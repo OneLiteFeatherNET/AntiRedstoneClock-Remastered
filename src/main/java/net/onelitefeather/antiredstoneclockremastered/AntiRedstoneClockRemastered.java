@@ -32,4 +32,8 @@ public class AntiRedstoneClockRemastered extends JavaPlugin  {
     public CheckTPS getTps() {
         return tps;
     }
+
+    public RedstoneClockService getRedstoneClockService() {
+        return redstoneClockService;
+    }
 }
