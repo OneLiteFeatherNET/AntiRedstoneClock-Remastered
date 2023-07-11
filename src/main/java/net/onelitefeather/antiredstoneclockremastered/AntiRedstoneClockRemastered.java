@@ -1,15 +1,23 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AntiRedstoneClockRemastered extends JavaPlugin {
-
+public class AntiRedstoneClockRemastered extends JavaPlugin  {
     private CheckTPS tps;
+
+    private RedstoneClockService redstoneClockService;
 
     @Override
     public void onEnable() {
         enableTPSChecker();
+        enableRedstoneClockService();
+    }
+
+    private void enableRedstoneClockService() {
+        this.redstoneClockService = new RedstoneClockService(this);
     }
 
     private void enableTPSChecker() {
