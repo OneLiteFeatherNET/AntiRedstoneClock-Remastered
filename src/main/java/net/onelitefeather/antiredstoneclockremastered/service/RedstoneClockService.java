@@ -50,7 +50,7 @@ public final class RedstoneClockService {
                 return;
             }
             if (clock.getTriggerCount() >= this.maxClockCount) {
-                //TODO: Replace block
+                destroyRedstoneClock(location, clock);
                 return;
             }
             clock.incrementTriggerCount();
