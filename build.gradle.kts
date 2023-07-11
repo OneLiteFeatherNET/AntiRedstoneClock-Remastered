@@ -1,5 +1,4 @@
 import io.papermc.hangarpublishplugin.model.Platforms
-import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default
 import org.ajoberstar.grgit.Grgit
 import xyz.jpenilla.runpaper.task.RunServer
 import java.util.*
@@ -66,6 +65,79 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
-tasks.test {
-    useJUnitPlatform()
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+tasks {
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    supportedMinecraftVersions.forEach { serverVersion ->
+        register<RunServer>("run-$serverVersion") {
+            minecraftVersion(serverVersion)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run paper"
+            runDirectory.set(file("run-$serverVersion"))
+            pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+        }
+    }
+}
+
+
+bukkit {
+    main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
+    apiVersion = "1.16"
+    authors = listOf("OneLiteFeather", "TheMeinerLP")
+}
+
+changelog {
+    version.set(baseVersion)
+    path.set("${project.projectDir}/CHANGELOG.md")
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Unreleased]")
+    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
+}
+
+hangarPublish {
+    publications.register("Attollo") { //Todo: Change
+        version.set(project.version.toString())
+        channel.set(System.getenv("HANGAR_CHANNEL"))
+        changelog.set(
+                project.changelog.renderItem(
+                        project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
+                )
+        )
+        apiKey.set(System.getenv("HANGAR_SECRET"))
+        owner.set("OneLiteFeather")
+        slug.set("Attollo") //Todo: Change
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                platformVersions.set(supportedMinecraftVersions)
+            }
+        }
+    }
+}
+modrinth {
+    token.set(System.getenv("MODRINTH_TOKEN"))
+    projectId.set("ULt9SvKn") //TODO: Change
+    versionNumber.set(version.toString())
+    versionType.set(System.getenv("MODRINTH_CHANNEL"))
+    uploadFile.set(tasks.shadowJar as Any)
+    gameVersions.addAll(supportedMinecraftVersions)
+    loaders.add("paper")
+    loaders.add("bukkit")
+    changelog.set(
+            project.changelog.renderItem(
+                    project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()
+            )
+    )
 }
