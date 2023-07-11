@@ -55,6 +55,7 @@ public final class RedstoneClock {
         return (System.currentTimeMillis() / 1000) >= endTime;
     }
 
+    @NotNull
     public Location getLocation() {
         return location;
     }
