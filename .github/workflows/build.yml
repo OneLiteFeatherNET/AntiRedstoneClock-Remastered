@@ -38,7 +38,7 @@ jobs:
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Attollo Archive
+          name: AntiRedstoneClock-Remastered Archive
           path: build/libs/AntiRedstoneClock-Remastered-*.jar
       - name: Publish to hangar
         if: ${{ runner.os == 'Linux' && env.STATUS == 'release' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
