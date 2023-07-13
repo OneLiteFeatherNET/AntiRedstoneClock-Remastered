@@ -37,6 +37,8 @@ ext {
     extension = "%s+%s".format(Locale.ROOT, snapshot, revision)
 }
 
+version = "%s%s".format(Locale.ROOT, baseVersion, extension)
+
 val minecraftVersion = "1.20.1"
 val supportedMinecraftVersions = listOf(
         "1.16.5",
