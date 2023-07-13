@@ -24,11 +24,16 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private PlotsquaredSupport plotsquaredSupport;
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-        enablePlotsquaredSupport();
         enableWorldGuardSupport();
+    }
+
+    @Override
+    public void onEnable() {
+
+        enablePlotsquaredSupport();
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
@@ -45,8 +50,9 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         if (psVersion < 5) {
             getLogger().warning("You us a unsupported version of PlotSquared!!!");
             this.plotsquaredSupport = new PlotSquaredWhatTheHellSupport();
-        } else if (psVersion < 6){
+        } else if (psVersion < 6) {
             getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
+            return;
         } else if (psVersion < 7) {
             getLogger().warning("You use a legacy version of PlotSquared!");
             this.plotsquaredSupport = new PlotSquaredLegacySupport();
