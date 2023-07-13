@@ -23,7 +23,7 @@ public final class RedstoneListener implements Listener {
 
         var block = blockRedstoneEvent.getBlock();
         var type = block.getType();
-        if (type != Material.REDSTONE_WIRE || type != reperaterMaterial) return;
+        if (type != Material.REDSTONE_WIRE && type != reperaterMaterial) return;
 
         if (blockRedstoneEvent.getOldCurrent() != 0) return;
 
