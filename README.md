@@ -15,8 +15,8 @@ antiredstoneclockremasterd.notify.admin
   - Shows current cached clocks
 
 ## More information / external links / Download
-Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered
+~~Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered~~
 
-Modrinth: https://modrinth.com/plugin/AntiRedstoneClock-Remastered
+~~Modrinth: https://modrinth.com/plugin/AntiRedstoneClock-Remastered~~
 
 Discord: https://discord.onelitefeather.net
