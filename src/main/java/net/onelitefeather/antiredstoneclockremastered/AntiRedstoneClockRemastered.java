@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
@@ -16,6 +17,8 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private RedstoneClockService redstoneClockService;
     private WorldGuardSupport worldGuardSupport;
+
+    private PlotsquaredSupport plotsquaredSupport;
 
     @Override
     public void onEnable() {
