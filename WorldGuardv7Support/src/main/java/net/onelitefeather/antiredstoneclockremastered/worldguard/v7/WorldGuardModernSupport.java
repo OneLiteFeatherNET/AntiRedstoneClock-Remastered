@@ -20,7 +20,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-public class WorldGuardModernSupport extends AbstractWorldGuardSupport {
+public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
 
     private static final WorldGuardPlugin WORLD_GUARD_PLUGIN = loadPlugin();
 
