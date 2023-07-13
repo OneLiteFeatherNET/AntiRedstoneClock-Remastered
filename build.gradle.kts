@@ -63,6 +63,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
@@ -94,6 +95,9 @@ tasks {
             runDirectory.set(file("run-$serverVersion"))
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
+    }
+    shadowJar {
+        relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
     }
 }
 

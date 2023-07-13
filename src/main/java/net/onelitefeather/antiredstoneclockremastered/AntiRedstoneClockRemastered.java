@@ -10,10 +10,16 @@ import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockServi
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.DrilldownPie;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
@@ -23,18 +29,24 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private PlotsquaredSupport plotsquaredSupport;
 
+    private Metrics metrics;
+
     @Override
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
+
         enableWorldGuardSupport();
     }
+
+
 
     @Override
     public void onEnable() {
         enablePlotsquaredSupport();
         enableTPSChecker();
         enableRedstoneClockService();
+        enableBStatsSupport();
         registerEvents();
     }
 
@@ -130,6 +142,43 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         this.tps.startCheck();
     }
 
+    private void enableBStatsSupport() {
+        this.metrics = new Metrics(this, 19085);
+        this.metrics.addCustomChart(new SimplePie("worldguard", this::bstatsWorldGuardVersion));
+        this.metrics.addCustomChart(new SimplePie("plotsquared", this::bstatsPlotSquaredVersion));
+        this.metrics.addCustomChart(new DrilldownPie("maxcount", this::bstatsMaxCount));
+    }
+
+    private Map<String, Map<String, Integer>> bstatsMaxCount() {
+        var map = new HashMap<String, Map<String, Integer>>();
+        var count = getConfig().getInt("clock.maxCount");
+        var entry = Map.of(String.valueOf(count),1);
+        switch (count) {
+            case 0 -> map.put("0 \uD83D\uDEAB", entry);
+            case 1, 2, 3, 4, 5 -> map.put("1-5 \uD83D\uDE10", entry);
+            case 6, 7, 8, 9, 10 -> map.put("6-10 \uD83D\uDE42", entry);
+            case 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 -> map.put("11-25 \uD83D\uDE0A", entry);
+            case 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50 ->
+                    map.put("26-50 \uD83D\uDE00", entry);
+            default -> map.put("50+ \uD83D\uDE01", entry);
+        }
+        return map;
+    }
+
+    private String bstatsPlotSquaredVersion() {
+        if (this.plotsquaredSupport != null) {
+            return this.plotsquaredSupport.getVersion();
+        }
+        return "unknown";
+    }
+
+    private String bstatsWorldGuardVersion() {
+        if (this.worldGuardSupport != null) {
+            return this.worldGuardSupport.getVersion();
+        }
+        return "unknown";
+    }
+
     public CheckTPS getTps() {
         return tps;
     }
@@ -145,4 +194,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public PlotsquaredSupport getPlotsquaredSupport() {
         return plotsquaredSupport;
     }
+
+
 }
