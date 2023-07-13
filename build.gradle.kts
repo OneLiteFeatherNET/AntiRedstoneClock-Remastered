@@ -66,6 +66,9 @@ dependencies {
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
+    implementation(project(":PlotSquaredv4Support"))
+    implementation(project(":PlotSquaredv6Support"))
+    implementation(project(":PlotSquaredv7Support"))
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

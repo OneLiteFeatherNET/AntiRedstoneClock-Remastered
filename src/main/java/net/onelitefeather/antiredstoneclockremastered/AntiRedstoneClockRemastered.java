@@ -3,6 +3,9 @@ package net.onelitefeather.antiredstoneclockremastered;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
+import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquaredWhatTheHellSupport;
+import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
+import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
@@ -24,10 +27,34 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         reloadConfig();
+        enablePlotsquaredSupport();
         enableWorldGuardSupport();
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
+    }
+
+    private void enablePlotsquaredSupport() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("PlotSquared");
+        if (plugin == null) {
+            Bukkit.getLogger().warning("PlotSquared hasn't been found!");
+            return;
+        }
+        @SuppressWarnings("deprecation")
+        int psVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
+        if (psVersion < 5) {
+            getLogger().warning("You us a unsupported version of PlotSquared!!!");
+            this.plotsquaredSupport = new PlotSquaredWhatTheHellSupport();
+        } else if (psVersion < 6){
+            getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
+        } else if (psVersion < 7) {
+            getLogger().warning("You use a legacy version of PlotSquared!");
+            this.plotsquaredSupport = new PlotSquaredLegacySupport();
+        } else {
+            getLogger().warning("Thanks to hold your software up-to date <3");
+            this.plotsquaredSupport = new PlotSquaredModernSupport();
+        }
+        this.plotsquaredSupport.init();
     }
 
     private void enableWorldGuardSupport() {
@@ -102,5 +129,9 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     public WorldGuardSupport getWorldGuardSupport() {
         return worldGuardSupport;
+    }
+
+    public PlotsquaredSupport getPlotsquaredSupport() {
+        return plotsquaredSupport;
     }
 }
