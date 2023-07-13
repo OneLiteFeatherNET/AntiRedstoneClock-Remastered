@@ -5,6 +5,7 @@ check:
   comparator: true
   ignoredWorlds:
     - world
+  ignoredRegions: []
 
 clock:
   endDelay: 300
