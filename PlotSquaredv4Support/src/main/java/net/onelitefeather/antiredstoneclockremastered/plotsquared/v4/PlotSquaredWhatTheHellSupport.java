@@ -38,7 +38,7 @@ public final class PlotSquaredWhatTheHellSupport extends AbstractPlotsquaredSupp
     public String getVersion() {
         var plotSquaredPlugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
         if (plotSquaredPlugin == null) {
-            return "unkown";
+            return "unknown";
         }
         return plotSquaredPlugin.getDescription().getVersion();
     }
