@@ -4,8 +4,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven("https://repo.codemc.org/repository/maven-public")
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://papermc.io/repo/repository/maven-public/")
 }
