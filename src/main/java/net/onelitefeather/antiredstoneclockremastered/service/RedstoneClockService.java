@@ -38,6 +38,31 @@ public final class RedstoneClockService {
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
     }
 
+    public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
+        var clock = getClockByLocation(location);
+        if (clock != null) {
+            if (clock.isActive()) {
+                if (clock.isTimeOut()) {
+                    removeClockByClock(clock);
+                    return;
+                }
+                if (clock.getTriggerCount() >= this.maxClockCount) {
+                    destroyRedstoneClock(location, clock);
+                    return;
+                }
+                clock.incrementTriggerCount();
+                clock.setActive(false);
+                return;
+            } else {
+                clock.setActive(state);
+            }
+        }
+        addRedstoneClockTest(location);
+    }
+
+    public void checkAndUpdateClockStateWithActiveManual(@NotNull Block block, boolean state) {
+        checkAndUpdateClockStateWithActiveManual(block.getLocation(), state);
+    }
     public void checkAndUpdateClockStateWithActive(@NotNull Block block) {
         checkAndUpdateClockStateWithActive(block.getLocation());
     }

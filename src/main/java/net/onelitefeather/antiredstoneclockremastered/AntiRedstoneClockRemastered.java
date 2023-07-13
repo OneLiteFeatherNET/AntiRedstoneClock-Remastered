@@ -1,8 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
-import net.onelitefeather.antiredstoneclockremastered.listener.ComparatorListener;
-import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
-import net.onelitefeather.antiredstoneclockremastered.listener.RedstoneListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.Material;
@@ -23,6 +21,12 @@ public class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService), this);
+        if (getConfig().getBoolean("check.observer", true)) {
+            getServer().getPluginManager().registerEvents(new ObserverListener(this), this);
+        }
+        if (getConfig().getBoolean("check.piston", true)) {
+            getServer().getPluginManager().registerEvents(new PistonListener(this), this);
+        }
         if (getConfig().getBoolean("check.comparator", true)) {
             var comparator = Material.getMaterial("COMPARATOR");
             if (comparator != null) {
