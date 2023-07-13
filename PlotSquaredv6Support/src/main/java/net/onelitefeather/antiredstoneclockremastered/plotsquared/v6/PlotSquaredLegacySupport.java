@@ -21,7 +21,7 @@ public final class PlotSquaredLegacySupport extends AbstractPlotsquaredSupport {
         if (plotArea != null) {
             var flag = plotArea.getFlagContainer().getFlag(RedstoneClockFlag.class);
             if (flag != null) {
-                return !flag.getValue();
+                return flag.getValue();
             }
         }
         return false;
