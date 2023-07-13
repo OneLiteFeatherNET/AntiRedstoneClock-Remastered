@@ -102,6 +102,7 @@ bukkit {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.16"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
+    softDepend = listOf("PlotSquared", "WorldGaurd")
 }
 
 changelog {
