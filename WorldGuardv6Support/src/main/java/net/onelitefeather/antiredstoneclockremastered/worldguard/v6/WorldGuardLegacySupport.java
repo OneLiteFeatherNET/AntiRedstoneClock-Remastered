@@ -73,6 +73,7 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getVersion() {
         if (WORLD_GUARD_PLUGIN == null) {
             return "undefined";
