@@ -1,8 +1,11 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.RedstoneListener;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AntiRedstoneClockRemastered extends JavaPlugin  {
@@ -14,6 +17,22 @@ public class AntiRedstoneClockRemastered extends JavaPlugin  {
     public void onEnable() {
         enableTPSChecker();
         enableRedstoneClockService();
+        registerEvents();
+    }
+
+    private void registerEvents() {
+        getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService), this);
+        if (getConfig().getBoolean("check.redstoneAndRepeater")) {
+            var repeater = Material.getMaterial("REPEATER");
+            if (repeater != null) {
+                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
+            } else {
+                repeater = Material.getMaterial("DIODE_BLOCK_ON");
+                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
+                repeater = Material.getMaterial("DIODE_BLOCK_OFF");
+                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
+            }
+        }
     }
 
     private void enableRedstoneClockService() {
