@@ -1,5 +1,8 @@
 check:
   redstoneAndRepeater: true
+  observer: true
+  piston: true
+  comparator: true
 
 clock:
   endDelay: 300
