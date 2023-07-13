@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
 
-    private static final StateFlag REDSTONECLOCK_FLAG = new StateFlag("redstone-clock", true);
+    private static final StateFlag REDSTONECLOCK_FLAG = new StateFlag("redstone-clock", false);
 
     private static final WorldGuardPlugin WORLD_GUARD_PLUGIN = loadPlugin();
 
@@ -43,7 +43,7 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
             RegionQuery query = WORLD_GUARD_PLUGIN.getRegionContainer().createQuery();
             ApplicableRegionSet set = query.getApplicableRegions(location);
             RegionAssociable associable = new DelayedRegionOverlapAssociation(query, location);
-            if (!set.testState(associable, REDSTONECLOCK_FLAG)) {
+            if (set.testState(associable, REDSTONECLOCK_FLAG)) {
                 result = true;
             } else {
                 RegionManager regionManager = WORLD_GUARD_PLUGIN.getRegionManager(location.getWorld());
