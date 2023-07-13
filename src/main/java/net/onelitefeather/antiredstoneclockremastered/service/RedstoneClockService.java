@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,6 +26,7 @@ public final class RedstoneClockService {
     private final boolean notifyAdmins;
     private final boolean notifyConsole;
     private final boolean dropItems;
+    private final List<String> ignoredWorlds;
 
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
 
@@ -36,9 +38,11 @@ public final class RedstoneClockService {
         this.notifyAdmins = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyAdmins", true);
         this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
+        this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
     }
 
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
+        if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -68,6 +72,7 @@ public final class RedstoneClockService {
     }
 
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
+        if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -94,6 +99,7 @@ public final class RedstoneClockService {
     }
 
     public void checkAndUpdateClockState(@NotNull Location location) {
+        if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isTimeOut()) {

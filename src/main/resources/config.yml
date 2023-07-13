@@ -3,6 +3,8 @@ check:
   observer: true
   piston: true
   comparator: true
+  ignoredWorlds:
+    - world
 
 clock:
   endDelay: 300
