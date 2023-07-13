@@ -1,14 +1,14 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.onelitefeather.antiredstoneclockremastered.listener.ComparatorListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.RedstoneListener;
-import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AntiRedstoneClockRemastered extends JavaPlugin  {
+public class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
 
     private RedstoneClockService redstoneClockService;
@@ -23,15 +23,22 @@ public class AntiRedstoneClockRemastered extends JavaPlugin  {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService), this);
+        if (getConfig().getBoolean("check.comparator", true)) {
+            var comparator = Material.getMaterial("COMPARATOR");
+            if (comparator != null) {
+                getServer().getPluginManager().registerEvents(new ComparatorListener(comparator, this), this);
+            } else {
+                getServer().getPluginManager().registerEvents(new ComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"), this), this);
+                getServer().getPluginManager().registerEvents(new ComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"), this), this);
+            }
+        }
         if (getConfig().getBoolean("check.redstoneAndRepeater", true)) {
             var repeater = Material.getMaterial("REPEATER");
             if (repeater != null) {
                 getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
             } else {
-                repeater = Material.getMaterial("DIODE_BLOCK_ON");
-                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
-                repeater = Material.getMaterial("DIODE_BLOCK_OFF");
-                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
+                getServer().getPluginManager().registerEvents(new RedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"), this), this);
+                getServer().getPluginManager().registerEvents(new RedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"), this), this);
             }
         }
     }
