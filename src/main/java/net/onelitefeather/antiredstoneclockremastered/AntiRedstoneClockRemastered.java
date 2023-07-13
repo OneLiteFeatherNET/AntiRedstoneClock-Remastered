@@ -14,6 +14,7 @@ public class AntiRedstoneClockRemastered extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        reloadConfig();
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
