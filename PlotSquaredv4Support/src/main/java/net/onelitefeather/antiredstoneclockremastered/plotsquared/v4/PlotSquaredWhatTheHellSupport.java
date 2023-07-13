@@ -25,7 +25,7 @@ public final class PlotSquaredWhatTheHellSupport extends AbstractPlotsquaredSupp
             if (flagOptional.isPresent()) {
                 var flag = flagOptional.get();
                 if (flag instanceof RedstoneClockFlag redstoneClockFlag) {
-                    return redstoneClockFlag.isFalse(plot);
+                    return redstoneClockFlag.isTrue(plot);
                 }
             }
         }
