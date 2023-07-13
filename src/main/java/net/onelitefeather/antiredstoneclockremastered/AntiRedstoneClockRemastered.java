@@ -15,6 +15,7 @@ public class AntiRedstoneClockRemastered extends JavaPlugin  {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
@@ -22,7 +23,7 @@ public class AntiRedstoneClockRemastered extends JavaPlugin  {
 
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService), this);
-        if (getConfig().getBoolean("check.redstoneAndRepeater")) {
+        if (getConfig().getBoolean("check.redstoneAndRepeater", true)) {
             var repeater = Material.getMaterial("REPEATER");
             if (repeater != null) {
                 getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
