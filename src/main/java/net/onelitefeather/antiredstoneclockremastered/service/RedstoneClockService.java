@@ -43,6 +43,7 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -73,6 +74,7 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -100,6 +102,7 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isTimeOut()) {

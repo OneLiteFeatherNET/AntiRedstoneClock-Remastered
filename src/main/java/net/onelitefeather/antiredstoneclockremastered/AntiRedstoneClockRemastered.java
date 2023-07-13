@@ -20,6 +20,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         reloadConfig();
+        enableWorldGuardSupport();
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
@@ -31,11 +32,18 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             Bukkit.getLogger().warning("WorldGuard hasn't been found!");
             return;
         }
-        Integer wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
+        @SuppressWarnings("deprecation")
+        int wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
         if (wgVersion > 6) {
 
         } else {
             this.worldGuardSupport = new WorldGuardLegacySupport(this);
+        }
+
+        if (this.worldGuardSupport.registerFlag()) {
+            this.getLogger().info("Flag redstoneclock registered");
+        } else {
+            this.getLogger().severe("An error occurred while registering redstoneclock flag");
         }
     }
 
