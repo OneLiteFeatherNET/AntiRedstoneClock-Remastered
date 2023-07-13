@@ -103,6 +103,9 @@ bukkit {
     apiVersion = "1.16"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
     softDepend = listOf("PlotSquared", "WorldGuard")
+    permissions {
+        register("antiredstoneclockremasterd.notify.admin")
+    }
 }
 
 changelog {
