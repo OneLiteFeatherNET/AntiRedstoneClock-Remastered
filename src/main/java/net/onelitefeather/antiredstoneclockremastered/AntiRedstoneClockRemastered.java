@@ -1,15 +1,20 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AntiRedstoneClockRemastered extends JavaPlugin {
+public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
 
     private RedstoneClockService redstoneClockService;
+    private WorldGuardSupport worldGuardSupport;
 
     @Override
     public void onEnable() {
@@ -18,6 +23,20 @@ public class AntiRedstoneClockRemastered extends JavaPlugin {
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
+    }
+
+    private void enableWorldGuardSupport() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+        if (plugin == null) {
+            Bukkit.getLogger().warning("WorldGuard hasn't been found!");
+            return;
+        }
+        Integer wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
+        if (wgVersion > 6) {
+
+        } else {
+            this.worldGuardSupport = new WorldGuardLegacySupport(this);
+        }
     }
 
     private void registerEvents() {
@@ -67,5 +86,9 @@ public class AntiRedstoneClockRemastered extends JavaPlugin {
 
     public RedstoneClockService getRedstoneClockService() {
         return redstoneClockService;
+    }
+
+    public WorldGuardSupport getWorldGuardSupport() {
+        return worldGuardSupport;
     }
 }
