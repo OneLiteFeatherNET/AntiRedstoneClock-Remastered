@@ -5,6 +5,7 @@ import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
+import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
@@ -35,7 +36,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         @SuppressWarnings("deprecation")
         int wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
         if (wgVersion > 6) {
-
+            this.worldGuardSupport = new WorldGuardModernSupport(this);
         } else {
             this.worldGuardSupport = new WorldGuardLegacySupport(this);
         }

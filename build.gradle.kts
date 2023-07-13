@@ -65,6 +65,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
+    implementation(project(":WorldGuardv7Support"))
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
