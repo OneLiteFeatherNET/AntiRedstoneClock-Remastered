@@ -3,6 +3,7 @@ check:
   observer: true
   piston: true
   comparator: true
+  sculk: true
   ignoredWorlds:
     - world
   ignoredRegions: []
