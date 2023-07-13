@@ -24,7 +24,7 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
 
     private static final WorldGuardPlugin WORLD_GUARD_PLUGIN = loadPlugin();
 
-    private static final StateFlag REDSTONECLOCK_FLAG = new StateFlag("redstone-clock", true);
+    private static final StateFlag REDSTONECLOCK_FLAG = new StateFlag("redstone-clock", false);
 
     public WorldGuardModernSupport(@NotNull Plugin plugin) {
         super(plugin);
@@ -37,7 +37,7 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
             RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
             ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
             RegionAssociable associable = new DelayedRegionOverlapAssociation(query, BukkitAdapter.adapt(location));
-            if (!set.testState(associable, REDSTONECLOCK_FLAG)) {
+            if (set.testState(associable, REDSTONECLOCK_FLAG)) {
                 return true;
             } else {
                 RegionManager regionManager = getRegionManager(location.getWorld());
