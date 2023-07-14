@@ -9,11 +9,30 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Plotsquared legacy is no longer supported by the IntellectualSites team. Take sure to update Plotsquared, FAWE and
+ * your minecraft version to prevent not fixed issues and exploits.
+ * This class creates a new third party Plotsquared flag for enabling / disabling antiredstone detection on a plot.
+ * It also gets the accurate version of Plotsquared and checks if the location of the redstone clock is on a plot.
+ */
 public final class PlotSquaredLegacySupport extends AbstractPlotsquaredSupport {
+
+    /**
+     * initialize a new flag with the default boolean value false; this flag disables ARC-R detection on default,
+     * you have to enable this flag though the plotsquared flag command
+     */
     @Override
     public void init() {
         GlobalFlagContainer.getInstance().addFlag(new RedstoneClockFlag(false));
     }
+
+    /**
+     * Checks if the location of the redstone clock is in a plotarea ("plot")
+     * @param location the location of the redstone clock
+     * @return true if the location is inside a plotarea and has the redstoneclockflag enabled,
+     * false if it is not inside a plotarea and has the redstoneclockflag disabled
+     *
+     */
 
     @Override
     public boolean isAllowedPlot(@NotNull Location location) {
