@@ -1,7 +1,7 @@
 # AntiRedstoneClock-Remastered
 This plugin is inspired by https://gitlab.com/Trafalcraft/antiRedstoneClock 
 
-We re-created the hole code and improved everything. On top, we support plotsquared v7 and worldguard v7.
+We re-created the whole code and improved everything. On top, we support Plotsquared v7 and Worldguard v7.
 
 ## Features
 - 1.13+ Support
@@ -14,6 +14,10 @@ We re-created the hole code and improved everything. On top, we support plotsqua
 - Config Migration(Soon)
 - Prevent duplicated loading of anti-redstoneclock plugins
 
+## Dependencies (soft-depend, can be used together)
+- Plotsquared v7 https://github.com/IntellectualSites/PlotSquared
+- Worldguard v7 https://github.com/EngineHub/WorldGuard
+
 ## Permissions:
 ```
 antiredstoneclockremastered.notify.admin
@@ -23,7 +27,7 @@ antiredstoneclockremastered.notify.admin
 - /arcm reload
   - Reloads the config
 - /arcm display
-  - Shows current cached clocks
+  - Shows current cached redstone clocks
 
 ## More information / external links / Download
 ~~Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered~~
