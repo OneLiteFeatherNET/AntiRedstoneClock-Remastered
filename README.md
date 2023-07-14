@@ -16,7 +16,7 @@ We re-created the hole code and improved everything. On top, we support plotsqua
 
 ## Permissions:
 ```
-antiredstoneclockremasterd.notify.admin
+antiredstoneclockremastered.notify.admin
 ```
 
 ## Commmands

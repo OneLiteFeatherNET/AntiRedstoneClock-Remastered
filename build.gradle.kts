@@ -108,7 +108,7 @@ bukkit {
     authors = listOf("OneLiteFeather", "TheMeinerLP")
     softDepend = listOf("PlotSquared", "WorldGuard")
     permissions {
-        register("antiredstoneclockremasterd.notify.admin")
+        register("antiredstoneclockremastered.notify.admin")
     }
 }
 
