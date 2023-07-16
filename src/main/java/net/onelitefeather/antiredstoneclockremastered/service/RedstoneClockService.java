@@ -17,17 +17,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The RedstoneClockService is not only getting the options from the config, it executes detection and redstone clock destruction logic
+ * if the flags in the config are set to true and or no worlds are ignored in the config
+ * If Plotsquared / Worldguard is not enabled on the server, it will be ignored as well
+ */
 public final class RedstoneClockService {
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final int endTimeDelay;
+    /**
+     * config value (integer for example on default 300 in seconds) for redstone timeout (maxClockCount reset)
+     */
     private final int maxClockCount;
+    /**
+     * config value (true or false) if the block should break if a redstone clock has been detected and stopped
+     */
     private final boolean autoBreakBlock;
+    /**
+     * Config value (true or false) if the users with the matching permission antiredstoneclockremastered.notify.admin
+     * are notified
+     */
     private final boolean notifyAdmins;
+    /**
+     * That is a value in the config that can be set to
+     * true / false if the console should log if a redstone clock was detected or not
+     */
     private final boolean notifyConsole;
+    /**
+     * Config value (true or false) if the plugin drops the item for the player if the redstone clock was detected and destroyed
+     */
     private final boolean dropItems;
+    /**
+     * ignoredWorlds is a list of worlds that won't be considered for clock detection
+     */
     private final List<String> ignoredWorlds;
 
+    /**
+     * This is a list of Redstone Clocks with their matching location
+     */
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
 
     public RedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
@@ -41,6 +69,11 @@ public final class RedstoneClockService {
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
     }
 
+    /**
+     * Some checks to ensure if the redstone clock is in dependency regions with enabled custom flags with allowed worlds
+     * @param location the location of the redstone clock
+     * @param state can be whether enabled or not, if not, it can run into a timeout when it was enabled before
+     */
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
