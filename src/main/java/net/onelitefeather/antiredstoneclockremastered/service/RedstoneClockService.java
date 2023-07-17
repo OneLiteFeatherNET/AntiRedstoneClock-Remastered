@@ -70,7 +70,7 @@ public final class RedstoneClockService {
     }
 
     /**
-     * Some checks to ensure if the redstone clock is in dependency regions with enabled custom flags with allowed worlds
+     * Some checks to ensure if the redstone clock is in Plotsquared / Worldguard allowed with custom flags with allowed worlds
      * @param location the location of the redstone clock
      * @param state can be whether enabled or not, if not, it can run into a timeout when it was enabled before
      */
@@ -99,13 +99,28 @@ public final class RedstoneClockService {
         addRedstoneClockTest(location);
     }
 
+    /**
+     * Using the above method checkAndUpdateClockStateWithActiveManual but using the block where the redstone clock is located
+     * @param block The block where the redstone clock is located
+     * @param state If the clock is enabled or disabled
+     */
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Block block, boolean state) {
         checkAndUpdateClockStateWithActiveManual(block.getLocation(), state);
     }
+
+    /**
+     * Add the block to get the location of the redstone clock location
+     * @param block the block of the clock
+     */
     public void checkAndUpdateClockStateWithActive(@NotNull Block block) {
         checkAndUpdateClockStateWithActive(block.getLocation());
     }
 
+    /**
+     * Some checks for allowed world and if the clock logic is allowed in Plotsquared and Worldguard with the custom flag
+     * Also some destruction logic to remove the clock if it is not allowed
+     * @param location the location of the redstone clock
+     */
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
@@ -131,10 +146,18 @@ public final class RedstoneClockService {
         addRedstoneClockTest(location);
     }
 
+    /**
+     * Uses the location of the block to call the method below
+     * @param block the block of the clock
+     */
     public void checkAndUpdateClockState(@NotNull Block block) {
         checkAndUpdateClockState(block.getLocation());
     }
 
+    /**
+     * Same checks as with the manual method
+     * @param location the location of the redstone clock
+     */
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
@@ -155,6 +178,11 @@ public final class RedstoneClockService {
         addRedstoneClockTest(location);
     }
 
+    /**
+     * The actual destruction method where the not allowed and tested redstone clock gets destroyed with a message
+     * @param location the location of the clock
+     * @param clock the detected and not allowed clock
+     */
     private void destroyRedstoneClock(@NotNull Location location, @NotNull RedstoneClock clock) {
         if (this.autoBreakBlock) breakBlock(location);
         if (!clock.isDetected()) {
@@ -174,6 +202,10 @@ public final class RedstoneClockService {
         removeClockByClock(clock);
     }
 
+    /**
+     * Checks if the config was set to dropitems or not. If true, only natural blocks can drop, if set false, nothing will drop
+     * @param location the location of the redstone clock which is destroyed
+     */
     private void breakBlock(@NotNull Location location) {
         if (this.dropItems) {
             location.getBlock().breakNaturally();
@@ -182,37 +214,71 @@ public final class RedstoneClockService {
         }
     }
 
+    /**
+     * Adds a Redstone Clock to the hashmap with a location and an endtime where it can time out and then removed again
+     * @param location the location of the redstone clock
+     */
     public void addRedstoneClockTest(@NotNull Location location) {
         this.activeClockTesters.putIfAbsent(location, new RedstoneClock(location, (System.currentTimeMillis() / 1000) + endTimeDelay));
     }
 
+    /**
+     * Removes the redstone clock location out of the hashmap
+     * @param location of the redstone clock
+     */
     public void removeClockByLocation(@NotNull Location location) {
         this.activeClockTesters.remove(location);
     }
 
+    /**
+     * Uses the above method but with the matching location of the redstone clock
+     * @param redstoneClock the redstone clock object
+     */
     public void removeClockByClock(@NotNull RedstoneClock redstoneClock) {
         removeClockByLocation(redstoneClock.getLocation());
     }
 
+    /**
+     *
+     * @param location of the Redstone Clock
+     * @return boolean if the hashmap contains the key with the redstone location
+     */
     public boolean containsLocation(@NotNull Location location) {
         return this.activeClockTesters.containsKey(location);
     }
 
+    /**
+     * Getter method for the key location of the hashmap
+     * @param location of the Redstone Clock
+     * @return RedstoneClock
+     */
     @Nullable
     public RedstoneClock getClockByLocation(@NotNull Location location) {
         return this.activeClockTesters.get(location);
     }
 
+    /**
+     * A getter method to get all active Redstone Clocks
+     * @return Collection - a list of Redstone Clocks that are active as the value of the hashmap
+     */
     @NotNull
     public Collection<RedstoneClock> getRedstoneClocks() {
         return Collections.unmodifiableCollection(this.activeClockTesters.values());
     }
 
+    /**
+     * A getter method to get all Redstone Clock locations
+     * @return Collection - a list of Redstone Clock locations as a key of the hashmap
+     */
     @NotNull
     public Collection<Location> getRedstoneClockLocations() {
         return Collections.unmodifiableCollection(this.activeClockTesters.keySet());
     }
 
+    /**
+     * A getter method to get all active clock testers that test redstone clocks
+     * @return the copy of the hashmap as a map
+     */
     @NotNull
     public Map<Location, RedstoneClock> getActiveTester() {
         return Map.copyOf(this.activeClockTesters);
