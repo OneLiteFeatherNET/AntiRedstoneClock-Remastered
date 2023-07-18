@@ -17,6 +17,12 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The implementation of WorldGuardSupport class but in legacy, looking for Worldguard in an enabled state
+ * and in addition check if the worldguard region(s) is/are allowed
+ * to register a redstone-clock flag which is default disabled.
+ * Also check if the redstone-clock flag can be applied to overlapping worldguard region(s)
+ */
 public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
 
     private static final StateFlag REDSTONECLOCK_FLAG = new StateFlag("redstone-clock", false);
@@ -35,7 +41,12 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
         if (plugin instanceof WorldGuardPlugin wgp) return wgp;
         return null;
     }
-
+    /**
+     * The actual check if the worldguard regions are allowed to add a redstone-clock flag, considering
+     * overlapping regions
+     * @param location the location of the redstone-clock
+     * @return the boolean result whether the region is allowed or not
+     */
     @Override
     public boolean isRegionAllowed(@NotNull Location location) {
         boolean result = false;
@@ -71,7 +82,10 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
         Vector vector = new Vector(loc.getX(), loc.getY(), loc.getZ());
         return regionManager.getApplicableRegions(vector);
     }
-
+    /**
+     * Searches for enabled Worldguard
+     * @return undefined if Worldguard was not found or is not enabled
+     */
     @Override
     @SuppressWarnings("deprecation")
     public String getVersion() {
@@ -82,6 +96,11 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
         }
     }
 
+    /**
+     * This method tries to register a redstone-clock flag. If the user have a different plugin providing a flag
+     * with the same name, an exception is thrown with a matching message
+     * @return boolean flagloaded = true if the flag was able to load, if not return false
+     */
     @Override
     public boolean registerFlag() {
         boolean flagLoaded = false;
@@ -92,7 +111,7 @@ public final class WorldGuardLegacySupport extends AbstractWorldGuardSupport {
                 registry.register(REDSTONECLOCK_FLAG);
                 flagLoaded = true;
             } catch (FlagConflictException e) {
-                Bukkit.getLogger().severe("A plugin already use the flag redstoneclock. WorldGuard flag support will not work");
+                Bukkit.getLogger().severe("A plugin already uses the flag redstoneclock. WorldGuard flag support will not work");
             }
         }
         return flagLoaded;
