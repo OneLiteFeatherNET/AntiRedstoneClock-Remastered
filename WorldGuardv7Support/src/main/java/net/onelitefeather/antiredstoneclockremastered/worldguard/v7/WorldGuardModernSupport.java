@@ -20,6 +20,12 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The implementation of WorldGuardSupport class, looking for Worldguard in an enabled state
+ * and in addition check if the worldguard region(s) is/are allowed
+ * to register a redstone-clock flag which is default disabled.
+ * Also check if the redstone-clock flag can be applied to overlapping worldguard region(s)
+ */
 public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
 
     private static final WorldGuardPlugin WORLD_GUARD_PLUGIN = loadPlugin();
@@ -30,6 +36,12 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
         super(plugin);
     }
 
+    /**
+     * The actual check if the worldguard regions are allowed to add a redstone-clock flag, considering
+     * overlapping regions
+     * @param location the location of the redstone-clock
+     * @return the boolean result whether the region is allowed or not
+     */
     @Override
     public boolean isRegionAllowed(@NotNull Location location) {
         boolean result = false;
@@ -47,6 +59,10 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
         return result;
     }
 
+    /**
+     * Searches for enabled Worldguard
+     * @return null if Worldguard was not found or is not enabled
+     */
     private static WorldGuardPlugin loadPlugin() {
 
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
@@ -76,6 +92,10 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
         return wgPlatform.getRegionContainer().get(worldEditWorld);
     }
 
+    /**
+     * Checks the Worldguard version if Worldguard is enabled
+     * @return the version as a String
+     */
     @Override
     @SuppressWarnings("deprecation")
     public String getVersion() {
@@ -86,6 +106,11 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
         }
     }
 
+    /**
+     * This method tries to register a redstone-clock flag. If the user have a different plugin providing a flag
+     * with the same name, an exception is thrown with a matching message
+     * @return boolean flagloaded = true if the flag was able to load, if not return false
+     */
     @Override
     public boolean registerFlag() {
         boolean flagLoaded = false;
