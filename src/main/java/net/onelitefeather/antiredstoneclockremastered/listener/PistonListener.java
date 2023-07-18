@@ -9,9 +9,17 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
+/**
+ * The PistonListener is for all events that needs to be considered
+ * when having a redstone piston block in a redstone clock / as a redstone clock for this plugin
+ */
 public final class PistonListener implements Listener {
     private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
 
+    /**
+     * A setter method for the PistonListener
+     * @param antiRedstoneClockRemastered is another main class
+     */
     public PistonListener(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
     }
