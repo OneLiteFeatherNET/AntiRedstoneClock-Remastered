@@ -10,7 +10,7 @@ plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("io.papermc.hangar-publish-plugin") version "0.0.5"
     id("com.modrinth.minotaur") version "2.+"
-    id("org.jetbrains.changelog") version "2.1.0"
+    id("org.jetbrains.changelog") version "2.1.2"
     id("org.ajoberstar.grgit") version "5.2.0"
 }
 
@@ -63,13 +63,14 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:$minecraftVersion-R0.1-SNAPSHOT")
+    implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
     implementation(project(":PlotSquaredv4Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
@@ -95,6 +96,9 @@ tasks {
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
     }
+    shadowJar {
+        relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
+    }
 }
 
 
@@ -103,6 +107,9 @@ bukkit {
     apiVersion = "1.16"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
     softDepend = listOf("PlotSquared", "WorldGuard")
+    permissions {
+        register("antiredstoneclockremastered.notify.admin")
+    }
 }
 
 changelog {
