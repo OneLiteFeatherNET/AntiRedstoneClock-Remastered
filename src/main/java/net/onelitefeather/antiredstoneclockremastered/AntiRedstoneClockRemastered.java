@@ -25,12 +25,12 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-        enableWorldGuardSupport();
+        enableWorldGuardSupport(); //Worldguard needs to enable flags before the worlds are loaded
     }
 
     @Override
     public void onEnable() {
-        enablePlotsquaredSupport();
+        enablePlotsquaredSupport(); //Plotsquared can enable flags after the worlds are loaded
         enableTPSChecker();
         enableRedstoneClockService();
         registerEvents();
