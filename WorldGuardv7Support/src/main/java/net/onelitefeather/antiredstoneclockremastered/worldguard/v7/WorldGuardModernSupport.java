@@ -94,7 +94,7 @@ public final class WorldGuardModernSupport extends AbstractWorldGuardSupport {
             registry.register(REDSTONECLOCK_FLAG);
             flagLoaded = true;
         } catch (FlagConflictException e) {
-            Bukkit.getLogger().severe("A plugin already use the flag redstone-clock. WorldGuard flag support will not work");
+            Bukkit.getLogger().severe("A plugin already uses the flag redstone-clock. WorldGuard flag support will not work");
         }
         return flagLoaded;
     }
