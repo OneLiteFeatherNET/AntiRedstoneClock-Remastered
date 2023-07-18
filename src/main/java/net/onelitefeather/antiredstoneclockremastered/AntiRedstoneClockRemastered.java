@@ -17,10 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
-
     private RedstoneClockService redstoneClockService;
     private WorldGuardSupport worldGuardSupport;
-
     private PlotsquaredSupport plotsquaredSupport;
 
     @Override
@@ -47,16 +45,16 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         @SuppressWarnings("deprecation")
         int psVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
         if (psVersion < 5) {
-            getLogger().warning("You us a unsupported version of PlotSquared!!!");
+            getLogger().warning("You use an unsupported version of PlotSquared!!!");
             this.plotsquaredSupport = new PlotSquaredWhatTheHellSupport();
         } else if (psVersion < 6) {
-            getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
+            getLogger().warning("We don't support PS5 currently also you use an unsupported version of PlotSquared!!!");
             return;
         } else if (psVersion < 7) {
             getLogger().warning("You use a legacy version of PlotSquared!");
             this.plotsquaredSupport = new PlotSquaredLegacySupport();
         } else {
-            getLogger().warning("Thanks to hold your software up-to date <3");
+            getLogger().warning("Thanks for keeping Plotsquared up-to date <3");
             this.plotsquaredSupport = new PlotSquaredModernSupport();
         }
         this.plotsquaredSupport.init();
@@ -71,8 +69,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         @SuppressWarnings("deprecation")
         int wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
         if (wgVersion > 6) {
+            getLogger().warning("Thanks for keeping Worldguard up-to date <3");
             this.worldGuardSupport = new WorldGuardModernSupport(this);
         } else {
+            getLogger().warning("You use a legacy version of Worldguard");
             this.worldGuardSupport = new WorldGuardLegacySupport(this);
         }
 
@@ -130,18 +130,34 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         this.tps.startCheck();
     }
 
+    /**
+     * This plugin captures its own tps from the server to be independent for older versions
+     * @return CheckTPS Object
+     */
     public CheckTPS getTps() {
         return tps;
     }
 
+    /**
+     * A getter method
+     * @return RedstoneClockService Object
+     */
     public RedstoneClockService getRedstoneClockService() {
         return redstoneClockService;
     }
 
+    /**
+     * A getter method
+     * @return WorldGuardSupport Object
+     */
     public WorldGuardSupport getWorldGuardSupport() {
         return worldGuardSupport;
     }
 
+    /**
+     * A getter method
+     * @return PlotsquaredSupport Object
+     */
     public PlotsquaredSupport getPlotsquaredSupport() {
         return plotsquaredSupport;
     }
