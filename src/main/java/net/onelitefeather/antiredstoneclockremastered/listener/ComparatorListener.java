@@ -7,10 +7,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
+/**
+ * The ComparatorListener is for all events that needs to be considered
+ * when having a redstone comparator block in a redstone clock / as a redstone clock for this plugin
+ */
 public final class ComparatorListener implements Listener {
     private final Material comparatorMaterial;
     private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
 
+    /**
+     * A setter method for the ComparatorListener
+     * @param comparatorMaterial is the bukkit Material of the Comparator
+     * @param antiRedstoneClockRemastered is another main class
+     */
     public ComparatorListener(Material comparatorMaterial, AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.comparatorMaterial = comparatorMaterial;
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
