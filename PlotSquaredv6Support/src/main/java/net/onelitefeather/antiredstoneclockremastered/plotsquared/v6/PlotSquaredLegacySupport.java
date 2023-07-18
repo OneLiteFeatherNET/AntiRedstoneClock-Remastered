@@ -46,6 +46,10 @@ public final class PlotSquaredLegacySupport extends AbstractPlotsquaredSupport {
         return false;
     }
 
+    /**
+     * Get the version of the Plotsquared plugin
+     * @return String the version of the plugin or unknown if the plugin does not exist or is not enabled
+     */
     @Override
     @SuppressWarnings("deprecation")
     public String getVersion() {
