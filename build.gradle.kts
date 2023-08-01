@@ -70,7 +70,7 @@ dependencies {
     implementation(project(":PlotSquaredv4Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
-    testImplementation(platform("org.junit:junit-bom:5.9.3"))
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
