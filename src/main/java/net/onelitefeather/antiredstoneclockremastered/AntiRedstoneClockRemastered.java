@@ -23,10 +23,8 @@ import java.util.Map;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
-
     private RedstoneClockService redstoneClockService;
     private WorldGuardSupport worldGuardSupport;
-
     private PlotsquaredSupport plotsquaredSupport;
 
     private Metrics metrics;
@@ -35,15 +33,14 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-
-        enableWorldGuardSupport();
+        enableWorldGuardSupport(); //Worldguard needs to enable flags before the worlds are loaded
     }
 
 
 
     @Override
     public void onEnable() {
-        enablePlotsquaredSupport();
+        enablePlotsquaredSupport(); //Plotsquared can enable flags after the worlds are loaded
         enableTPSChecker();
         enableRedstoneClockService();
         enableBStatsSupport();
@@ -83,8 +80,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         @SuppressWarnings("deprecation")
         int wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
         if (wgVersion > 6) {
+            getLogger().warning("Thanks for keeping Worldguard up-to date <3");
             this.worldGuardSupport = new WorldGuardModernSupport(this);
         } else {
+            getLogger().warning("You use a legacy version of Worldguard");
             this.worldGuardSupport = new WorldGuardLegacySupport(this);
         }
 
@@ -142,6 +141,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         this.tps.startCheck();
     }
 
+    /**
+     * This plugin captures its own tps from the server to be independent for older versions
+     * @return CheckTPS Object
+     */
     private void enableBStatsSupport() {
         this.metrics = new Metrics(this, 19085);
         this.metrics.addCustomChart(new SimplePie("worldguard", this::bstatsWorldGuardVersion));
@@ -183,17 +186,27 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         return tps;
     }
 
+    /**
+     * A getter method
+     * @return RedstoneClockService Object
+     */
     public RedstoneClockService getRedstoneClockService() {
         return redstoneClockService;
     }
 
+    /**
+     * A getter method
+     * @return WorldGuardSupport Object
+     */
     public WorldGuardSupport getWorldGuardSupport() {
         return worldGuardSupport;
     }
 
+    /**
+     * A getter method
+     * @return PlotsquaredSupport Object
+     */
     public PlotsquaredSupport getPlotsquaredSupport() {
         return plotsquaredSupport;
     }
-
-
 }

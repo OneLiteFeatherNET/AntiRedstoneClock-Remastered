@@ -7,10 +7,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
+/**
+ * The ObserverListener is for all events that needs to be considered
+ * when having a redstone observer block in a redstone clock / as a redstone clock for this plugin
+ */
 public final class ObserverListener implements Listener {
     private final Material material;
     private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
 
+    /**
+     * A setter method for the ObserverListener
+     * @param antiRedstoneClockRemastered is another main class
+     */
     public ObserverListener(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.material = Material.OBSERVER;
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
