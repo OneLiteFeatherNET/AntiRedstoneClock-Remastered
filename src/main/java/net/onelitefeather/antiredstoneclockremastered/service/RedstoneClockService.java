@@ -104,8 +104,10 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location)) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null &&
+                this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
+        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null &&
+                this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location)) return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isTimeOut()) {
