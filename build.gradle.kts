@@ -8,7 +8,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("xyz.jpenilla.run-paper") version "2.2.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("io.papermc.hangar-publish-plugin") version "0.0.5"
+    id("io.papermc.hangar-publish-plugin") version "0.1.0"
     id("com.modrinth.minotaur") version "2.+"
     id("org.jetbrains.changelog") version "2.2.0"
     id("org.ajoberstar.grgit") version "5.2.0"
@@ -54,6 +54,7 @@ val supportedMinecraftVersions = listOf(
         "1.19.4",
         "1.20",
         "1.20.1",
+        "1.20.2",
 )
 
 repositories {
@@ -122,7 +123,7 @@ changelog {
 }
 
 hangarPublish {
-    publications.register("Attollo") { //Todo: Change
+    publications.register("AntiRedstoneClock-Remastered") {
         version.set(project.version.toString())
         channel.set(System.getenv("HANGAR_CHANNEL"))
         changelog.set(
@@ -131,8 +132,7 @@ hangarPublish {
                 )
         )
         apiKey.set(System.getenv("HANGAR_SECRET"))
-        owner.set("OneLiteFeather")
-        slug.set("Attollo") //Todo: Change
+        id.set("AntiRedstoneClock-Remastered")
 
         platforms {
             register(Platforms.PAPER) {
@@ -144,7 +144,7 @@ hangarPublish {
 }
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("ULt9SvKn") //TODO: Change
+    projectId.set("UWh9tyEa") //TODO: Change
     versionNumber.set(version.toString())
     versionType.set(System.getenv("MODRINTH_CHANNEL"))
     uploadFile.set(tasks.shadowJar as Any)
