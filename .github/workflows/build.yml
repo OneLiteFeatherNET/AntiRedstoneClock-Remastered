@@ -52,9 +52,9 @@ jobs:
         env:
           HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
           HANGAR_CHANNEL: "Snapshot"
-      - name: Publish to Modrinth
+      - name: Publish to Hangar
         if: ${{ runner.os == 'Linux' && env.STATUS == 'release' && github.event_name == 'push' && github.ref == 'refs/heads/main'}}
-        run: ./gradlew modrinth  --no-daemon
+        run: ./gradlew publishAllPublicationsToHangar  --no-daemon
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
           MODRINTH_CHANNEL: "release"
