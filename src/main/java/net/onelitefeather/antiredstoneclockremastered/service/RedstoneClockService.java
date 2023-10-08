@@ -1,5 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
@@ -16,8 +19,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 public final class RedstoneClockService {
+
+    private final static TagResolver.Single PREFIX = Placeholder.component("prefix", MiniMessage.miniMessage().deserialize("<gradient:red:white>AntiRedstoneClock</gradient>"));
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final int endTimeDelay;
@@ -43,8 +49,10 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location)) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+            return;
+        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+            return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -69,14 +77,17 @@ public final class RedstoneClockService {
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Block block, boolean state) {
         checkAndUpdateClockStateWithActiveManual(block.getLocation(), state);
     }
+
     public void checkAndUpdateClockStateWithActive(@NotNull Block block) {
         checkAndUpdateClockStateWithActive(block.getLocation());
     }
 
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location)) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+            return;
+        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+            return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isActive()) {
@@ -129,12 +140,16 @@ public final class RedstoneClockService {
         if (!clock.isDetected()) {
             clock.setDetected(true);
             if (this.notifyConsole) {
-                this.antiRedstoneClockRemastered.getLogger().warning("Redstone Clock detected at: X,Y,Z(DEMO,DEMO,DEMO)");
+                this.antiRedstoneClockRemastered.getLogger().log(Level.WARNING, "Redstone Clock detected at: X,Y,Z({},{},{})", new Object[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()});
             }
             if (this.notifyAdmins) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) {
-                        player.sendMessage(""); //TODO: Message
+                        player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix> Redstone Clock detected at: X,Y,Z(<x>,<y>,<z>)",
+                                Placeholder.parsed("x", String.valueOf(location.getBlockX())),
+                                Placeholder.parsed("y", String.valueOf(location.getBlockY())),
+                                Placeholder.parsed("z", String.valueOf(location.getBlockZ())),
+                                PREFIX));
                     }
                 }
             }
@@ -144,11 +159,14 @@ public final class RedstoneClockService {
     }
 
     private void breakBlock(@NotNull Location location) {
+        Block block = location.getBlock();
         if (this.dropItems) {
-            location.getBlock().breakNaturally();
-        } else {
-            location.getBlock().setType(Material.AIR, false);
+            var drops = block.getDrops();
+            drops.forEach(itemStack -> {
+                block.getWorld().dropItem(location, itemStack);
+            });
         }
+        block.setType(Material.AIR, false);
     }
 
     public void addRedstoneClockTest(@NotNull Location location) {
