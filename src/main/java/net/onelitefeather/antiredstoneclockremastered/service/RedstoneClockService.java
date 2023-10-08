@@ -23,7 +23,7 @@ import java.util.logging.Level;
 
 public final class RedstoneClockService {
 
-    private final static TagResolver.Single PREFIX = Placeholder.component("prefix", MiniMessage.miniMessage().deserialize("<gradient:red:white>AntiRedstoneClock</gradient>"));
+    private final static TagResolver.Single PREFIX = Placeholder.component("prefix", MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>"));
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final int endTimeDelay;
@@ -140,12 +140,12 @@ public final class RedstoneClockService {
         if (!clock.isDetected()) {
             clock.setDetected(true);
             if (this.notifyConsole) {
-                this.antiRedstoneClockRemastered.getLogger().log(Level.WARNING, "Redstone Clock detected at: X,Y,Z({},{},{})", new Object[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()});
+                this.antiRedstoneClockRemastered.getLogger().log(Level.WARNING, "Redstone Clock detected at: X,Y,Z({0},{1},{2})", new Object[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()});
             }
             if (this.notifyAdmins) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) {
-                        player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix> Redstone Clock detected at: X,Y,Z(<x>,<y>,<z>)",
+                        player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix> <gold><click:run_command:'/tp <x> <y> <z>'>Redstone Clock detected at: X,Y,Z(<x>,<y>,<z>)</click>",
                                 Placeholder.parsed("x", String.valueOf(location.getBlockX())),
                                 Placeholder.parsed("y", String.valueOf(location.getBlockY())),
                                 Placeholder.parsed("z", String.valueOf(location.getBlockZ())),
@@ -162,11 +162,11 @@ public final class RedstoneClockService {
         Block block = location.getBlock();
         if (this.dropItems) {
             var drops = block.getDrops();
-            drops.forEach(itemStack -> {
-                block.getWorld().dropItem(location, itemStack);
-            });
+            drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
-        block.setType(Material.AIR, false);
+        Runnable removeTask = () -> block.setType(Material.AIR, true);
+        Bukkit.getScheduler().runTaskLater(antiRedstoneClockRemastered, removeTask, 1);
+
     }
 
     public void addRedstoneClockTest(@NotNull Location location) {
