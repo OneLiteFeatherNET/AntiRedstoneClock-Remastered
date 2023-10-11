@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-legacy:6.2")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:6.0") {
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.17") {
         exclude("org.bukkit", "bukkit")
     }
     compileOnly(project(":internal-api"))
