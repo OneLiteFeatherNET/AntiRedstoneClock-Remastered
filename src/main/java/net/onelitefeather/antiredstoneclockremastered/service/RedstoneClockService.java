@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -23,7 +24,7 @@ import java.util.logging.Level;
 
 public final class RedstoneClockService {
 
-    private final static TagResolver.Single PREFIX = Placeholder.component("prefix", MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>"));
+    private final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final int endTimeDelay;
@@ -115,10 +116,10 @@ public final class RedstoneClockService {
 
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null &&
-                this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location)) return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null &&
-                this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location)) return;
+        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+            return;
+        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+            return;
         var clock = getClockByLocation(location);
         if (clock != null) {
             if (clock.isTimeOut()) {
@@ -145,11 +146,11 @@ public final class RedstoneClockService {
             if (this.notifyAdmins) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) {
-                        player.sendMessage(MiniMessage.miniMessage().deserialize("<prefix> <gold><click:run_command:'/tp <x> <y> <z>'>Redstone Clock detected at: X,Y,Z(<x>,<y>,<z>)</click>",
-                                Placeholder.parsed("x", String.valueOf(location.getBlockX())),
-                                Placeholder.parsed("y", String.valueOf(location.getBlockY())),
-                                Placeholder.parsed("z", String.valueOf(location.getBlockZ())),
-                                PREFIX));
+                        player.sendMessage(Component.translatable("service.notify.detected.clock")
+                                .arguments(PREFIX,
+                                        Component.text(location.getBlockX()),
+                                        Component.text(location.getBlockY()),
+                                        Component.text(location.getBlockZ())));
                     }
                 }
             }

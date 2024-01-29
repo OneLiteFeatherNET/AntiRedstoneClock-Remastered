@@ -1,5 +1,9 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
@@ -7,6 +11,7 @@ import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquared
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.translations.PluginTranslationRegistry;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
@@ -18,8 +23,16 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
@@ -43,6 +56,26 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("antiredstoneclockremastered", "translations")));
+        translationRegistry.defaultLocale(Locale.US);
+        Path langFolder = getDataFolder().toPath().resolve("lang");
+        if (Files.exists(langFolder)) {
+            try(var urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
+                getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+                    var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, urlClassLoader, UTF8ResourceBundleControl.get());
+                    translationRegistry.registerAll(r, bundle, false);
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+                var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, UTF8ResourceBundleControl.get());
+                translationRegistry.registerAll(r, bundle, false);
+            });
+        }
+        GlobalTranslator.translator().addSource(translationRegistry);
+
         enablePlotsquaredSupport();
         enableTPSChecker();
         enableRedstoneClockService();
