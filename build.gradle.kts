@@ -97,7 +97,12 @@ bukkit {
 hangarPublish {
     publications.register("AntiRedstoneClock-Remastered") {
         version.set(publishData.getVersion())
-        channel.set(System.getenv("HANGAR_CHANNEL"))
+        if (publishData.getVersion().contains("SNAPSHOT")) {
+            channel.set("SNAPSHOT")
+        } else {
+            channel.set("Release")
+        }
+
         apiKey.set(System.getenv("HANGAR_SECRET"))
         id.set("AntiRedstoneClock-Remastered")
 
@@ -113,7 +118,12 @@ modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("UWh9tyEa")
     versionNumber.set(publishData.getVersion())
-    versionType.set(System.getenv("MODRINTH_CHANNEL"))
+    if (publishData.getVersion().contains("SNAPSHOT")) {
+        versionType.set("beta")
+    } else {
+        versionType.set("release")
+    }
+
     uploadFile.set(tasks.shadowJar as Any)
     gameVersions.addAll(supportedMinecraftVersions)
     loaders.add("paper")
