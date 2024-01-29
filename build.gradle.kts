@@ -98,7 +98,7 @@ hangarPublish {
     publications.register("AntiRedstoneClock-Remastered") {
         version.set(publishData.getVersion())
         if (publishData.getVersion().contains("SNAPSHOT")) {
-            channel.set("SNAPSHOT")
+            channel.set("Snapshot")
         } else {
             channel.set("Release")
         }
