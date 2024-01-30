@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.38"))
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.40"))
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-bukkit") { isTransitive = false }
     compileOnly(project(":internal-api"))
