@@ -20,6 +20,7 @@ public final class ObserverListener implements Listener {
     private void onRedstoneObserverClock(BlockRedstoneEvent blockRedstoneEvent) {
 
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.observer")) return;
 
         var block = blockRedstoneEvent.getBlock();
         var type = block.getType();

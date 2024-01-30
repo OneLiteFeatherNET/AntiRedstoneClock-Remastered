@@ -20,6 +20,7 @@ public final class ComparatorListener implements Listener {
     private void onRedstoneComparatorClock(BlockRedstoneEvent blockRedstoneEvent) {
 
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.comparator")) return;
 
         var block = blockRedstoneEvent.getBlock();
         var type = block.getType();

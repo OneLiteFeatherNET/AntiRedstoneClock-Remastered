@@ -20,6 +20,7 @@ public final class RedstoneListener implements Listener {
     private void onRedstoneClock(BlockRedstoneEvent blockRedstoneEvent) {
 
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.redstoneAndRepeater")) return;
 
         var block = blockRedstoneEvent.getBlock();
         var type = block.getType();

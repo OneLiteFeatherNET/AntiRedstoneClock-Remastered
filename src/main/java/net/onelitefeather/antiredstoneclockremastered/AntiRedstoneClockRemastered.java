@@ -9,6 +9,7 @@ import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.commands.DisplayActiveClocksCommand;
+import net.onelitefeather.antiredstoneclockremastered.commands.FeatureCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquaredWhatTheHellSupport;
@@ -103,6 +104,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         if (this.annotationParser != null) {
             this.annotationParser.parse(new ReloadCommand(this));
             this.annotationParser.parse(new DisplayActiveClocksCommand(this));
+            this.annotationParser.parse(new FeatureCommand(this));
         }
     }
 

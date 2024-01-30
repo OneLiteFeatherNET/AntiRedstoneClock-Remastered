@@ -17,6 +17,7 @@ public final class SculkListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     private void onBlockReceiveGameEvent(BlockReceiveGameEvent event) {
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.sculk")) return;
         var block = event.getBlock();
         this.antiRedstoneClockRemastered.getRedstoneClockService().checkAndUpdateClockState(block);
     }
