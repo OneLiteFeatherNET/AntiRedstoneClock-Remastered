@@ -25,6 +25,8 @@ We re-created the whole code and improved everything. On top, we support Plotsqu
 ```
 antiredstoneclockremastered.notify.admin
 ```
+> [!CAUTION]
+> All others can be taken from the Plugin.yml or use LuckPerms, which are automatically suggested there
 
 ## Commmands
 - /arcm reload

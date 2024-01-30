@@ -99,6 +99,19 @@ bukkit {
         register("antiredstoneclockremastered.notify.admin")
         register("antiredstoneclockremastered.command.reload")
         register("antiredstoneclockremastered.command.help")
+        register("antiredstoneclockremastered.command.feature.check.observer")
+        register("antiredstoneclockremastered.command.feature.check.piston")
+        register("antiredstoneclockremastered.command.feature.check.sculk")
+        register("antiredstoneclockremastered.command.feature.check.redstone_and_repeater")
+        register("antiredstoneclockremastered.command.feature.check.world.add")
+        register("antiredstoneclockremastered.command.feature.check.world.remove")
+        register("antiredstoneclockremastered.command.feature.check.region.remove")
+        register("antiredstoneclockremastered.command.feature.check.region.add")
+        register("antiredstoneclockremastered.command.feature.clock.notifyAdmins")
+        register("antiredstoneclockremastered.command.feature.clock.notifyConsole")
+        register("antiredstoneclockremastered.command.feature.clock.drop")
+        register("antiredstoneclockremastered.command.feature.clock.enddelay")
+        register("antiredstoneclockremastered.command.feature.clock.maxCount")
     }
 }
 
