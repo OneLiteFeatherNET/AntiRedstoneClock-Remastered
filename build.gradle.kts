@@ -97,7 +97,11 @@ bukkit {
 
 hangarPublish {
     publications.register("AntiRedstoneClock-Remastered") {
-        version.set(publishData.getVersion())
+        if (publishData.getVersion().contains("SNAPSHOT")) {
+            version.set(publishData.getVersion(true))
+        } else {
+            version.set(publishData.getVersion())
+        }
         if (publishData.getVersion().contains("SNAPSHOT")) {
             channel.set("Snapshot")
         } else {
@@ -118,7 +122,11 @@ hangarPublish {
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("UWh9tyEa")
-    versionNumber.set(publishData.getVersion())
+    if (publishData.getVersion().contains("SNAPSHOT")) {
+        versionNumber.set(publishData.getVersion(true))
+    } else {
+        versionNumber.set(publishData.getVersion())
+    }
     if (publishData.getVersion().contains("SNAPSHOT")) {
         versionType.set("beta")
     } else {
