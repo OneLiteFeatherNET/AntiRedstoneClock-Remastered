@@ -1,12 +1,22 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.translation.GlobalTranslator;
+import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
+import net.onelitefeather.antiredstoneclockremastered.commands.DisplayActiveClocksCommand;
+import net.onelitefeather.antiredstoneclockremastered.commands.FeatureCommand;
+import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquaredWhatTheHellSupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.translations.PluginTranslationRegistry;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
@@ -15,11 +25,29 @@ import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.annotations.AnnotationParser;
+import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
+import org.incendo.cloud.component.DefaultValue;
+import org.incendo.cloud.description.Description;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.minecraft.extras.MinecraftHelp;
+import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.paper.PaperCommandManager;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
@@ -30,24 +58,82 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private PlotsquaredSupport plotsquaredSupport;
 
     private Metrics metrics;
+    private AnnotationParser<CommandSender> annotationParser;
+
+    public final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
     @Override
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-
         enableWorldGuardSupport();
     }
 
 
-
     @Override
     public void onEnable() {
+        final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("antiredstoneclockremastered", "translations")));
+        translationRegistry.defaultLocale(Locale.US);
+        Path langFolder = getDataFolder().toPath().resolve("lang");
+        if (Files.exists(langFolder)) {
+            try (var urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
+                getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+                    var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, urlClassLoader, UTF8ResourceBundleControl.get());
+                    translationRegistry.registerAll(r, bundle, false);
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+                var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, UTF8ResourceBundleControl.get());
+                translationRegistry.registerAll(r, bundle, false);
+            });
+        }
+        GlobalTranslator.translator().addSource(translationRegistry);
+        enableCommandFramework();
         enablePlotsquaredSupport();
         enableTPSChecker();
         enableRedstoneClockService();
         enableBStatsSupport();
         registerEvents();
+        registerCommands();
+    }
+
+    private void registerCommands() {
+        if (this.annotationParser != null) {
+            this.annotationParser.parse(new ReloadCommand(this));
+            this.annotationParser.parse(new DisplayActiveClocksCommand(this));
+            this.annotationParser.parse(new FeatureCommand(this));
+        }
+    }
+
+    private void enableCommandFramework() {
+        PaperCommandManager<CommandSender> commandManager = PaperCommandManager.createNative(
+                this,
+                ExecutionCoordinator.asyncCoordinator()
+        );
+        if (commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            commandManager.registerBrigadier();
+        }
+
+        if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            commandManager.registerAsynchronousCompletions();
+        }
+        annotationParser = new AnnotationParser<>(commandManager, CommandSender.class);
+        annotationParser.descriptionMapper(string -> RichDescription.of(Component.translatable(string)));
+        MinecraftHelp<CommandSender> help = MinecraftHelp.createNative(
+                "/arcm help",
+                commandManager
+        );
+        commandManager.command(
+                commandManager.commandBuilder("arcm").literal("help")
+                        .permission("antiredstoneclockremastered.command.help")
+                        .optional("query", greedyStringParser(), DefaultValue.constant(""))
+                        .handler(context -> {
+                            help.queryCommands(context.get("query"), context.sender());
+                        })
+        );
     }
 
     private void enablePlotsquaredSupport() {
@@ -152,7 +238,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private Map<String, Map<String, Integer>> bstatsMaxCount() {
         var map = new HashMap<String, Map<String, Integer>>();
         var count = getConfig().getInt("clock.maxCount");
-        var entry = Map.of(String.valueOf(count),1);
+        var entry = Map.of(String.valueOf(count), 1);
         switch (count) {
             case 0 -> map.put("0 \uD83D\uDEAB", entry);
             case 1, 2, 3, 4, 5 -> map.put("1-5 \uD83D\uDE10", entry);

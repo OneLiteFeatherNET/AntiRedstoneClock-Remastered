@@ -20,6 +20,7 @@ public final class PistonListener implements Listener {
     private void onPistonExtendEvent(BlockPistonExtendEvent blockPistonExtendEvent) {
 
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.piston")) return;
 
         var block = blockPistonExtendEvent.getBlock();
 
@@ -29,6 +30,7 @@ public final class PistonListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     private void onPistonRetractEvent(BlockPistonRetractEvent blockPistonExtendEvent) {
         if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
+        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.piston")) return;
 
         var block = blockPistonExtendEvent.getBlock();
 

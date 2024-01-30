@@ -1,3 +1,5 @@
+translations:
+  - 'en-US'
 check:
   redstoneAndRepeater: true
   observer: true
