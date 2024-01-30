@@ -26,6 +26,8 @@ antiredstoneclockremastered.notify.admin
 ## Commmands
 - /arcm reload
   - Reloads the config
+- /arcm help
+  - Shows all commands and descriptions
 - /arcm display
   - Shows current cached redstone clocks
 
