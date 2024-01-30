@@ -23,16 +23,14 @@ import java.util.logging.Level;
 
 public final class RedstoneClockService {
 
-    private final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
-
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
-    private final int endTimeDelay;
-    private final int maxClockCount;
-    private final boolean autoBreakBlock;
-    private final boolean notifyAdmins;
-    private final boolean notifyConsole;
-    private final boolean dropItems;
-    private final List<String> ignoredWorlds;
+    private int endTimeDelay;
+    private int maxClockCount;
+    private boolean autoBreakBlock;
+    private boolean notifyAdmins;
+    private boolean notifyConsole;
+    private boolean dropItems;
+    private List<String> ignoredWorlds;
 
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
 
@@ -156,7 +154,7 @@ public final class RedstoneClockService {
 
     private void sendNotification(final Player player, final Location location) {
         final var component = Component.translatable("service.notify.detected.clock")
-                .arguments(PREFIX,
+                .arguments(AntiRedstoneClockRemastered.PREFIX,
                         Component.text(location.getBlockX()),
                         Component.text(location.getBlockY()),
                         Component.text(location.getBlockZ()),
@@ -181,6 +179,17 @@ public final class RedstoneClockService {
 
     public void addRedstoneClockTest(@NotNull Location location) {
         this.activeClockTesters.putIfAbsent(location, new RedstoneClock(location, (System.currentTimeMillis() / 1000) + endTimeDelay));
+    }
+
+    public void reload() {
+        this.antiRedstoneClockRemastered.reloadConfig();
+        this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
+        this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
+        this.autoBreakBlock = antiRedstoneClockRemastered.getConfig().getBoolean("clock.autoBreak", true);
+        this.notifyAdmins = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyAdmins", true);
+        this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
+        this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
+        this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
     }
 
     public void removeClockByLocation(@NotNull Location location) {
