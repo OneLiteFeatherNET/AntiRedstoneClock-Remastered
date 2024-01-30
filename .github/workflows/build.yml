@@ -4,12 +4,6 @@ on:
     branches:
       - main
       - develop
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - labeled
 jobs:
   build:
     # Run on all label events (won't be duplicated) or all push events or on PR syncs not from the same repo
@@ -28,14 +22,6 @@ jobs:
           java-version: 17
       - name: Clean Build
         run: ./gradlew clean build shadowJar --no-daemon
-      - name: Determine release status
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          if [ "$(./gradlew properties | awk '/^version:/ { print $2; }' | grep '\-SNAPSHOT')" ]; then
-            echo "STATUS=snapshot" >> $GITHUB_ENV
-          else
-            echo "STATUS=release" >> $GITHUB_ENV
-          fi
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3
         with:
