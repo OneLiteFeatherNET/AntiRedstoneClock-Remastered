@@ -30,19 +30,20 @@ public final class DisplayActiveClocksCommand {
 
     private Component mapClockToMessage(RedstoneClock redstoneClock) {
         var location = redstoneClock.getLocation();
-        return Component.translatable("antiredstoneclockremastered.command.display.clock.text")
-                .arguments(
-                        TranslationArgument.numeric(location.getBlockX()),
-                        TranslationArgument.numeric(location.getBlockY()),
-                        TranslationArgument.numeric(location.getBlockZ()),
-                        TranslationArgument.numeric(redstoneClock.getTriggerCount()),
-                        Component.empty()
-                                .hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent())
-                                .clickEvent(ClickEvent.callback(audience -> {
-                                    if (audience instanceof final Player executor) {
-                                        executor.teleport(location);
-                                    }
-                                }))
-                );
+        return Component.empty().hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent()).append(
+                Component.translatable("antiredstoneclockremastered.command.display.clock.text")
+                        .arguments(
+                                TranslationArgument.numeric(location.getBlockX()),
+                                TranslationArgument.numeric(location.getBlockY()),
+                                TranslationArgument.numeric(location.getBlockZ()),
+                                TranslationArgument.numeric(redstoneClock.getTriggerCount()),
+                                Component.empty()
+                                        .clickEvent(ClickEvent.callback(audience -> {
+                                            if (audience instanceof final Player executor) {
+                                                executor.teleport(location);
+                                            }
+                                        }))
+                        )
+        );
     }
 }
