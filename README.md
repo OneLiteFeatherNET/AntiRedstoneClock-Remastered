@@ -14,6 +14,9 @@ We re-created the whole code and improved everything. On top, we support Plotsqu
 - Config Migration(Soon)
 - Prevent duplicated loading of anti-redstoneclock plugins
 
+> [!CAUTION]
+> The "world" world is ignored by default
+
 ## Dependencies (soft-depend, can be used together)
 - Plotsquared v7 https://github.com/IntellectualSites/PlotSquared
 - Worldguard v7 https://github.com/EngineHub/WorldGuard
