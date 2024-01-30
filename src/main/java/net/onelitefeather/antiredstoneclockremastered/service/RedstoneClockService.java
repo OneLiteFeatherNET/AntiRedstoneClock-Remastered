@@ -1,9 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
@@ -144,19 +143,29 @@ public final class RedstoneClockService {
                 this.antiRedstoneClockRemastered.getLogger().log(Level.WARNING, "Redstone Clock detected at: X,Y,Z({0},{1},{2})", new Object[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()});
             }
             if (this.notifyAdmins) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
+                for (final Player player : Bukkit.getOnlinePlayers()) {
                     if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) {
-                        player.sendMessage(Component.translatable("service.notify.detected.clock")
-                                .arguments(PREFIX,
-                                        Component.text(location.getBlockX()),
-                                        Component.text(location.getBlockY()),
-                                        Component.text(location.getBlockZ())));
+                        sendNotification(player, location);
                     }
                 }
             }
 
         }
         removeClockByClock(clock);
+    }
+
+    private void sendNotification(final Player player, final Location location) {
+        final var component = Component.translatable("service.notify.detected.clock")
+                .arguments(PREFIX,
+                        Component.text(location.getBlockX()),
+                        Component.text(location.getBlockY()),
+                        Component.text(location.getBlockZ()),
+                        Component.empty().clickEvent(ClickEvent.callback(audience -> {
+                            if (audience instanceof final Player executor) {
+                                executor.teleport(location);
+                            }
+                        })));
+        player.sendMessage(component);
     }
 
     private void breakBlock(@NotNull Location location) {
