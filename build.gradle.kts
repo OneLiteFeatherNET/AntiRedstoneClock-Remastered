@@ -51,6 +51,11 @@ repositories {
 dependencies {
     compileOnly(libs.paper)
     implementation(libs.bstats)
+    implementation(libs.cloud.command.paper)
+    implementation(libs.cloud.command.extras)
+    implementation(libs.cloud.command.annotations)
+    annotationProcessor(libs.cloud.command.annotations)
+
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
@@ -92,6 +97,8 @@ bukkit {
     softDepend = listOf("PlotSquared", "WorldGuard")
     permissions {
         register("antiredstoneclockremastered.notify.admin")
+        register("antiredstoneclockremastered.command.reload")
+        register("antiredstoneclockremastered.command.help")
     }
 }
 
