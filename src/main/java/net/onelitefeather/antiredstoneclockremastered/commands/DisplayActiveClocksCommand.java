@@ -23,8 +23,8 @@ public final class DisplayActiveClocksCommand {
     @CommandDescription("antiredstoneclockremastered.command.display.description")
     @Permission("antiredstoneclockremastered.command.display")
     public void displayClocks(CommandSender commandSender) {
-        commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.display.clock.title").arguments(AntiRedstoneClockRemastered.PREFIX));
-        this.plugin.getRedstoneClockService().getRedstoneClocks().stream().map(this::mapClockToMessage).forEach(commandSender::sendMessage);
+        this.plugin.adventure().sender(commandSender).sendMessage(Component.translatable("antiredstoneclockremastered.command.display.clock.title").arguments(AntiRedstoneClockRemastered.PREFIX));
+        this.plugin.getRedstoneClockService().getRedstoneClocks().stream().map(this::mapClockToMessage).forEach(component -> this.plugin.adventure().sender(commandSender).sendMessage(component));
 
     }
 
