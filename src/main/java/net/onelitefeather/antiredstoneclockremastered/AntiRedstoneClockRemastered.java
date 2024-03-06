@@ -1,6 +1,7 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -28,10 +29,10 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.component.DefaultValue;
-import org.incendo.cloud.description.Description;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.minecraft.extras.RichDescription;
@@ -59,6 +60,14 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private Metrics metrics;
     private AnnotationParser<CommandSender> annotationParser;
+    private BukkitAudiences adventure;
+
+    public @NonNull BukkitAudiences adventure() {
+        if(this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
+    }
 
     public final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
@@ -72,6 +81,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.adventure = BukkitAudiences.create(this);
         final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("antiredstoneclockremastered", "translations")));
         translationRegistry.defaultLocale(Locale.US);
         Path langFolder = getDataFolder().toPath().resolve("lang");
@@ -98,6 +108,14 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         enableBStatsSupport();
         registerEvents();
         registerCommands();
+    }
+
+    @Override
+    public void onDisable() {
+        if(this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
     }
 
     private void registerCommands() {
