@@ -69,7 +69,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         return this.adventure;
     }
 
-    public final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
+    public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
     @Override
     public void onLoad() {
