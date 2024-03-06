@@ -140,9 +140,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
         annotationParser = new AnnotationParser<>(commandManager, CommandSender.class);
         annotationParser.descriptionMapper(string -> RichDescription.of(Component.translatable(string)));
-        MinecraftHelp<CommandSender> help = MinecraftHelp.createNative(
+        MinecraftHelp<CommandSender> help = MinecraftHelp.create(
                 "/arcm help",
-                commandManager
+                commandManager,
+                sender -> this.adventure.sender(sender)
         );
         commandManager.command(
                 commandManager.commandBuilder("arcm").literal("help")
