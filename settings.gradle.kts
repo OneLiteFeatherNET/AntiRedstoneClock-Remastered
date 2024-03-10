@@ -26,8 +26,13 @@ dependencyResolutionManagement {
             version("paper", "1.20.4-R0.1-SNAPSHOT")
             version("bstats", "3.0.2")
             version("cloudcommand", "2.0.0-SNAPSHOT")
+            version("adventure", "4.16.0")
+            version("adventure.platform", "4.3.2")
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
+            library("adventure.api", "net.kyori", "adventure-api").versionRef("adventure")
+            library("minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
+            library("adventure.bukkit", "net.kyori", "adventure-platform-bukkit").versionRef("adventure.platform")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
             library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommand")
             library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommand")

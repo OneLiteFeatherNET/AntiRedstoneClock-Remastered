@@ -163,7 +163,7 @@ public final class RedstoneClockService {
                                 executor.teleport(location);
                             }
                         })));
-        player.sendMessage(component);
+        this.antiRedstoneClockRemastered.adventure().player(player).sendMessage(component);
     }
 
     private void breakBlock(@NotNull Location location) {

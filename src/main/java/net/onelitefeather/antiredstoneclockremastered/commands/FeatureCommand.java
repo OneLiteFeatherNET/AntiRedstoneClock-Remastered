@@ -73,9 +73,9 @@ public final class FeatureCommand {
 
     private void sendMessageToggleMessage(CommandSender sender, boolean value) {
         if (value) {
-            sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.toggle.enabled").arguments(AntiRedstoneClockRemastered.PREFIX));
+            this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.toggle.enabled").arguments(AntiRedstoneClockRemastered.PREFIX));
         } else {
-            sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.toggle.disabled").arguments(AntiRedstoneClockRemastered.PREFIX));
+            this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.toggle.disabled").arguments(AntiRedstoneClockRemastered.PREFIX));
         }
     }
 
@@ -88,7 +88,7 @@ public final class FeatureCommand {
         plugin.getConfig().set("check.ignoredWorlds", worlds);
         plugin.saveConfig();
         plugin.getRedstoneClockService().reload();
-        sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
+        this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
     }
 
     @Command("check ignored_worlds remove <world>")
@@ -100,7 +100,7 @@ public final class FeatureCommand {
         plugin.getConfig().set("check.ignoredWorlds", worlds);
         plugin.saveConfig();
         plugin.getRedstoneClockService().reload();
-        sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
+        this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
     }
 
     @Command("check ignored_regions add <region>")
@@ -112,7 +112,7 @@ public final class FeatureCommand {
         plugin.getConfig().set("check.ignoredRegions", regions);
         plugin.saveConfig();
         plugin.getRedstoneClockService().reload();
-        sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
+        this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
     }
 
     @Command("check ignored_regions remove <region>")
@@ -124,7 +124,7 @@ public final class FeatureCommand {
         plugin.getConfig().set("check.ignoredRegions", regions);
         plugin.saveConfig();
         plugin.getRedstoneClockService().reload();
-        sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
+        this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
     }
 
     @Command("clock autoBreak")
@@ -188,7 +188,7 @@ public final class FeatureCommand {
     }
 
     private void sendMessageSetMessage(CommandSender sender, Integer value) {
-        sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.clock.set").arguments(AntiRedstoneClockRemastered.PREFIX, TranslationArgument.numeric(value)));
+        this.plugin.adventure().sender(sender).sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.clock.set").arguments(AntiRedstoneClockRemastered.PREFIX, TranslationArgument.numeric(value)));
     }
 
 }
