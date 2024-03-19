@@ -46,6 +46,7 @@ val supportedMinecraftVersions = listOf(
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
+    implementation("net.kyori:adventure-text-feature-pagination:4.0.0-SNAPSHOT")
     annotationProcessor(libs.cloud.command.annotations)
 
     implementation(project(":internal-api"))
