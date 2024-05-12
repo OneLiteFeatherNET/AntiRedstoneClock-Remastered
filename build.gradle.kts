@@ -92,6 +92,12 @@ publishData {
 }
 
 tasks {
+    named<Jar>("jar") {
+        archiveClassifier.set("unshaded")
+    }
+    named("build") {
+        dependsOn(shadowJar)
+    }
     supportedMinecraftVersions.forEach { serverVersion ->
         register<RunServer>("run-$serverVersion") {
             minecraftVersion(serverVersion)
@@ -102,6 +108,7 @@ tasks {
         }
     }
     shadowJar {
+        archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
     }
 }
