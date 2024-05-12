@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.bukkit.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
+    id("olf.build-logic")
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -42,17 +43,29 @@ val supportedMinecraftVersions = listOf(
     "1.20.3",
     "1.20.4"
 )
-
-repositories {
-    mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+allprojects {
+    apply {
+        plugin("java")
+    }
+    repositories {
+        mavenCentral()
+        maven("https://repo.codemc.io/repository/maven-public")
+        maven("https://jitpack.io")// Plotsquared V4 Support
+        maven("https://maven.enginehub.org/repo/")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+    dependencies {
+        if (name != "internal-api") {
+            compileOnly(project(":internal-api"))
+        }
+        compileOnly(rootProject.libs.paper)
+    }
 }
 
 dependencies {
-    compileOnly(libs.paper)
     implementation(libs.bstats)
-    implementation(libs.adventure.api)
     implementation(libs.minimessage)
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
@@ -118,47 +131,46 @@ bukkit {
         register("antiredstoneclockremastered.command.feature.clock.maxCount")
     }
 }
+val branch = rootProject.branchName()
+val baseVersion = publishData.getVersion(false)
+val isRelease = !baseVersion.contains('-')
+val isMainBranch = branch == "master"
+if (!isRelease || isMainBranch) { // Only publish releases from the main branch
+    val suffixedVersion =
+        if (isRelease) baseVersion else baseVersion + "+" + System.getenv("GITHUB_RUN_NUMBER")
+    val changelogContent = if (isRelease) {
+        "See [GitHub](https://github.com/OneLiteFeatherNET/BetterGoPaint) for release notes."
+    } else {
+        val commitHash = rootProject.latestCommitHash()
+        "[$commitHash](https://github.com/OneLiteFeatherNET/BetterGoPaint/commit/$commitHash) ${rootProject.latestCommitMessage()}"
+    }
+    hangarPublish {
+        publications.register("AntiRedstoneClock-Remastered") {
+            version.set(suffixedVersion)
+            channel.set(if (isRelease) "Release" else if (isMainBranch) "Snapshot" else "Alpha")
+            changelog.set(changelogContent)
+            apiKey.set(System.getenv("HANGAR_SECRET"))
+            id.set("AntiRedstoneClock-Remastered")
 
-hangarPublish {
-    publications.register("AntiRedstoneClock-Remastered") {
-        if (publishData.getVersion().contains("SNAPSHOT")) {
-            version.set(publishData.getVersion(true))
-        } else {
-            version.set(publishData.getVersion())
-        }
-        if (publishData.getVersion().contains("SNAPSHOT")) {
-            channel.set("Snapshot")
-        } else {
-            channel.set("Release")
-        }
-
-        apiKey.set(System.getenv("HANGAR_SECRET"))
-        id.set("AntiRedstoneClock-Remastered")
-
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set(supportedMinecraftVersions)
+            platforms {
+                register(Platforms.PAPER) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(supportedMinecraftVersions)
+                }
             }
         }
     }
-}
-modrinth {
-    token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("UWh9tyEa")
-    if (publishData.getVersion().contains("SNAPSHOT")) {
-        versionNumber.set(publishData.getVersion(true))
-    } else {
-        versionNumber.set(publishData.getVersion())
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set("UWh9tyEa")
+        versionType.set(if (isRelease) "release" else if (isMainBranch) "beta" else "alpha")
+        versionNumber.set(suffixedVersion)
+        versionName.set(suffixedVersion)
+        changelog.set(changelogContent)
+        changelog.set(changelogContent)
+        uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+        gameVersions.addAll(supportedMinecraftVersions)
+        loaders.add("paper")
+        loaders.add("bukkit")
     }
-    if (publishData.getVersion().contains("SNAPSHOT")) {
-        versionType.set("beta")
-    } else {
-        versionType.set("release")
-    }
-
-    uploadFile.set(tasks.shadowJar as Any)
-    gameVersions.addAll(supportedMinecraftVersions)
-    loaders.add("paper")
-    loaders.add("bukkit")
 }

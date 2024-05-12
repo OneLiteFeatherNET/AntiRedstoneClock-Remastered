@@ -1,4 +1,5 @@
 rootProject.name = "AntiRedstoneClock-Remastered"
+includeBuild("build-logic")
 include("internal-api")
 include("WorldGuardv6Support")
 include("WorldGuardv7Support")
@@ -23,15 +24,39 @@ dependencyResolutionManagement {
             version("bukkit.yml", "0.6.0")
             version("paper.run", "2.2.3")
             version("shadowJar", "8.1.1")
+
             version("paper", "1.20.4-R0.1-SNAPSHOT")
             version("bstats", "3.0.2")
+
             version("cloudcommand", "2.0.0-SNAPSHOT")
+
             version("adventure", "4.16.0")
 
+            // WorldGuard
+            version("wgv6", "6.2")
+            version("wgv7", "7.0.9")
+            library("wg6", "com.sk89q.worldguard", "worldguard-legacy").versionRef("wgv6")
+            library("wg7", "com.sk89q.worldguard", "worldguard-bukkit").versionRef("wgv7")
+
+            // PlotSquared
+            version("psv4", "4.453")
+            version("psv6", "1.43")
+            version("psv7", "1.43")
+
+            library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
+            library("psv4.bukkit", "com.github.IntellectualSites.PlotSquared","Bukkit").versionRef("psv4")
+
+            library("psv6.platform", "com.intellectualsites.bom","bom-1.16.x").versionRef("psv6")
+            library("psv7.platform", "com.intellectualsites.bom","bom-newest").versionRef("psv7")
+            library("psv6.core", "com.plotsquared","PlotSquared-Core").withoutVersion()
+            library("psv6.bukkit", "com.plotsquared","PlotSquared-Bukkit").withoutVersion()
+            library("psv7.core", "com.intellectualsites.plotsquared","plotsquared-core").withoutVersion()
+            library("psv7.bukkit", "com.intellectualsites.plotsquared","plotsquared-bukkit").withoutVersion()
+
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
-            library("adventure.api", "net.kyori", "adventure-api").versionRef("adventure")
             library("minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
+
             library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommand")
             library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommand")
             library("cloud.command.extras", "org.incendo", "cloud-minecraft-extras").versionRef("cloudcommand")
