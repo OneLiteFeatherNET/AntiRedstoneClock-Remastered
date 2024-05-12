@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.bukkit.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
+    id("olf.build-logic")
 }
 
 if (!File("$rootDir/.git").exists()) {
