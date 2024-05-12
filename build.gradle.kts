@@ -54,7 +54,6 @@ dependencies {
     implementation(libs.bstats)
     implementation(libs.adventure.api)
     implementation(libs.minimessage)
-    implementation(libs.adventure.bukkit)
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
@@ -91,7 +90,6 @@ tasks {
     }
     shadowJar {
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
-        relocate("net.kyori", "net.onelitefeather.antiredstoneclockremastered.net.kyori")
     }
 }
 

@@ -20,7 +20,6 @@ public final class ReloadCommand {
     @Permission("antiredstoneclockremastered.command.reload")
     public void reloadConfig(CommandSender commandSender) {
         this.plugin.getRedstoneClockService().reload();
-        plugin.adventure().sender(commandSender).sendMessage(Component.translatable("antiredstoneclockremastered.command.reload.success").arguments(AntiRedstoneClockRemastered.PREFIX));
-
+        commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.reload.success").arguments(AntiRedstoneClockRemastered.PREFIX));
     }
 }
