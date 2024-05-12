@@ -41,7 +41,7 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
             page = 0;
         }
         build.render(this.plugin.getRedstoneClockService().getRedstoneClocks(), Math.max(1, page))
-                .forEach(component -> this.plugin.adventure().sender(commandSender).sendMessage(component));
+                .forEach(commandSender::sendMessage);
 
     }
 
