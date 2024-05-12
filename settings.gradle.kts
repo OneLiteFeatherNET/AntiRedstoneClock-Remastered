@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             version("modrinth", "2.+")
             version("hangar", "0.1.2")
             version("bukkit.yml", "0.6.0")
-            version("paper.run", "2.2.3")
+            version("paper.run", "2.3.0")
             version("shadowJar", "8.1.1")
 
             version("paper", "1.20.4-R0.1-SNAPSHOT")
