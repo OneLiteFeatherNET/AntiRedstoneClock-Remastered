@@ -30,7 +30,7 @@ dependencyResolutionManagement {
 
             version("cloudcommand", "2.0.0-SNAPSHOT")
 
-            version("adventure", "4.16.0")
+            version("adventure", "4.17.0")
 
             // WorldGuard
             version("wgv6", "6.2")
