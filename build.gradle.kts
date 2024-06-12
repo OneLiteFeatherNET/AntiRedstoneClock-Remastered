@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
+    `maven-publish`
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -86,8 +87,7 @@ java {
 }
 
 publishData {
-    addMainRepo("")
-    addSnapshotRepo("")
+    useEldoNexusRepos(false)
     publishTask("shadowJar")
 }
 
@@ -179,5 +179,28 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
         gameVersions.addAll(supportedMinecraftVersions)
         loaders.add("paper")
         loaders.add("bukkit")
+    }
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        // Configure our maven publication
+        publishData.configurePublication(this)
+    }
+
+    repositories {
+        // We add EldoNexus as our repository. The used url is defined by the publish data.
+        maven {
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    // Those credentials need to be set under "Settings -> Secrets -> Actions" in your repository
+                    username = System.getenv("ELDO_USERNAME")
+                    password = System.getenv("ELDO_PASSWORD")
+                }
+            }
+
+            name = "EldoNexus"
+            setUrl(publishData.getRepository())
+        }
     }
 }

@@ -24,4 +24,6 @@ jobs:
         env:
           HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
-        run: ./gradlew build modrinth publishAllPublicationsToHangar --stacktrace
+          ELDO_USERNAME: "${{ secrets.ELDO_USERNAME }}"
+          ELDO_PASSWORD: "${{ secrets.ELDO_PASSWORD }}"
+        run: ./gradlew build modrinth publishAllPublicationsToHangar publish
