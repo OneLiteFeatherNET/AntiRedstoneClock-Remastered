@@ -87,7 +87,7 @@ java {
 }
 
 publishData {
-    useEldoNexusRepos(false)
+    useEldoNexusRepos(true)
     publishTask("shadowJar")
 }
 
