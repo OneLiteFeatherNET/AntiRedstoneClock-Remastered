@@ -39,6 +39,7 @@ import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.incendo.cloud.paper.PaperCommandManager;
 
 import java.io.IOException;
@@ -117,7 +118,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private void enableCommandFramework() {
-        PaperCommandManager<CommandSender> commandManager = PaperCommandManager.createNative(
+        LegacyPaperCommandManager<CommandSender> commandManager = LegacyPaperCommandManager.createNative(
                 this,
                 ExecutionCoordinator.asyncCoordinator()
         );
