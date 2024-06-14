@@ -42,7 +42,9 @@ val supportedMinecraftVersions = listOf(
     "1.20.1",
     "1.20.2",
     "1.20.3",
-    "1.20.4"
+    "1.20.4",
+    "1.20.5",
+    "1.20.6"
 )
 allprojects {
     apply {
@@ -83,7 +85,7 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 publishData {
