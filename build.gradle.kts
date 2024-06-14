@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.0.1"
+version = "1.1.0"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
@@ -87,7 +87,7 @@ java {
 }
 
 publishData {
-    useEldoNexusRepos(true)
+    useEldoNexusRepos(false)
     publishTask("shadowJar")
 }
 
@@ -146,15 +146,15 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
     val suffixedVersion =
         if (isRelease) baseVersion else baseVersion + "+" + System.getenv("GITHUB_RUN_NUMBER")
     val changelogContent = if (isRelease) {
-        "See [GitHub](https://github.com/OneLiteFeatherNET/BetterGoPaint) for release notes."
+        "See [GitHub](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered) for release notes."
     } else {
         val commitHash = rootProject.latestCommitHash()
-        "[$commitHash](https://github.com/OneLiteFeatherNET/BetterGoPaint/commit/$commitHash) ${rootProject.latestCommitMessage()}"
+        "[$commitHash](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/$commitHash) ${rootProject.latestCommitMessage()}"
     }
     hangarPublish {
         publications.register("AntiRedstoneClock-Remastered") {
             version.set(suffixedVersion)
-            channel.set(if (isRelease) "Release" else if (isMainBranch) "Snapshot" else "Alpha")
+            channel.set(if (isRelease) "Release" else "Snapshot")
             changelog.set(changelogContent)
             apiKey.set(System.getenv("HANGAR_SECRET"))
             id.set("AntiRedstoneClock-Remastered")
@@ -170,7 +170,7 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("UWh9tyEa")
-        versionType.set(if (isRelease) "release" else if (isMainBranch) "beta" else "alpha")
+        versionType.set(if (isRelease) "release" else "beta")
         versionNumber.set(suffixedVersion)
         versionName.set(suffixedVersion)
         changelog.set(changelogContent)
