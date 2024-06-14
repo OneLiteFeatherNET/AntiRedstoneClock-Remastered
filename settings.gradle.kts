@@ -30,7 +30,7 @@ dependencyResolutionManagement {
 
             version("cloudcommand", "2.0.0-SNAPSHOT")
 
-            version("adventure", "4.16.0")
+            version("adventure", "4.17.0")
 
             // WorldGuard
             version("wgv6", "6.2")
@@ -40,8 +40,8 @@ dependencyResolutionManagement {
 
             // PlotSquared
             version("psv4", "4.453")
-            version("psv6", "1.43")
-            version("psv7", "1.43")
+            version("psv6", "1.45")
+            version("psv7", "1.45")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
             library("psv4.bukkit", "com.github.IntellectualSites.PlotSquared","Bukkit").versionRef("psv4")
