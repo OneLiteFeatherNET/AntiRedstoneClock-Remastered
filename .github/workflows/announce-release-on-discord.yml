@@ -11,7 +11,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.ONELITEFATHERNET_GITHUB_WEBHOOK }}
           DISCORD_USERNAME: AntiRedstoneClock-Remastered Release
           DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/assets/blob/main/onelitefeathernet.png
-          DISCORD_THREAD_ID: '1235181365511589888'
+          DISCORD_THREAD_ID: '1239259280662597725'
         uses: OneLiteFeatherNET/action-discord@master
         with:
           args: |
