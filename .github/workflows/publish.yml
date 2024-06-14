@@ -2,7 +2,7 @@ name: Publish AntiRedstoneClock-Remasterd to platforms
 on:
   push:
     branches:
-      - master
+      - main
       - develop
 jobs:
   publish:
