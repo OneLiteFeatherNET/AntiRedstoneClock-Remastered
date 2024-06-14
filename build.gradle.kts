@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.1.0"
+version = "1.1.1"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
@@ -143,7 +143,7 @@ bukkit {
 val branch = rootProject.branchName()
 val baseVersion = publishData.getVersion(false)
 val isRelease = !baseVersion.contains('-')
-val isMainBranch = branch == "master"
+val isMainBranch = branch == "main"
 if (!isRelease || isMainBranch) { // Only publish releases from the main branch
     val suffixedVersion =
         if (isRelease) baseVersion else baseVersion + "+" + System.getenv("GITHUB_RUN_NUMBER")
