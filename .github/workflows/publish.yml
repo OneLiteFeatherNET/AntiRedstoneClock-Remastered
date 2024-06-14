@@ -1,11 +1,12 @@
-name: Publish
+name: Publish AntiRedstoneClock-Remasterd to platforms
 on:
   push:
     branches:
       - master
       - develop
 jobs:
-  build:
+  publish:
+    name: 'Publish to EldoNexus, Modrinth and Hangar'
     # Run on all label events (won't be duplicated) or all push events or on PR syncs not from the same repo
     if: github.repository_owner == 'OneLiteFeatherNET'
     runs-on: ubuntu-latest
