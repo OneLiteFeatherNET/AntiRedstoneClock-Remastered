@@ -21,6 +21,5 @@ public final class ReloadCommand {
     public void reloadConfig(CommandSender commandSender) {
         this.plugin.getRedstoneClockService().reload();
         commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.reload.success").arguments(AntiRedstoneClockRemastered.PREFIX));
-
     }
 }

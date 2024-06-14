@@ -3,29 +3,50 @@ package net.onelitefeather.antiredstoneclockremastered.commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.feature.pagination.Pagination;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.annotation.specifier.Greedy;
+import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public final class DisplayActiveClocksCommand {
+import java.util.Collection;
+import java.util.List;
+
+public final class DisplayActiveClocksCommand implements Pagination.Renderer.RowRenderer<RedstoneClock> {
 
     private final AntiRedstoneClockRemastered plugin;
+
+    private final Pagination.Builder pagination = Pagination.builder().resultsPerPage(4);
 
     public DisplayActiveClocksCommand(AntiRedstoneClockRemastered plugin) {
         this.plugin = plugin;
     }
 
-    @Command("arcm display")
+    @Command("arcm display [page]")
     @CommandDescription("antiredstoneclockremastered.command.display.description")
     @Permission("antiredstoneclockremastered.command.display")
-    public void displayClocks(CommandSender commandSender) {
-        commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.display.clock.title").arguments(AntiRedstoneClockRemastered.PREFIX));
-        this.plugin.getRedstoneClockService().getRedstoneClocks().stream().map(this::mapClockToMessage).forEach(commandSender::sendMessage);
+    public void displayClocks(CommandSender commandSender, @Greedy @Argument("page") Integer page) {
+        Pagination<RedstoneClock> build = pagination.build(
+                AntiRedstoneClockRemastered.PREFIX,
+                this,
+                this::mapToCommand);
+        if (page == null) {
+            page = 0;
+        }
+        build.render(this.plugin.getRedstoneClockService().getRedstoneClocks(), Math.max(1, page))
+                .forEach(commandSender::sendMessage);
 
+    }
+
+    private String mapToCommand(int i) {
+        return "/arcm display " + i;
     }
 
     private Component mapClockToMessage(RedstoneClock redstoneClock) {
@@ -45,5 +66,10 @@ public final class DisplayActiveClocksCommand {
                                         }))
                         )
         );
+    }
+
+    @Override
+    public @NotNull Collection<Component> renderRow(@Nullable RedstoneClock redstoneClock, int index) {
+        return List.of(mapClockToMessage(redstoneClock));
     }
 }

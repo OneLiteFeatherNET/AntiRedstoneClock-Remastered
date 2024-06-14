@@ -1,0 +1,26 @@
+name: Announce release on discord
+on:
+  release:
+    types: [ published ]
+jobs:
+  send_announcement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send custom message with args
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.ONELITEFATHERNET_GITHUB_WEBHOOK }}
+          DISCORD_USERNAME: AntiRedstoneClock-Remastered Release
+          DISCORD_AVATAR: https://raw.githubusercontent.com/OneLiteFeatherNET/assets/blob/main/onelitefeathernet.png
+          DISCORD_THREAD_ID: '1239259280662597725'
+        uses: OneLiteFeatherNET/action-discord@master
+        with:
+          args: |
+            "<@&1250397109207830589>"
+            ""
+            "<a:fancyonelitefeather:1202007167818018867> **AntiRedstoneClock-Remastered ${{ github.event.release.tag_name }} has been released!**"
+            ""
+            "Click here to view changelog: https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/releases/tag/${{ github.event.release.tag_name }}"
+            ""
+            "The download is available at:"
+            "- Hangar: <https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/${{ github.event.release.tag_name }}/>"
+            "- Modrinth: <https://modrinth.com/plugin/AntiRedstoneClock-Remastered/version/${{ github.event.release.tag_name }}/>"

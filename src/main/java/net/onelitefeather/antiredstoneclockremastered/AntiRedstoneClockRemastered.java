@@ -11,7 +11,12 @@ import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.commands.DisplayActiveClocksCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.FeatureCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
-import net.onelitefeather.antiredstoneclockremastered.listener.*;
+import net.onelitefeather.antiredstoneclockremastered.listener.ComparatorListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.ObserverListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.PistonListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.RedstoneListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.SculkListener;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquaredWhatTheHellSupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
@@ -31,10 +36,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.component.DefaultValue;
-import org.incendo.cloud.description.Description;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.incendo.cloud.paper.PaperCommandManager;
 
 import java.io.IOException;
@@ -60,7 +65,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private Metrics metrics;
     private AnnotationParser<CommandSender> annotationParser;
 
-    public final static Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
+    public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
     @Override
     public void onLoad() {
@@ -100,6 +105,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         registerCommands();
     }
 
+    @Override
+    public void onDisable() {
+    }
+
     private void registerCommands() {
         if (this.annotationParser != null) {
             this.annotationParser.parse(new ReloadCommand(this));
@@ -109,7 +118,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private void enableCommandFramework() {
-        PaperCommandManager<CommandSender> commandManager = PaperCommandManager.createNative(
+        LegacyPaperCommandManager<CommandSender> commandManager = LegacyPaperCommandManager.createNative(
                 this,
                 ExecutionCoordinator.asyncCoordinator()
         );
@@ -122,9 +131,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
         annotationParser = new AnnotationParser<>(commandManager, CommandSender.class);
         annotationParser.descriptionMapper(string -> RichDescription.of(Component.translatable(string)));
-        MinecraftHelp<CommandSender> help = MinecraftHelp.createNative(
+        MinecraftHelp<CommandSender> help = MinecraftHelp.create(
                 "/arcm help",
-                commandManager
+                commandManager,
+                sender -> sender
         );
         commandManager.command(
                 commandManager.commandBuilder("arcm").literal("help")
@@ -139,7 +149,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private void enablePlotsquaredSupport() {
         Plugin plugin = getServer().getPluginManager().getPlugin("PlotSquared");
         if (plugin == null) {
-            Bukkit.getLogger().warning("PlotSquared hasn't been found!");
+            this.getLogger().warning("PlotSquared hasn't been found!");
             return;
         }
         @SuppressWarnings("deprecation")
@@ -163,7 +173,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private void enableWorldGuardSupport() {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
         if (plugin == null) {
-            Bukkit.getLogger().warning("WorldGuard hasn't been found!");
+            this.getLogger().warning("WorldGuard hasn't been found!");
             return;
         }
         @SuppressWarnings("deprecation")
