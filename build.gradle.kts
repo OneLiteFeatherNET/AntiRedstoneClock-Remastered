@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.1.0"
+version = "1.1.1"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
