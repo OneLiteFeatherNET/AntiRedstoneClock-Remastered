@@ -163,7 +163,7 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
 
             platforms {
                 register(Platforms.PAPER) {
-                    jar.set(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
                     platformVersions.set(supportedMinecraftVersions)
                 }
             }
@@ -177,7 +177,7 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
         versionName.set(suffixedVersion)
         changelog.set(changelogContent)
         changelog.set(changelogContent)
-        uploadFile.set(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+        uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
         gameVersions.addAll(supportedMinecraftVersions)
         loaders.add("paper")
         loaders.add("bukkit")

@@ -27,4 +27,4 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
           ELDO_USERNAME: "${{ secrets.ELDO_USERNAME }}"
           ELDO_PASSWORD: "${{ secrets.ELDO_PASSWORD }}"
-        run: ./gradlew shadowJar modrinth publishAllPublicationsToHangar publish
+        run: ./gradlew build modrinth publishAllPublicationsToHangar publish
