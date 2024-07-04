@@ -125,8 +125,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         if (commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             commandManager.registerBrigadier();
         }
-
-        if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
         annotationParser = new AnnotationParser<>(commandManager, CommandSender.class);
