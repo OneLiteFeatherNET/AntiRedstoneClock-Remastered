@@ -103,7 +103,7 @@ tasks {
 
 bukkit {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
-    apiVersion = "1.16"
+    apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
     softDepend = listOf("PlotSquared", "WorldGuard")
     permissions {
