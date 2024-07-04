@@ -143,7 +143,7 @@ bukkit {
 val branch = rootProject.branchName()
 val baseVersion = publishData.getVersion(false)
 val isRelease = !baseVersion.contains('-')
-val isMainBranch = branch == "main"
+val isMainBranch = branch == "master"
 if (!isRelease || isMainBranch) { // Only publish releases from the main branch
     val suffixedVersion =
         if (isRelease) baseVersion else baseVersion + "+" + System.getenv("GITHUB_RUN_NUMBER")
