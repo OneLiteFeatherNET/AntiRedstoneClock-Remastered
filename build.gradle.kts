@@ -25,7 +25,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.1.1"
+version = "1.1.2"
 val supportedMinecraftVersions = listOf(
     "1.16.5",
     "1.17",
@@ -163,7 +163,7 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
 
             platforms {
                 register(Platforms.PAPER) {
-                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    jar.set(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
                     platformVersions.set(supportedMinecraftVersions)
                 }
             }
@@ -177,7 +177,7 @@ if (!isRelease || isMainBranch) { // Only publish releases from the main branch
         versionName.set(suffixedVersion)
         changelog.set(changelogContent)
         changelog.set(changelogContent)
-        uploadFile.set(tasks.shadowJar.flatMap { it.archiveFile })
+        uploadFile.set(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         gameVersions.addAll(supportedMinecraftVersions)
         loaders.add("paper")
         loaders.add("bukkit")
