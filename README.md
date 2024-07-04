@@ -12,11 +12,11 @@ Also this plugin is not a "performance tool", it won't make your server run bett
 Third, support from 1.13 backwards likely won't happen.
 
 ## Features
-- 1.13+ Support
-- Java 17 only support
+- 1.19+ Support
+- Java 21 only support
 - Plotsquared v6 and v7 support
 - WorldGuard Support
-- 1.17,1.18,1.19,1.20 ready
+- 1.19,1.20,1.21 ready
 - Clock detection
 - Sculk support
 - Config Migration(Soon)
