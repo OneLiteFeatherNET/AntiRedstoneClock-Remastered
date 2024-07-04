@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public final class PlotSquaredModernSupport extends AbstractPlotsquaredSupport {
     @Override
     public void init() {
-        GlobalFlagContainer.getInstance().addFlag(new RedstoneClockFlag(false));
+        GlobalFlagContainer.getInstance().addFlag(RedstoneClockFlag.REDSTONE_CLOCK_FALSE);
     }
 
     @Override
@@ -21,10 +21,10 @@ public final class PlotSquaredModernSupport extends AbstractPlotsquaredSupport {
         if (plotArea != null) {
             var flag = plotArea.getFlagContainer().getFlag(RedstoneClockFlag.class);
             if (flag != null) {
-                return !flag.getValue();
+                return flag.getValue();
             }
         }
-        return false;
+        return true;
     }
 
     @Override
