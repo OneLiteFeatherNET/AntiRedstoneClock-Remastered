@@ -11,6 +11,11 @@ It's not planned to support Paper forks or spigot directly - this plugin is deve
 Also this plugin is not a "performance tool", it won't make your server run better directly.
 Third, support from 1.13 backwards likely won't happen.
 
+## Minecraft Version Support:
+Only the last 3 versions of a major Minecraft are supported.
+For Minecraft version 1.19, it would be 1.19.4,
+For Minecraft version 1.20, it would be 1.20.6 and so on
+
 ## Features
 - 1.19+ Support
 - Java 21 only support
