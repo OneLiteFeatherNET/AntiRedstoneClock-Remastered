@@ -46,6 +46,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -79,9 +80,11 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("antiredstoneclockremastered", "translations")));
         translationRegistry.defaultLocale(Locale.US);
         Path langFolder = getDataFolder().toPath().resolve("lang");
+        var languages = new HashSet<>(getConfig().getStringList("translations"));
+        languages.add("en-US");
         if (Files.exists(langFolder)) {
             try (var urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
-                getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+                languages.stream().map(Locale::forLanguageTag).forEach(r -> {
                     var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, urlClassLoader, UTF8ResourceBundleControl.get());
                     translationRegistry.registerAll(r, bundle, false);
                 });
@@ -89,7 +92,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
                 throw new RuntimeException(e);
             }
         } else {
-            getConfig().getStringList("translations").stream().map(Locale::forLanguageTag).forEach(r -> {
+            languages.stream().map(Locale::forLanguageTag).forEach(r -> {
                 var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, UTF8ResourceBundleControl.get());
                 translationRegistry.registerAll(r, bundle, false);
             });
