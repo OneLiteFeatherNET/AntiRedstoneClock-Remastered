@@ -38,7 +38,6 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://repo.codemc.io/repository/maven-public")
-        maven("https://jitpack.io")// Plotsquared V4 Support
         maven("https://maven.enginehub.org/repo/")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://papermc.io/repo/repository/maven-public/")
@@ -64,7 +63,6 @@ dependencies {
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
-    implementation(project(":PlotSquaredv4Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
 }
