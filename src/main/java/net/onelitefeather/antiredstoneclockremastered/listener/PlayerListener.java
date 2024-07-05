@@ -22,7 +22,7 @@ public final class PlayerListener implements Listener {
     @EventHandler
     private void onPlayerJoinEvent(PlayerJoinEvent playerJoinEvent) {
         var player = playerJoinEvent.getPlayer();
-        if ((player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) && !player.hasPermission(Constants.DISABLE_DONATION_NOTIFY)) {
+        if (player.isOp() || (player.hasPermission(Constants.PERMISSION_NOTIFY) && !player.hasPermission(Constants.DISABLE_DONATION_NOTIFY))) {
             player.sendMessage(Component.translatable("antiredstoneclockremastered.notify.donation.player").arguments(AntiRedstoneClockRemastered.PREFIX));
         }
     }
