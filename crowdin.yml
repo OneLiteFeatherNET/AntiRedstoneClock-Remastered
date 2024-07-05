@@ -1,3 +1,3 @@
 files:
   - source: src/main/resources/antiredstoneclockremasterd.properties
-    translation: src/main/resources/antiredstoneclockremasterd_%locale_with_underscore%.properties
+    translation: /src/main/resources/antiredstoneclockremasterd_%locale_with_underscore%.properties
