@@ -30,6 +30,7 @@ dependencyResolutionManagement {
             version("cloudcommand", "2.0.0-SNAPSHOT")
 
             version("adventure", "4.17.0")
+            version("semver", "0.10.2")
 
             // WorldGuard
             version("wgv6", "6.2")
@@ -59,6 +60,8 @@ dependencyResolutionManagement {
             library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommand")
             library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommand")
             library("cloud.command.extras", "org.incendo", "cloud-minecraft-extras").versionRef("cloudcommand")
+
+            library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
 
             plugin("publishdata","de.chojo.publishdata").versionRef("publishdata")
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
