@@ -27,7 +27,6 @@ import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardMo
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -39,7 +38,6 @@ import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
-import org.incendo.cloud.paper.PaperCommandManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,6 +93,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             });
         }
         GlobalTranslator.translator().addSource(translationRegistry);
+        donationInformation();
         enableCommandFramework();
         enablePlotsquaredSupport();
         enableTPSChecker();
@@ -106,6 +105,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onDisable() {
+    }
+
+    private void donationInformation() {
+        getComponentLogger().info(Component.translatable("antiredstoneclockremastered.notify.donation.console"));
     }
 
     private void registerCommands() {
