@@ -20,6 +20,7 @@ import net.onelitefeather.antiredstoneclockremastered.listener.SculkListener;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.translations.PluginTranslationRegistry;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
@@ -63,6 +64,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private AnnotationParser<CommandSender> annotationParser;
 
     public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
+    private UpdateService updateService;
 
     @Override
     public void onLoad() {
@@ -94,6 +96,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
         GlobalTranslator.translator().addSource(translationRegistry);
         donationInformation();
+        updateService();
         enableCommandFramework();
         enablePlotsquaredSupport();
         enableTPSChecker();
@@ -103,8 +106,15 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         registerCommands();
     }
 
+    private void updateService() {
+        this.updateService = new UpdateService(this);
+        this.updateService.run();
+        this.updateService.notifyConsole(getComponentLogger());
+    }
+
     @Override
     public void onDisable() {
+        this.updateService.shutdown();
     }
 
     private void donationInformation() {
@@ -190,7 +200,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService, this), this);
         if (getConfig().getBoolean("check.observer", true)) {
             getServer().getPluginManager().registerEvents(new ObserverListener(this), this);
         }
@@ -289,5 +299,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         return plotsquaredSupport;
     }
 
-
+    public UpdateService getUpdateService() {
+        return updateService;
+    }
 }

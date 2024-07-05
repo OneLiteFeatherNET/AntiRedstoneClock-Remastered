@@ -2,6 +2,8 @@ package net.onelitefeather.antiredstoneclockremastered.utils;
 
 import org.bukkit.Material;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +11,10 @@ import java.util.List;
 public final class Constants {
 
     public static final String PERMISSION_NOTIFY = "antiredstoneclockremastered.notify.admin";
+    public static final String PERMISSION_NOTIFY_UPDATE = "antiredstoneclockremastered.notify.admin.update";
     public static final String DISABLE_DONATION_NOTIFY = "antiredstoneclockremastered.notify.disable.donation";
+    public static final URI LATEST_RELEASE_VERSION_URI = URI.create("https://hangar.papermc.io/api/v1/projects/AntiRedstoneClock-Remastered/latestrelease");
+    public static final HttpRequest LATEST_RELEASE_VERSION_REQUEST = HttpRequest.newBuilder().GET().uri(LATEST_RELEASE_VERSION_URI).build();
 
     public static final Collection<Material> REDSTONE_ITEMS = new ArrayList<>(initRedstoneItems());
 

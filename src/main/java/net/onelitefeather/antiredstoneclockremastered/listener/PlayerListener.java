@@ -14,9 +14,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public final class PlayerListener implements Listener {
 
     private final RedstoneClockService redstoneClockService;
+    private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
 
-    public PlayerListener(RedstoneClockService redstoneClockService) {
+    public PlayerListener(RedstoneClockService redstoneClockService, AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.redstoneClockService = redstoneClockService;
+        this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
     }
 
     @EventHandler
@@ -24,6 +26,9 @@ public final class PlayerListener implements Listener {
         var player = playerJoinEvent.getPlayer();
         if (player.isOp() || (player.hasPermission(Constants.PERMISSION_NOTIFY) && !player.hasPermission(Constants.DISABLE_DONATION_NOTIFY))) {
             player.sendMessage(Component.translatable("antiredstoneclockremastered.notify.donation.player").arguments(AntiRedstoneClockRemastered.PREFIX));
+        }
+        if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY_UPDATE)) {
+            this.antiRedstoneClockRemastered.getUpdateService().notifyPlayer(player);
         }
     }
 

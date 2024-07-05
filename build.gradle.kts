@@ -1,4 +1,5 @@
 import io.papermc.hangarpublishplugin.model.Platforms
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
@@ -11,6 +12,7 @@ plugins {
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
     `maven-publish`
+    kotlin("jvm") version "2.0.0"
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -25,7 +27,7 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.2.0"
+version = "1.1.0"
 val supportedMinecraftVersions = listOf(
     "1.19.4",
     "1.20.6",
@@ -57,6 +59,7 @@ dependencies {
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
+    implementation(libs.semver)
     implementation("net.kyori:adventure-text-feature-pagination:4.0.0-SNAPSHOT")
     annotationProcessor(libs.cloud.command.annotations)
 
@@ -114,6 +117,9 @@ paper {
     permissions {
         register("antiredstoneclockremastered.notify.admin")
         register("antiredstoneclockremastered.notify.disable.donation")
+        register("antiredstoneclockremastered.notify.admin.update") {
+            default = BukkitPluginDescription.Permission.Default.OP
+        }
         register("antiredstoneclockremastered.command.reload")
         register("antiredstoneclockremastered.command.help")
         register("antiredstoneclockremastered.command.feature.check.observer")
