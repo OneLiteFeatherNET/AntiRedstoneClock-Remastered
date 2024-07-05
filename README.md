@@ -1,4 +1,6 @@
 # AntiRedstoneClock-Remastered
+[![Crowdin](https://badges.crowdin.net/e/79ae9c901c3d260349569fca62af7b2f/localized.svg)](https://onelitefeather.crowdin.com/antiredstoneclock-remastered)
+
 This plugin is inspired by https://gitlab.com/Trafalcraft/antiRedstoneClock
 
 We re-created the whole code and improved everything. On top, we support Plotsquared v7 and Worldguard v7.
