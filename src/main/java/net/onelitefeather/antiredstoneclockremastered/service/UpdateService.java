@@ -32,7 +32,7 @@ public final class UpdateService implements Runnable {
 
     @Override
     public void run() {
-        var remoteVersion = checkForVersion();
+        var remoteVersion = getNewerVersion();
         if (remoteVersion != null) {
             this.remoteVersion = remoteVersion;
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -71,7 +71,7 @@ public final class UpdateService implements Runnable {
 
 
     @Nullable
-    private Version checkForVersion() {
+    private Version getNewerVersion() {
         try {
             HttpResponse<String> httpResponse = hangarClient.send(Constants.LATEST_RELEASE_VERSION_REQUEST, HttpResponse.BodyHandlers.ofString());
             Version remoteVersion = Version.parse(httpResponse.body());
