@@ -113,6 +113,7 @@ paper {
     }
     permissions {
         register("antiredstoneclockremastered.notify.admin")
+        register("antiredstoneclockremastered.notify.disable.donation")
         register("antiredstoneclockremastered.command.reload")
         register("antiredstoneclockremastered.command.help")
         register("antiredstoneclockremastered.command.feature.check.observer")

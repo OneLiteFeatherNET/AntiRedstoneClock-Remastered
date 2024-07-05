@@ -9,6 +9,7 @@ import java.util.List;
 public final class Constants {
 
     public static final String PERMISSION_NOTIFY = "antiredstoneclockremastered.notify.admin";
+    public static final String DISABLE_DONATION_NOTIFY = "antiredstoneclockremastered.notify.disable.donation";
 
     public static final Collection<Material> REDSTONE_ITEMS = new ArrayList<>(initRedstoneItems());
 
