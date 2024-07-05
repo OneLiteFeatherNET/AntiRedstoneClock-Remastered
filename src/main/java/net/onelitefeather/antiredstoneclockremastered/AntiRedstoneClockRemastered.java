@@ -17,7 +17,6 @@ import net.onelitefeather.antiredstoneclockremastered.listener.PistonListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.RedstoneListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.SculkListener;
-import net.onelitefeather.antiredstoneclockremastered.plotsquared.v4.PlotSquaredWhatTheHellSupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
@@ -153,17 +152,14 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
         @SuppressWarnings("deprecation")
         int psVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
-        if (psVersion < 5) {
-            getLogger().warning("You us a unsupported version of PlotSquared!!!");
-            this.plotsquaredSupport = new PlotSquaredWhatTheHellSupport();
-        } else if (psVersion < 6) {
+        if (psVersion < 6) {
             getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
             return;
         } else if (psVersion < 7) {
             getLogger().warning("You use a legacy version of PlotSquared!");
             this.plotsquaredSupport = new PlotSquaredLegacySupport();
         } else {
-            getLogger().warning("Thanks to hold your software up-to date <3");
+            getLogger().info("Thanks to hold your software up-to date <3");
             this.plotsquaredSupport = new PlotSquaredModernSupport();
         }
         this.plotsquaredSupport.init();

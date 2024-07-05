@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.shadowJar)
     alias(libs.plugins.publishdata)
     alias(libs.plugins.paper.run)
-    alias(libs.plugins.bukkit.yml)
+    alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
@@ -25,26 +25,11 @@ if (!File("$rootDir/.git").exists()) {
 }
 
 group = "net.onelitefeather"
-version = "1.1.2"
+version = "1.2.0"
 val supportedMinecraftVersions = listOf(
-    "1.16.5",
-    "1.17",
-    "1.17.1",
-    "1.18",
-    "1.18.1",
-    "1.18.2",
-    "1.19",
-    "1.19.1",
-    "1.19.2",
-    "1.19.3",
     "1.19.4",
-    "1.20",
-    "1.20.1",
-    "1.20.2",
-    "1.20.3",
-    "1.20.4",
-    "1.20.5",
-    "1.20.6"
+    "1.20.6",
+    "1.21"
 )
 allprojects {
     apply {
@@ -53,7 +38,6 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://repo.codemc.io/repository/maven-public")
-        maven("https://jitpack.io")// Plotsquared V4 Support
         maven("https://maven.enginehub.org/repo/")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://papermc.io/repo/repository/maven-public/")
@@ -79,7 +63,6 @@ dependencies {
     implementation(project(":internal-api"))
     implementation(project(":WorldGuardv6Support"))
     implementation(project(":WorldGuardv7Support"))
-    implementation(project(":PlotSquaredv4Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
 }
@@ -116,11 +99,18 @@ tasks {
 }
 
 
-bukkit {
+paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
-    apiVersion = "1.16"
+    apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
-    softDepend = listOf("PlotSquared", "WorldGuard")
+    serverDependencies {
+        register("PlotSquared") {
+            required = false
+        }
+        register("WorldGuard") {
+            required = false
+        }
+    }
     permissions {
         register("antiredstoneclockremastered.notify.admin")
         register("antiredstoneclockremastered.command.reload")
