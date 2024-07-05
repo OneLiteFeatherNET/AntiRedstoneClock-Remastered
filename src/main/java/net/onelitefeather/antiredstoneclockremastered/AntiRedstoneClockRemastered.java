@@ -78,6 +78,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onEnable() {
         final TranslationRegistry translationRegistry = new PluginTranslationRegistry(TranslationRegistry.create(Key.key("antiredstoneclockremastered", "translations")));
         translationRegistry.defaultLocale(Locale.US);
+        translationRegistry.registerAll(Locale.US, ResourceBundle.getBundle("antiredstoneclockremasterd", Locale.US, UTF8ResourceBundleControl.get()), false);
         Path langFolder = getDataFolder().toPath().resolve("lang");
         if (Files.exists(langFolder)) {
             try (var urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
