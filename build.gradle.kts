@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
     `maven-publish`
-    kotlin("jvm") version "2.0.0"
 }
 
 if (!File("$rootDir/.git").exists()) {
