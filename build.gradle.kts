@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.shadowJar)
     alias(libs.plugins.publishdata)
     alias(libs.plugins.paper.run)
-    alias(libs.plugins.bukkit.yml)
+    alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
     id("olf.build-logic")
@@ -99,11 +99,18 @@ tasks {
 }
 
 
-bukkit {
+paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
-    softDepend = listOf("PlotSquared", "WorldGuard")
+    serverDependencies {
+        register("PlotSquared") {
+            required = false
+        }
+        register("WorldGuard") {
+            required = false
+        }
+    }
     permissions {
         register("antiredstoneclockremastered.notify.admin")
         register("antiredstoneclockremastered.command.reload")
