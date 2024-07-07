@@ -44,7 +44,7 @@ public final class UpdateService implements Runnable {
     }
 
     public void notifyConsole(ComponentLogger logger) {
-        if (this.remoteVersion.isHigherThan(this.localVersion)) {
+        if (this.remoteVersion != null && this.remoteVersion.isHigherThan(this.localVersion)) {
             logger.warn(Component.translatable("antiredstoneclockremastered.notify.update.console")
                     .arguments(Component.text(localVersion.toString()),
                             Component.text(remoteVersion.toString()),
