@@ -54,10 +54,10 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
         return Component.empty().hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent()).append(
                 Component.translatable("antiredstoneclockremastered.command.display.clock.text")
                         .arguments(
+                                TranslationArgument.numeric(redstoneClock.getTriggerCount()),
                                 TranslationArgument.numeric(location.getBlockX()),
                                 TranslationArgument.numeric(location.getBlockY()),
                                 TranslationArgument.numeric(location.getBlockZ()),
-                                TranslationArgument.numeric(redstoneClock.getTriggerCount()),
                                 Component.empty()
                                         .clickEvent(ClickEvent.callback(audience -> {
                                             if (audience instanceof final Player executor) {
