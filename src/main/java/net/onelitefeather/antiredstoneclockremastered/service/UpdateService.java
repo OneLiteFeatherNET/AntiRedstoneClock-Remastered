@@ -55,7 +55,7 @@ public final class UpdateService implements Runnable {
 
 
     public void notifyPlayer(Player player) {
-        if (this.remoteVersion.isHigherThan(this.localVersion)) {
+        if (this.remoteVersion != null && this.remoteVersion.isHigherThan(this.localVersion)) {
             notifyPlayer(this.localVersion, this.remoteVersion, player);
         }
     }
