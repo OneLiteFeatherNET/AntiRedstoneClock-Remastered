@@ -27,7 +27,7 @@ dependencyResolutionManagement {
             version("paper", "1.20.6-R0.1-SNAPSHOT")
             version("bstats", "3.0.2")
 
-            version("cloudcommand", "2.0.0-SNAPSHOT")
+            version("cloudcommand", "2.0.0")
 
             version("adventure", "4.17.0")
             version("semver", "0.10.2")
