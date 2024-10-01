@@ -34,7 +34,7 @@ dependencyResolutionManagement {
 
             // WorldGuard
             version("wgv6", "6.2")
-            version("wgv7", "7.0.10")
+            version("wgv7", "7.0.12")
             library("wg6", "com.sk89q.worldguard", "worldguard-legacy").versionRef("wgv6")
             library("wg7", "com.sk89q.worldguard", "worldguard-bukkit").versionRef("wgv7")
 
