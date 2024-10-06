@@ -35,6 +35,7 @@ public final class RedstoneClockService {
     private List<String> ignoredWorlds;
 
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
+    private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     public RedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
@@ -45,6 +46,7 @@ public final class RedstoneClockService {
         this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
+        SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
     }
 
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
@@ -171,9 +173,7 @@ public final class RedstoneClockService {
     private void breakBlock(@NotNull Location location) {
         Block block = location.getBlock();
         if (this.dropItems) {
-            ItemStack destroyTool = new ItemStack(Material.DIAMOND_PICKAXE);
-            destroyTool.addEnchantment(Enchantment.SILK_TOUCH, 1);
-            var drops = block.getDrops(destroyTool);
+            var drops = block.getDrops(SILK_TOUCH_PICKAXE);
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
         Runnable removeTask = () -> block.setType(Material.AIR, true);
