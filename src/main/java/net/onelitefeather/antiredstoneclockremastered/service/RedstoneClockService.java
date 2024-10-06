@@ -10,7 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +35,7 @@ public final class RedstoneClockService {
     private List<String> ignoredWorlds;
 
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
+    private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     public RedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
@@ -43,6 +46,7 @@ public final class RedstoneClockService {
         this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
+        SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
     }
 
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
@@ -169,7 +173,7 @@ public final class RedstoneClockService {
     private void breakBlock(@NotNull Location location) {
         Block block = location.getBlock();
         if (this.dropItems) {
-            var drops = block.getDrops();
+            var drops = block.getDrops(SILK_TOUCH_PICKAXE);
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
         Runnable removeTask = () -> block.setType(Material.AIR, true);
