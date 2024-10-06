@@ -10,7 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -169,7 +171,9 @@ public final class RedstoneClockService {
     private void breakBlock(@NotNull Location location) {
         Block block = location.getBlock();
         if (this.dropItems) {
-            var drops = block.getDrops();
+            ItemStack destroyTool = new ItemStack(Material.DIAMOND_PICKAXE);
+            destroyTool.addEnchantment(Enchantment.SILK_TOUCH, 1);
+            var drops = block.getDrops(destroyTool);
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
         Runnable removeTask = () -> block.setType(Material.AIR, true);
