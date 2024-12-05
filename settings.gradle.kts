@@ -21,11 +21,11 @@ dependencyResolutionManagement {
             version("modrinth", "2.+")
             version("hangar", "0.1.2")
             version("paper.yml", "0.6.0")
-            version("paper.run", "2.3.0")
+            version("paper.run", "2.3.1")
             version("shadowJar", "8.1.1")
 
             version("paper", "1.20.6-R0.1-SNAPSHOT")
-            version("bstats", "3.0.2")
+            version("bstats", "3.1.0")
 
             version("cloudcommand", "2.0.0-SNAPSHOT")
 
@@ -34,14 +34,14 @@ dependencyResolutionManagement {
 
             // WorldGuard
             version("wgv6", "6.2")
-            version("wgv7", "7.0.10")
+            version("wgv7", "7.0.12")
             library("wg6", "com.sk89q.worldguard", "worldguard-legacy").versionRef("wgv6")
             library("wg7", "com.sk89q.worldguard", "worldguard-bukkit").versionRef("wgv7")
 
             // PlotSquared
             version("psv4", "4.453")
-            version("psv6", "1.46")
-            version("psv7", "1.46")
+            version("psv6", "1.51")
+            version("psv7", "1.51")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
             library("psv4.bukkit", "com.github.IntellectualSites.PlotSquared","Bukkit").versionRef("psv4")
