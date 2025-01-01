@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 
             version("cloudcommand", "2.0.0-SNAPSHOT")
 
-            version("adventure", "4.17.0")
+            version("adventure", "4.18.0")
             version("semver", "0.10.2")
 
             // WorldGuard
