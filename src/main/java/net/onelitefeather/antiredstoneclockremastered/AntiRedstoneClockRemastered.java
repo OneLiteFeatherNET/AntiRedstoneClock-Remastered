@@ -28,6 +28,7 @@ import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardMo
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -66,6 +67,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
     private UpdateService updateService;
+    public static boolean isFolia;
 
     @Override
     public void onLoad() {
@@ -98,6 +100,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             });
         }
         GlobalTranslator.translator().addSource(translationRegistry);
+        checkFolia();
         donationInformation();
         updateService();
         enableCommandFramework();
@@ -129,6 +132,27 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             this.annotationParser.parse(new ReloadCommand(this));
             this.annotationParser.parse(new DisplayActiveClocksCommand(this));
             this.annotationParser.parse(new FeatureCommand(this));
+        }
+    }
+    
+    /**
+     * Checks if the server is using Folia.
+     */
+    public void checkFolia() {
+        if (Bukkit.getVersion().toLowerCase().contains("folia")) {
+            try {
+                Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
+                isFolia = true;
+            } catch (ClassNotFoundException e) {
+                isFolia = false;
+            }
+            return;
+        }
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
+            isFolia = true;
+        } catch (ClassNotFoundException e) {
+            isFolia = false;
         }
     }
 

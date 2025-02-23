@@ -1,6 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
 import com.github.zafarkhaja.semver.Version;
+
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.util.concurrent.TimeUnit;
 
 public final class UpdateService implements Runnable {
     private final HttpClient hangarClient = HttpClient.newBuilder().build();
@@ -22,11 +25,19 @@ public final class UpdateService implements Runnable {
     private final Version localVersion;
     private Version remoteVersion;
     private final BukkitTask scheduler;
+    private final ScheduledTask foliaScheduler;
     private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
 
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
-        this.scheduler = Bukkit.getScheduler().runTaskTimerAsynchronously(antiRedstoneClockRemastered, this, 0, 20 * 60 * 60 * 3);
+        if(AntiRedstoneClockRemastered.isFolia) {
+        	this.foliaScheduler = Bukkit.getAsyncScheduler().runAtFixedRate(antiRedstoneClockRemastered, task -> run(), 0, 3, TimeUnit.HOURS);
+        	this.scheduler = null;
+        } else {
+        	this.foliaScheduler = null;
+        	this.scheduler = Bukkit.getScheduler().runTaskTimerAsynchronously(antiRedstoneClockRemastered, this, 0, 20 * 60 * 60 * 3);
+        }
+        
     }
 
 
@@ -86,6 +97,11 @@ public final class UpdateService implements Runnable {
 
     public void shutdown() {
         this.hangarClient.shutdownNow();
-        this.scheduler.cancel();
+        if(this.scheduler != null && !this.scheduler.isCancelled()) {
+        	this.scheduler.cancel();
+        }
+        if(this.foliaScheduler != null && !this.foliaScheduler.isCancelled()) {
+        	this.foliaScheduler.cancel();
+        }
     }
 }

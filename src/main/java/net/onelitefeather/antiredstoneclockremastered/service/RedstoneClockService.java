@@ -177,7 +177,11 @@ public final class RedstoneClockService {
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
         Runnable removeTask = () -> block.setType(Material.AIR, true);
-        Bukkit.getScheduler().runTaskLater(antiRedstoneClockRemastered, removeTask, 1);
+        if(AntiRedstoneClockRemastered.isFolia) {
+        	Bukkit.getRegionScheduler().runDelayed(antiRedstoneClockRemastered, location, task -> removeTask.run(), 1);
+        } else {
+        	Bukkit.getScheduler().runTaskLater(antiRedstoneClockRemastered, removeTask, 1);
+        }
 
     }
 

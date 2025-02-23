@@ -41,7 +41,7 @@ allprojects {
         maven("https://repo.codemc.io/repository/maven-public")
         maven("https://maven.enginehub.org/repo/")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
     dependencies {
@@ -49,6 +49,7 @@ allprojects {
             compileOnly(project(":internal-api"))
         }
         compileOnly(rootProject.libs.paper)
+        compileOnly("dev.folia:folia-api:1.20.2-R0.1-SNAPSHOT")
     }
 }
 
@@ -105,6 +106,8 @@ paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
+    contributors = listOf("Xyness")
+    foliaSupported = true
     serverDependencies {
         register("PlotSquared") {
             required = false
@@ -136,6 +139,7 @@ paper {
         register("antiredstoneclockremastered.command.feature.clock.maxCount")
     }
 }
+
 val branch = rootProject.branchName()
 val baseVersion = publishData.getVersion(false)
 val isRelease = !baseVersion.contains('-')
