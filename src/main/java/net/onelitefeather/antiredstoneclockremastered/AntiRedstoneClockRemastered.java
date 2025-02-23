@@ -29,6 +29,7 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -51,6 +52,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
@@ -67,7 +69,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
     private UpdateService updateService;
-    public static boolean isFolia;
+    private boolean isFolia;
 
     @Override
     public void onLoad() {
@@ -132,27 +134,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             this.annotationParser.parse(new ReloadCommand(this));
             this.annotationParser.parse(new DisplayActiveClocksCommand(this));
             this.annotationParser.parse(new FeatureCommand(this));
-        }
-    }
-    
-    /**
-     * Checks if the server is using Folia.
-     */
-    public void checkFolia() {
-        if (Bukkit.getVersion().toLowerCase().contains("folia")) {
-            try {
-                Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
-                isFolia = true;
-            } catch (ClassNotFoundException e) {
-                isFolia = false;
-            }
-            return;
-        }
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServerInitEvent");
-            isFolia = true;
-        } catch (ClassNotFoundException e) {
-            isFolia = false;
         }
     }
 
@@ -328,5 +309,63 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     public UpdateService getUpdateService() {
         return updateService;
+    }
+    
+    /** Added functions */
+    
+    public void checkFolia() {
+        try {
+        	Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            isFolia = true;
+        } catch (ClassNotFoundException e) {
+            isFolia = false;
+        }
+    }
+    
+    public boolean isFolia() {
+    	return isFolia;
+    }
+    
+    /**
+     * Executes a delayed task asynchronously.
+     * 
+     * @param gTask The task to execute
+     * @param delay The delay (in ms).
+     */
+    public Object executeAsyncDelayed(Runnable gTask, long delay) {
+        if (isFolia) {
+            return Bukkit.getAsyncScheduler().runDelayed(this, task -> gTask.run(), delay, TimeUnit.MILLISECONDS);
+        } else {
+            return Bukkit.getScheduler().runTaskLaterAsynchronously(this, gTask, (delay/1000)*20);
+        }
+    }
+    
+    /**
+     * Executes a delayed location task asynchronously.
+     * 
+     * @param gTask    The task to execute
+     * @param delay    The delay (in ms).
+     * @param location The location of the task.
+     */
+    public Object executeLocationAsyncDelayed(Runnable gTask, long delay, Location location) {
+        if (isFolia) {
+            return Bukkit.getRegionScheduler().runDelayed(this, location, task -> gTask.run(), (delay/1000)*20);
+        } else {
+            return Bukkit.getScheduler().runTaskLaterAsynchronously(this, gTask, (delay/1000)*20);
+        }
+    }
+    
+    /**
+     * Executes a repeated task asynchronously.
+     * 
+     * @param gTask The task to execute
+     * @param delay The delay (in ms).
+     */
+    public Object executeAsyncAtFixedRate(Runnable gTask, long delay) {
+        if (isFolia) {
+        	return Bukkit.getAsyncScheduler().runAtFixedRate(this, task -> gTask.run(), 0, delay, TimeUnit.MILLISECONDS);
+        } else {
+            return Bukkit.getScheduler().runTaskTimerAsynchronously(this, gTask, 0, (delay/1000)*20);
+        }
     }
 }

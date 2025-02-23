@@ -17,27 +17,20 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
-import java.util.concurrent.TimeUnit;
 
 public final class UpdateService implements Runnable {
     private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
     private final Version localVersion;
     private Version remoteVersion;
-    private final BukkitTask scheduler;
-    private final ScheduledTask foliaScheduler;
+    private final Object scheduler;
     private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
-
+    private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
+    
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
-        if(AntiRedstoneClockRemastered.isFolia) {
-        	this.foliaScheduler = Bukkit.getAsyncScheduler().runAtFixedRate(antiRedstoneClockRemastered, task -> run(), 0, 3, TimeUnit.HOURS);
-        	this.scheduler = null;
-        } else {
-        	this.foliaScheduler = null;
-        	this.scheduler = Bukkit.getScheduler().runTaskTimerAsynchronously(antiRedstoneClockRemastered, this, 0, 20 * 60 * 60 * 3);
-        }
-        
+        this.scheduler = antiRedstoneClockRemastered.executeAsyncAtFixedRate(this, 3 * 60 * 60 * 1000);
+        this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
     }
 
 
@@ -97,11 +90,12 @@ public final class UpdateService implements Runnable {
 
     public void shutdown() {
         this.hangarClient.shutdownNow();
-        if(this.scheduler != null && !this.scheduler.isCancelled()) {
-        	this.scheduler.cancel();
-        }
-        if(this.foliaScheduler != null && !this.foliaScheduler.isCancelled()) {
-        	this.foliaScheduler.cancel();
+        if (scheduler != null) {
+            if (antiRedstoneClockRemastered.isFolia()) {
+                ((ScheduledTask) scheduler).cancel();
+            } else {
+                ((BukkitTask) scheduler).cancel();
+            }
         }
     }
 }
