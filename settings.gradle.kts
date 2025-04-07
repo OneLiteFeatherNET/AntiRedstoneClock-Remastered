@@ -28,7 +28,7 @@ dependencyResolutionManagement {
             version("bstats", "3.1.0")
 
             version("cloudcommand", "2.0.0")
-            version("cloudcommandPaper", "2.0.0-beta.10")
+            version("cloudcommandPaper", "2.0.0-SNAPSHOT")
             version("cloudcommandAnnotations", "2.0.0")
             version("cloudcommandExtras", "2.0.0-beta.10")
 
