@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             version("paper.run", "2.3.1")
             version("shadowJar", "9.0.0-beta12")
 
-            version("paper", "1.20.6-R0.1-SNAPSHOT")
+            version("paper", "1.21.5-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
 
             version("cloudcommand", "2.0.0")
@@ -32,7 +32,7 @@ dependencyResolutionManagement {
             version("cloudcommandAnnotations", "2.0.0")
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
-            version("adventure", "4.17.0")
+            version("adventure", "4.20.0")
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("semver", "0.10.2")
 
