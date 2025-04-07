@@ -22,14 +22,18 @@ dependencyResolutionManagement {
             version("hangar", "0.1.2")
             version("paper.yml", "0.6.0")
             version("paper.run", "2.3.1")
-            version("shadowJar", "8.1.1")
+            version("shadowJar", "9.0.0-beta12")
 
             version("paper", "1.20.6-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
 
-            version("cloudcommand", "2.0.0-SNAPSHOT")
+            version("cloudcommand", "2.0.0")
+            version("cloudcommandPaper", "2.0.0-beta.10")
+            version("cloudcommandAnnotations", "2.0.0")
+            version("cloudcommandExtras", "2.0.0-beta.10")
 
             version("adventure", "4.17.0")
+            version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("semver", "0.10.2")
 
             // WorldGuard
@@ -55,11 +59,12 @@ dependencyResolutionManagement {
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
+            library("adventure.text.feature.pagination", "net.kyori", "adventure-text-feature-pagination").versionRef("adventure-text-feature-pagination")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
 
-            library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommand")
-            library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommand")
-            library("cloud.command.extras", "org.incendo", "cloud-minecraft-extras").versionRef("cloudcommand")
+            library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommandPaper")
+            library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommandAnnotations")
+            library("cloud.command.extras", "org.incendo", "cloud-minecraft-extras").versionRef("cloudcommandExtras")
 
             library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
 
@@ -68,7 +73,7 @@ dependencyResolutionManagement {
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")
             plugin("paper.yml", "net.minecrell.plugin-yml.paper").versionRef("paper.yml")
             plugin("paper.run", "xyz.jpenilla.run-paper").versionRef("paper.run")
-            plugin("shadowJar", "com.github.johnrengelman.shadow").versionRef("shadowJar")
+            plugin("shadowJar", "com.gradleup.shadow").versionRef("shadowJar")
         }
     }
 }
