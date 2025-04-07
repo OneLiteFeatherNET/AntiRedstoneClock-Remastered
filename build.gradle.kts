@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
     implementation(libs.semver)
-    implementation("net.kyori:adventure-text-feature-pagination:4.0.0-SNAPSHOT")
+    implementation(libs.adventure.text.feature.pagination)
     annotationProcessor(libs.cloud.command.annotations)
 
     implementation(project(":internal-api"))
