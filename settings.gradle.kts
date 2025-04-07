@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             version("cloudcommand", "2.0.0")
             version("cloudcommandPaper", "2.0.0-beta.10")
             version("cloudcommandAnnotations", "2.0.0")
-            version("cloudcommandExtras", "2.0.0-beta.10")
+            version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
             version("adventure", "4.17.0")
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
