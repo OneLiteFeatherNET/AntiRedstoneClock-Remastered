@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             version("hangar", "0.1.3")
             version("paper.yml", "0.6.0")
             version("paper.run", "2.3.1")
-            version("shadowJar", "9.0.0-beta12")
+            version("shadowJar", "9.0.0-beta15")
 
             version("paper", "1.21.5-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
@@ -44,7 +44,7 @@ dependencyResolutionManagement {
 
             // PlotSquared
             version("psv4", "4.453")
-            version("psv6", "1.51")
+            version("psv6", "1.52")
             version("psv7", "1.52")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
