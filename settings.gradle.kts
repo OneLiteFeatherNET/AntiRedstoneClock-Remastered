@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             version("hangar", "0.1.3")
             version("paper.yml", "0.6.0")
             version("paper.run", "2.3.1")
-            version("shadowJar", "9.0.0-beta15")
+            version("shadowJar", "9.0.0-rc2")
 
             version("paper", "1.20.6-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
