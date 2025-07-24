@@ -83,7 +83,7 @@ tasks {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
     }
-    configure<TaskModrinthUpload>() {
+    this.modrinth {
         dependsOn(shadowJar)
     }
 }
