@@ -60,3 +60,52 @@ Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered
 Modrinth: https://modrinth.com/plugin/AntiRedstoneClock-Remastered
 
 Discord: https://discord.onelitefeather.net
+
+## Release Cycle
+**Important Announcement:** While we have already been using Semantic Versioning (SemVer) for our releases, starting from July 24, 2025, we will be implementing the "semantic-release" tool to automate this process.
+
+### What is Semantic Versioning?
+Semantic Versioning follows the format of **MAJOR.MINOR.PATCH** (e.g., 2.4.1):
+
+- **MAJOR** version increases when incompatible API changes are made
+- **MINOR** version increases when functionality is added in a backward-compatible manner
+- **PATCH** version increases when backward-compatible bug fixes are implemented
+
+### How Commits Affect Version Numbers
+Different types of commits will automatically trigger different version increments:
+
+1. **MAJOR version bump** (e.g., 1.2.3 → 2.0.0)
+   - Breaking changes to the API
+   - Commits with `BREAKING CHANGE:` in the commit message
+   - Commits with `!` after the type (e.g., `feat!: remove deprecated methods`)
+
+2. **MINOR version bump** (e.g., 1.2.3 → 1.3.0)
+   - Commits with type `feat` (new features)
+   - Example: `feat: add new command for clock statistics`
+
+3. **PATCH version bump** (e.g., 1.2.3 → 1.2.4)
+   - Commits with type `fix` (bug fixes)
+   - Example: `fix: resolve issue with clock detection in nether worlds`
+
+4. **No version bump**
+   - Commits with types like `docs`, `style`, `refactor`, `test`, `chore`
+   - Example: `docs: update README with new information`
+
+### Example Release Flow
+1. Current version: 1.2.3
+2. Developer adds a new feature: `feat: add support for custom clock detection rules`
+   - Version becomes 1.3.0
+3. Developer fixes a bug: `fix: prevent false positives in clock detection`
+   - Version becomes 1.3.1
+4. Developer makes a breaking change: `feat!: redesign configuration format`
+   - Version becomes 2.0.0
+
+### Update Triggers
+Please note that version updates can be triggered by:
+- **Pull Requests (PRs)**: Any merged PR can trigger a version update based on its commit messages
+- **Renovate Bot**: Dependency updates through Renovate will also trigger appropriate version updates
+
+### References
+- Official Semantic Versioning specification: https://semver.org/
+- Conventional Commits standard: https://www.conventionalcommits.org/
+- Semantic Release tool: https://github.com/semantic-release/semantic-release
