@@ -1,4 +1,3 @@
-import com.modrinth.minotaur.TaskModrinthUpload
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
