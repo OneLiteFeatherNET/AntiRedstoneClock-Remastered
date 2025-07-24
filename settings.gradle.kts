@@ -1,23 +1,21 @@
 rootProject.name = "AntiRedstoneClock-Remastered"
-includeBuild("build-logic")
 include("internal-api")
 include("WorldGuardv6Support")
 include("WorldGuardv7Support")
 include("PlotSquaredv6Support")
 include("PlotSquaredv7Support")
 
-pluginManagement {
-    repositories {
-        maven("https://eldonexus.de/repository/maven-public/")
-        gradlePluginPortal()
-    }
-}
-
-
 dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven("https://repo.codemc.io/repository/maven-public")
+        maven("https://maven.enginehub.org/repo/")
+        maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        maven("https://repo.papermc.io/repository/maven-public/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
     versionCatalogs {
         create("libs") {
-            version("publishdata", "1.4.0")
             version("modrinth", "2.+")
             version("hangar", "0.1.3")
             version("paper.yml", "0.6.0")
@@ -68,7 +66,6 @@ dependencyResolutionManagement {
 
             library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
 
-            plugin("publishdata","de.chojo.publishdata").versionRef("publishdata")
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")
             plugin("paper.yml", "net.minecrell.plugin-yml.paper").versionRef("paper.yml")

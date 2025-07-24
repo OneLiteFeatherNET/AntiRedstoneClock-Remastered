@@ -1,0 +1,30 @@
+{
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./gradlew check",
+        "publishCmd": "./gradlew -Pversion=${nextRelease.version} publishAllPublicationsToHangar modrinth"
+      }
+    ],
+    "@semantic-release/git",
+    [
+      "@semantic-release/github",
+      {
+        "labels": false,
+        "failTitle": false,
+        "failComment": false,
+        "successComment": false,
+        "releasedLabels": false,
+        "addReleases": false
+      }
+    ]
+  ]
+}
