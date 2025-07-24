@@ -6,7 +6,6 @@
         "preset": "conventionalcommits"
       }
     ],
-    "@semantic-release/release-notes-generator",
     [
       "@semantic-release/exec",
       {
@@ -15,15 +14,16 @@
       }
     ],
     "@semantic-release/git",
+    "@semantic-release/release-notes-generator",
     [
       "@semantic-release/github",
       {
-        "labels": false,
-        "failTitle": false,
-        "failComment": false,
-        "successComment": false,
-        "releasedLabels": false,
-        "addReleases": false
+        "assets": [
+          {
+            "path": "build/libs/AntiRedstoneClock-Remastered-*.jar",
+            "label": "Plugin Jar"
+          }
+        ]
       }
     ]
   ]
