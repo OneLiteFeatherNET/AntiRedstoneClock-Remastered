@@ -121,7 +121,7 @@ paper {
     }
 }
 val baseVersion = version as String
-val channel = with(baseVersion) {
+val baseChannel = with(baseVersion) {
     when {
         contains("SNAPSHOT") -> "Snapshot"
         contains("ALPHA") -> "Alpha"
@@ -133,7 +133,7 @@ val changelogContent = "See [GitHub](https://github.com/OneLiteFeatherNET/AntiRe
 hangarPublish {
     publications.register("AntiRedstoneClock-Remastered") {
         version.set(baseVersion)
-        channel.set(channel)
+        channel.set(baseChannel)
         changelog.set(changelogContent)
         apiKey.set(System.getenv("HANGAR_SECRET"))
         id.set("AntiRedstoneClock-Remastered")
@@ -149,7 +149,7 @@ hangarPublish {
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("UWh9tyEa")
-    versionType.set(channel.lowercase())
+    versionType.set(baseChannel.lowercase())
     versionNumber.set(baseVersion)
     versionName.set(baseVersion)
     changelog.set(changelogContent)
