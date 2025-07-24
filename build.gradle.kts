@@ -22,9 +22,8 @@ if (!File("$rootDir/.git").exists()) {
     ).also { System.exit(1) }
 }
 val supportedMinecraftVersions = listOf(
-    "1.19.4",
     "1.20.6",
-    "1.21"
+    "1.21.8",
 )
 allprojects {
     apply {
