@@ -46,7 +46,6 @@ allprojects {
 
 dependencies {
     implementation(libs.bstats)
-    implementation(libs.minimessage)
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)

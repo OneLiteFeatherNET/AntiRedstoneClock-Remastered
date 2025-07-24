@@ -30,7 +30,6 @@ dependencyResolutionManagement {
             version("cloudcommandAnnotations", "2.0.0")
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
-            version("adventure", "4.17.0")
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("semver", "0.10.2")
 
@@ -56,7 +55,6 @@ dependencyResolutionManagement {
             library("psv7.bukkit", "com.intellectualsites.plotsquared","plotsquared-bukkit").withoutVersion()
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
-            library("minimessage", "net.kyori", "adventure-text-minimessage").versionRef("adventure")
             library("adventure.text.feature.pagination", "net.kyori", "adventure-text-feature-pagination").versionRef("adventure-text-feature-pagination")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
 

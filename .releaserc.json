@@ -20,8 +20,7 @@
       {
         "assets": [
           {
-            "path": "build/libs/AntiRedstoneClock-Remastered-${nextRelease.version}.jar",
-            "label": "Plugin Jar"
+            "path": "build/libs/AntiRedstoneClock-Remastered-*.jar"
           }
         ]
       }
