@@ -11,7 +11,7 @@
       "@semantic-release/exec",
       {
         "verifyConditionsCmd": "./gradlew check",
-        "publishCmd": "./gradlew -Pversion=${nextRelease.version} publishAllPublicationsToHangar modrinth"
+        "publishCmd": "./gradlew -Pversion=${nextRelease.version} shadowJar publishAllPublicationsToHangar modrinth"
       }
     ],
     "@semantic-release/git",
