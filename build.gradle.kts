@@ -31,6 +31,12 @@ allprojects {
         plugin("java")
     }
 
+    configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    }
+
     dependencies {
         if (name != "internal-api") {
             compileOnly(project(":internal-api"))
@@ -54,10 +60,6 @@ dependencies {
     implementation(project(":WorldGuardv7Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
