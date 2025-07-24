@@ -1,3 +1,4 @@
+import com.modrinth.minotaur.TaskModrinthUpload
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
@@ -81,6 +82,9 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
+    }
+    configure<TaskModrinthUpload>() {
+        dependsOn(shadowJar)
     }
 }
 
