@@ -33,6 +33,11 @@ public final class PluginTranslationRegistry implements TranslationRegistry {
     }
 
     @Override
+    public boolean contains(@NotNull String key, @NotNull Locale locale) {
+        return backedRegistry.contains(key, locale);
+    }
+
+    @Override
     public @NotNull Key name() {
         return backedRegistry.name();
     }
