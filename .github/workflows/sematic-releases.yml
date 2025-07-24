@@ -45,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          ONELITEFEATHER_MAVEN_USERNAME: ${{ secrets.ONELITEFEATHER_MAVEN_USERNAME }}
-          ONELITEFEATHER_MAVEN_PASSWORD: ${{ secrets.ONELITEFEATHER_MAVEN_PASSWORD }}
+          HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
           # Token with permissions to push to the client repository
           CLIENT_REPO_TOKEN: ${{ secrets.CLIENT_REPO_TOKEN }}
         run: npx semantic-release
