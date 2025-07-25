@@ -14,16 +14,16 @@ Also this plugin is not a "performance tool", it won't make your server run bett
 Third, support from 1.13 backwards likely won't happen.
 
 ## Minecraft Version Support
-Only the last 3 versions of a major Minecraft are supported.
+Only the last 2 versions of a major Minecraft are supported.
 For Minecraft version 1.19, it would be 1.19.4,
 For Minecraft version 1.20, it would be 1.20.6 and so on
 
 ## Features
-- 1.19+ Support
+- 1.20+ Support
 - Java 21 only support
 - Plotsquared v6 and v7 support
 - WorldGuard Support
-- 1.19,1.20,1.21 ready
+- 1.20,1.21 ready
 - Clock detection
 - Sculk support
 - Config Migration(Soon)
