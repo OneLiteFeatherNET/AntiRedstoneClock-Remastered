@@ -41,7 +41,7 @@ dependencyResolutionManagement {
 
             // PlotSquared
             version("psv4", "4.453")
-            version("psv6", "1.52")
+            version("psv6", "1.55")
             version("psv7", "1.52")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
