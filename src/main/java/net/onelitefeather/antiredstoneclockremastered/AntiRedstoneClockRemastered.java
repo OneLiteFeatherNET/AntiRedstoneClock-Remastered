@@ -1,10 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
-import net.kyori.adventure.key.Key;
+import io.papermc.paper.ServerBuildInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.translation.MiniMessageTranslationStore;
-import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
@@ -16,6 +14,9 @@ import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquared
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
@@ -44,6 +45,7 @@ import java.util.*;
 import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
+    public static final String RESOURCE_BUNDLE_NAME = "antiredstoneclockremasterd";
     private CheckTPS tps;
 
     private RedstoneClockService redstoneClockService;
@@ -67,27 +69,30 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final MiniMessageTranslationStore miniMessageTranslationStore = MiniMessageTranslationStore.create(Key.key("antiredstoneclockremastered", "translations"));
-        miniMessageTranslationStore.defaultLocale(Locale.US);
+        TranslationService translationService;
+        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
+        if (buildInfo.minecraftVersionId().startsWith("1.20")) {
+            translationService = new LegacyTranslationService();
+            getSLF4JLogger().info("Using legacy translation service");
+        } else {
+            translationService = new ModernTranslationService();
+            getSLF4JLogger().info("Using modern translation service");
+        }
         Path langFolder = getDataFolder().toPath().resolve("lang");
+        if (Files.notExists(langFolder)) {
+            try {
+                Files.createDirectories(langFolder);
+            } catch (IOException e) {
+                getSLF4JLogger().error("An error occurred while creating lang folder");
+                return;
+            }
+        }
         var languages = new HashSet<>(getConfig().getStringList("translations"));
         languages.add("en-US");
-        if (Files.exists(langFolder)) {
-            try (var urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
-                languages.stream().map(Locale::forLanguageTag).forEach(r -> {
-                    var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, urlClassLoader, UTF8ResourceBundleControl.get());
-                    miniMessageTranslationStore.registerAll(r, bundle, false);
-                });
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            languages.stream().map(Locale::forLanguageTag).forEach(r -> {
-                var bundle = ResourceBundle.getBundle("antiredstoneclockremasterd", r, UTF8ResourceBundleControl.get());
-                miniMessageTranslationStore.registerAll(r, bundle, false);
-            });
-        }
-        GlobalTranslator.translator().addSource(miniMessageTranslationStore);
+        languages.stream()
+            .map(Locale::forLanguageTag)
+            .forEach(locale -> loadAndRegisterTranslation(locale, langFolder, translationService));
+        translationService.registerGlobal();
         donationInformation();
         updateService();
         enableCommandFramework();
@@ -107,7 +112,9 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.updateService.shutdown();
+        if (this.updateService != null) {
+            this.updateService.shutdown();
+        }
     }
 
     private void donationInformation() {
@@ -274,6 +281,29 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             return this.worldGuardSupport.getVersion();
         }
         return "unknown";
+    }
+
+    private void loadAndRegisterTranslation(Locale locale, Path langFolder, TranslationService translationService) {
+        try {
+            ResourceBundle bundle = loadResourceBundle(locale, langFolder);
+            if (bundle != null) {
+                translationService.registerAll(locale, bundle, false);
+            }
+        } catch (Exception e) {
+            getSLF4JLogger().error("An error occurred while loading language file for locale {}", locale, e);
+        }
+    }
+
+    private ResourceBundle loadResourceBundle(Locale locale, Path langFolder) throws Exception {
+        Path langFile = langFolder.resolve(RESOURCE_BUNDLE_NAME + "_" + locale.toLanguageTag() + ".properties");
+
+        if (Files.exists(langFile)) {
+            try (URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
+                return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, locale, urlClassLoader, UTF8ResourceBundleControl.get());
+            }
+        } else {
+            return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, locale, UTF8ResourceBundleControl.get());
+        }
     }
 
     public CheckTPS getTps() {
