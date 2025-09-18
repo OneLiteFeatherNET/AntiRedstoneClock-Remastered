@@ -9,10 +9,10 @@ import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
  * Guice module for command dependencies.
  *
  * @author TheMeinerLP
- * @since 1.0.0
+ * @since 2.2.0
  * @version 1.0.0
  */
-public class CommandModule extends AbstractModule {
+public final class CommandModule extends AbstractModule {
     
     @Override
     protected void configure() {

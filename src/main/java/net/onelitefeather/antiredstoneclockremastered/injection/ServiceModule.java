@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
  * Guice module for core service dependencies.
  *
  * @author TheMeinerLP
- * @since 1.0.0
+ * @since 2.2.0
  * @version 1.0.0
  */
-public class ServiceModule extends AbstractModule {
+public final class ServiceModule extends AbstractModule {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceModule.class);
     private final AntiRedstoneClockRemastered plugin;

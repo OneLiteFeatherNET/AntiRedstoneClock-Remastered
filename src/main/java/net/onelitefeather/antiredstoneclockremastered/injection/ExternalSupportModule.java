@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
  * Guice module for external plugin support dependencies.
  *
  * @author TheMeinerLP
- * @since 1.0.0
+ * @since 2.2.0
  * @version 1.0.0
  */
-public class ExternalSupportModule extends AbstractModule {
+public final class ExternalSupportModule extends AbstractModule {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalSupportModule.class);
     private final AntiRedstoneClockRemastered plugin;

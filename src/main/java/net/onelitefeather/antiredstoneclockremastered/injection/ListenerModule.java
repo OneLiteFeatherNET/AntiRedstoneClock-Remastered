@@ -8,10 +8,10 @@ import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
  * Guice module for listener dependencies.
  *
  * @author TheMeinerLP
- * @since 1.0.0
+ * @since 2.2.0
  * @version 1.0.0
  */
-public class ListenerModule extends AbstractModule {
+public final class ListenerModule extends AbstractModule {
     
     @Override
     protected void configure() {
