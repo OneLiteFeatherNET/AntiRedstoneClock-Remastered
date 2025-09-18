@@ -1,6 +1,9 @@
 package net.onelitefeather.antiredstoneclockremastered.listener;
 
+import jakarta.inject.Inject;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,18 +12,23 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 
 public final class ObserverListener implements Listener {
     private final Material material;
-    private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
+    private final AntiRedstoneClockRemastered plugin;
+    private final CheckTPS checkTPS;
+    private final RedstoneClockService redstoneClockService;
 
-    public ObserverListener(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    @Inject
+    public ObserverListener(AntiRedstoneClockRemastered plugin, CheckTPS checkTPS, RedstoneClockService redstoneClockService) {
         this.material = Material.OBSERVER;
-        this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
+        this.plugin = plugin;
+        this.checkTPS = checkTPS;
+        this.redstoneClockService = redstoneClockService;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onRedstoneObserverClock(BlockRedstoneEvent blockRedstoneEvent) {
 
-        if (!this.antiRedstoneClockRemastered.getTps().isTpsOk()) return;
-        if (!this.antiRedstoneClockRemastered.getConfig().getBoolean("check.observer")) return;
+        if (!this.checkTPS.isTpsOk()) return;
+        if (!this.plugin.getConfig().getBoolean("check.observer")) return;
 
         var block = blockRedstoneEvent.getBlock();
         var type = block.getType();
@@ -28,6 +36,6 @@ public final class ObserverListener implements Listener {
 
         if (blockRedstoneEvent.getOldCurrent() != 0) return;
 
-        this.antiRedstoneClockRemastered.getRedstoneClockService().checkAndUpdateClockStateWithActive(block);
+        this.redstoneClockService.checkAndUpdateClockStateWithActive(block);
     }
 }

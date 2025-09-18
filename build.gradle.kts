@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
+    jacoco
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -59,6 +60,8 @@ dependencies {
     implementation(libs.cloud.command.annotations)
     implementation(libs.semver)
     implementation(libs.adventure.text.feature.pagination)
+    implementation(libs.guice)
+    implementation(libs.jakarta.inject)
     annotationProcessor(libs.cloud.command.annotations)
 
     implementation(project(":internal-api"))
@@ -66,6 +69,14 @@ dependencies {
     implementation(project(":WorldGuardv7Support"))
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
+
+    // Testing dependencies
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.junit.jupiter)
+    testImplementation(libs.mockbukkit)
+    testImplementation(libs.assertj.core)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks {
@@ -74,6 +85,24 @@ tasks {
     }
     named("build") {
         dependsOn(shadowJar)
+    }
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showStandardStreams = false
+        }
+        maxParallelForks = 1
+        
+        // Generate test reports
+        reports {
+            junitXml.required.set(true)
+            html.required.set(true)
+        }
+        
+        // Test result publication
+        finalizedBy(jacocoTestReport)
     }
     supportedMinecraftVersions.forEach { serverVersion ->
         register<RunServer>("run-$serverVersion") {
@@ -90,6 +119,14 @@ tasks {
     }
     this.modrinth {
         dependsOn(shadowJar)
+    }
+    
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
     }
 }
 

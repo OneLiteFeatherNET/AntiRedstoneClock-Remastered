@@ -1,8 +1,10 @@
 package net.onelitefeather.antiredstoneclockremastered.listener;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -14,11 +16,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public final class PlayerListener implements Listener {
 
     private final RedstoneClockService redstoneClockService;
-    private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
+    private final UpdateService updateService;
 
-    public PlayerListener(RedstoneClockService redstoneClockService, AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    @Inject
+    public PlayerListener(RedstoneClockService redstoneClockService, UpdateService updateService) {
         this.redstoneClockService = redstoneClockService;
-        this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
+        this.updateService = updateService;
     }
 
     @EventHandler
@@ -28,7 +31,7 @@ public final class PlayerListener implements Listener {
             player.sendMessage(Component.translatable("antiredstoneclockremastered.notify.donation.player").arguments(AntiRedstoneClockRemastered.PREFIX));
         }
         if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY_UPDATE)) {
-            this.antiRedstoneClockRemastered.getUpdateService().notifyPlayer(player);
+            this.updateService.notifyPlayer(player);
         }
     }
 

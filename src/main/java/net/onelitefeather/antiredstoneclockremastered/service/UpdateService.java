@@ -1,6 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
 import com.github.zafarkhaja.semver.Version;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
+@Singleton
 public final class UpdateService implements Runnable {
     private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
@@ -24,6 +27,7 @@ public final class UpdateService implements Runnable {
     private final BukkitTask scheduler;
     private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
 
+    @Inject
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
         this.scheduler = Bukkit.getScheduler().runTaskTimerAsynchronously(antiRedstoneClockRemastered, this, 0, 20 * 60 * 60 * 3);

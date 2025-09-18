@@ -1,22 +1,26 @@
 package net.onelitefeather.antiredstoneclockremastered.utils;
 
-import org.bukkit.plugin.Plugin;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 
+@Singleton
 public final class CheckTPS {
 
     private long lastPoll = System.currentTimeMillis();
     private boolean tpsOk = true;
     private long tps = 20;
-    private final Plugin plugin;
+    private final AntiRedstoneClockRemastered plugin;
     private final int interval;
     private final int maximimumTPS;
     private final int minimumTPS;
 
-    public CheckTPS(Plugin plugin, int interval, int maximimumTPS, int minimumTPS) {
+    @Inject
+    public CheckTPS(AntiRedstoneClockRemastered plugin) {
         this.plugin = plugin;
-        this.interval = interval;
-        this.maximimumTPS = maximimumTPS;
-        this.minimumTPS = minimumTPS;
+        this.interval = plugin.getConfig().getInt("tps.interval", 2);
+        this.maximimumTPS = plugin.getConfig().getInt("tps.max", 20);
+        this.minimumTPS = plugin.getConfig().getInt("tps.min", 15);
     }
 
     public void startCheck() {
