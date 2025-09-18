@@ -193,24 +193,36 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             getServer().getPluginManager().registerEvents(injector.getInstance(PistonListener.class), this);
         }
         
-        // Material-dependent listeners still use manual registration for now
+        // Material-dependent listeners now use dependency injection
         if (getConfig().getBoolean("check.comparator", true)) {
             var comparator = Material.getMaterial("COMPARATOR");
             if (comparator != null) {
-                getServer().getPluginManager().registerEvents(new ComparatorListener(comparator, this), this);
+                var listener = injector.getInstance(ListenerModule.class)
+                    .createComparatorListener(comparator, redstoneClockService, tps, this);
+                getServer().getPluginManager().registerEvents(listener, this);
             } else {
-                getServer().getPluginManager().registerEvents(new ComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"), this), this);
-                getServer().getPluginManager().registerEvents(new ComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"), this), this);
+                var listener1 = injector.getInstance(ListenerModule.class)
+                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"), redstoneClockService, tps, this);
+                var listener2 = injector.getInstance(ListenerModule.class)
+                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"), redstoneClockService, tps, this);
+                getServer().getPluginManager().registerEvents(listener1, this);
+                getServer().getPluginManager().registerEvents(listener2, this);
             }
         }
         
         if (getConfig().getBoolean("check.redstoneAndRepeater", true)) {
             var repeater = Material.getMaterial("REPEATER");
             if (repeater != null) {
-                getServer().getPluginManager().registerEvents(new RedstoneListener(repeater, this), this);
+                var listener = injector.getInstance(ListenerModule.class)
+                    .createRedstoneListener(repeater, redstoneClockService, tps, this);
+                getServer().getPluginManager().registerEvents(listener, this);
             } else {
-                getServer().getPluginManager().registerEvents(new RedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"), this), this);
-                getServer().getPluginManager().registerEvents(new RedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"), this), this);
+                var listener1 = injector.getInstance(ListenerModule.class)
+                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"), redstoneClockService, tps, this);
+                var listener2 = injector.getInstance(ListenerModule.class)
+                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"), redstoneClockService, tps, this);
+                getServer().getPluginManager().registerEvents(listener1, this);
+                getServer().getPluginManager().registerEvents(listener2, this);
             }
         }
     }

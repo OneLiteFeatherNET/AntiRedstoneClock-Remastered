@@ -1,10 +1,12 @@
 package net.onelitefeather.antiredstoneclockremastered.injection;
 
 import com.google.inject.AbstractModule;
-import net.onelitefeather.antiredstoneclockremastered.listener.ObserverListener;
-import net.onelitefeather.antiredstoneclockremastered.listener.PistonListener;
-import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
-import net.onelitefeather.antiredstoneclockremastered.listener.SculkListener;
+import com.google.inject.Provides;
+import net.onelitefeather.antiredstoneclockremastered.listener.*;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Guice module for listener dependencies.
@@ -21,7 +23,21 @@ public final class ListenerModule extends AbstractModule {
         bind(ObserverListener.class);
         bind(SculkListener.class);
         bind(PistonListener.class);
-        // ComparatorListener and RedstoneListener require Material parameters
-        // and are handled directly in the main plugin class for now
+    }
+    
+    /**
+     * Creates ComparatorListener instances for different materials.
+     */
+    public ComparatorListener createComparatorListener(Material material, RedstoneClockService redstoneClockService, 
+                                                     CheckTPS checkTPS, Plugin plugin) {
+        return new ComparatorListener(material, redstoneClockService, checkTPS, plugin);
+    }
+    
+    /**
+     * Creates RedstoneListener instances for different materials.
+     */
+    public RedstoneListener createRedstoneListener(Material material, RedstoneClockService redstoneClockService, 
+                                                 CheckTPS checkTPS, Plugin plugin) {
+        return new RedstoneListener(material, redstoneClockService, checkTPS, plugin);
     }
 }
