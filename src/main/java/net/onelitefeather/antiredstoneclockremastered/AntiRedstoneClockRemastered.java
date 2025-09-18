@@ -12,7 +12,8 @@ import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
-import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
@@ -234,7 +235,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private void enableRedstoneClockService() {
-        this.redstoneClockService = new RedstoneClockService(this);
+        this.redstoneClockService = RedstoneClockServiceFactory.createService(this);
     }
 
     private void enableTPSChecker() {
