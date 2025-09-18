@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
+    jacoco
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -70,12 +71,12 @@ dependencies {
     implementation(project(":PlotSquaredv7Support"))
 
     // Testing dependencies
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
-    testImplementation("org.mockito:mockito-core:5.7.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.7.0")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.128.0")
-    testImplementation("org.assertj:assertj-core:3.24.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.junit.jupiter)
+    testImplementation(libs.mockbukkit)
+    testImplementation(libs.assertj.core)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks {
@@ -93,6 +94,15 @@ tasks {
             showStandardStreams = false
         }
         maxParallelForks = 1
+        
+        // Generate test reports
+        reports {
+            junitXml.required.set(true)
+            html.required.set(true)
+        }
+        
+        // Test result publication
+        finalizedBy(jacocoTestReport)
     }
     supportedMinecraftVersions.forEach { serverVersion ->
         register<RunServer>("run-$serverVersion") {
@@ -109,6 +119,14 @@ tasks {
     }
     this.modrinth {
         dependsOn(shadowJar)
+    }
+    
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
     }
 }
 

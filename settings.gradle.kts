@@ -34,6 +34,12 @@ dependencyResolutionManagement {
             version("semver", "0.10.2")
             version("guice", "7.0.0")
             version("jakarta-inject", "2.0.1")
+            
+            // Testing dependencies
+            version("junit", "5.10.1")
+            version("mockito", "5.7.0")
+            version("mockbukkit", "3.128.0")
+            version("assertj", "3.24.2")
 
             // WorldGuard
             version("wgv6", "6.2")
@@ -67,6 +73,14 @@ dependencyResolutionManagement {
             library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
             library("guice", "com.google.inject", "guice").versionRef("guice")
             library("jakarta-inject", "jakarta.inject", "jakarta.inject-api").versionRef("jakarta-inject")
+            
+            // Testing libraries
+            library("junit-jupiter", "org.junit.jupiter", "junit-jupiter").versionRef("junit")
+            library("junit-platform-launcher", "org.junit.platform", "junit-platform-launcher").withoutVersion()
+            library("mockito-core", "org.mockito", "mockito-core").versionRef("mockito")
+            library("mockito-junit-jupiter", "org.mockito", "mockito-junit-jupiter").versionRef("mockito")
+            library("mockbukkit", "com.github.seeseemelk", "MockBukkit-v1.21").versionRef("mockbukkit")
+            library("assertj-core", "org.assertj", "assertj-core").versionRef("assertj")
 
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")
