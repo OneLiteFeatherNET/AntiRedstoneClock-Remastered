@@ -1,0 +1,21 @@
+# Test configuration for MockBukkit
+clock:
+  endDelay: 300
+  maxCount: 150
+  autoBreak: true
+  notifyAdmins: true
+  notifyConsole: true
+  drop: false
+
+check:
+  ignoredWorlds: []
+  ignoredRegions: []
+  observer: true
+  piston: true
+  sculk: true
+  redstone: true
+  repeater: true
+  comparator: true
+
+# Test settings
+testMode: true

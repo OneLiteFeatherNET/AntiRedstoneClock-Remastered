@@ -1,0 +1,63 @@
+name: AntiRedstoneClock-Remastered
+version: 2.2.0-TEST
+main: net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered
+api-version: 1.19
+authors: [OneLiteFeather, TheMeinerLP]
+description: Test configuration for MockBukkit
+softdepend: [PlotSquared, WorldGuard]
+
+permissions:
+  antiredstoneclockremastered.notify.admin:
+    description: Permission to receive admin notifications
+    default: op
+  antiredstoneclockremastered.notify.disable.donation:
+    description: Permission to disable donation notifications
+    default: op
+  antiredstoneclockremastered.notify.admin.update:
+    description: Permission to receive update notifications
+    default: op
+  antiredstoneclockremastered.command.reload:
+    description: Permission to reload the plugin
+    default: op
+  antiredstoneclockremastered.command.help:
+    description: Permission to view help
+    default: true
+  antiredstoneclockremastered.command.feature.check.observer:
+    description: Permission to manage observer block checks
+    default: op
+  antiredstoneclockremastered.command.feature.check.piston:
+    description: Permission to manage piston checks
+    default: op
+  antiredstoneclockremastered.command.feature.check.sculk:
+    description: Permission to manage sculk sensor checks
+    default: op
+  antiredstoneclockremastered.command.feature.check.redstone_and_repeater:
+    description: Permission to manage redstone and repeater checks
+    default: op
+  antiredstoneclockremastered.command.feature.check.world.add:
+    description: Permission to add worlds to ignore list
+    default: op
+  antiredstoneclockremastered.command.feature.check.world.remove:
+    description: Permission to remove worlds from ignore list
+    default: op
+  antiredstoneclockremastered.command.feature.check.region.remove:
+    description: Permission to remove regions from ignore list
+    default: op
+  antiredstoneclockremastered.command.feature.check.region.add:
+    description: Permission to add regions to ignore list
+    default: op
+  antiredstoneclockremastered.command.feature.clock.notifyAdmins:
+    description: Permission to configure admin notifications
+    default: op
+  antiredstoneclockremastered.command.feature.clock.notifyConsole:
+    description: Permission to configure console notifications
+    default: op
+  antiredstoneclockremastered.command.feature.clock.drop:
+    description: Permission to configure item dropping
+    default: op
+  antiredstoneclockremastered.command.feature.clock.enddelay:
+    description: Permission to configure end delay
+    default: op
+  antiredstoneclockremastered.command.feature.clock.maxCount:
+    description: Permission to configure max count
+    default: op
