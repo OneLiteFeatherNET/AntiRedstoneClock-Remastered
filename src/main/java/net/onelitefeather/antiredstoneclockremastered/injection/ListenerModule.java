@@ -2,7 +2,9 @@ package net.onelitefeather.antiredstoneclockremastered.injection;
 
 import com.google.inject.AbstractModule;
 import net.onelitefeather.antiredstoneclockremastered.listener.ObserverListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.PistonListener;
 import net.onelitefeather.antiredstoneclockremastered.listener.PlayerListener;
+import net.onelitefeather.antiredstoneclockremastered.listener.SculkListener;
 
 /**
  * Guice module for listener dependencies.
@@ -17,6 +19,9 @@ public final class ListenerModule extends AbstractModule {
     protected void configure() {
         bind(PlayerListener.class);
         bind(ObserverListener.class);
-        // Other listeners can be added here as they get refactored
+        bind(SculkListener.class);
+        bind(PistonListener.class);
+        // ComparatorListener and RedstoneListener require Material parameters
+        // and are handled directly in the main plugin class for now
     }
 }

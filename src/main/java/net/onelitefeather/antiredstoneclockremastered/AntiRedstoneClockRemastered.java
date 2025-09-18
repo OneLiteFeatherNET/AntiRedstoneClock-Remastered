@@ -176,20 +176,23 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private void registerEvents() {
         // Register DI-enabled listeners
         getServer().getPluginManager().registerEvents(injector.getInstance(PlayerListener.class), this);
+        
         if (getConfig().getBoolean("check.observer", true)) {
             getServer().getPluginManager().registerEvents(injector.getInstance(ObserverListener.class), this);
         }
         
-        // Legacy listeners (to be refactored in future)
         if (getConfig().getBoolean("check.sculk", true)) {
             var sculk = Material.getMaterial("SCULK");
             if (sculk != null) {
-                getServer().getPluginManager().registerEvents(new SculkListener(this), this);
+                getServer().getPluginManager().registerEvents(injector.getInstance(SculkListener.class), this);
             }
         }
+        
         if (getConfig().getBoolean("check.piston", true)) {
-            getServer().getPluginManager().registerEvents(new PistonListener(this), this);
+            getServer().getPluginManager().registerEvents(injector.getInstance(PistonListener.class), this);
         }
+        
+        // Material-dependent listeners still use manual registration for now
         if (getConfig().getBoolean("check.comparator", true)) {
             var comparator = Material.getMaterial("COMPARATOR");
             if (comparator != null) {
@@ -199,6 +202,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(new ComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"), this), this);
             }
         }
+        
         if (getConfig().getBoolean("check.redstoneAndRepeater", true)) {
             var repeater = Material.getMaterial("REPEATER");
             if (repeater != null) {
