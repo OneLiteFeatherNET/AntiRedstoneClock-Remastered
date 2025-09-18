@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+@Singleton
 public final class RedstoneClockService {
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
@@ -37,6 +40,7 @@ public final class RedstoneClockService {
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
+    @Inject
     public RedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);

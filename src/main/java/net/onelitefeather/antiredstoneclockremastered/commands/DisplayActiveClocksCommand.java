@@ -6,6 +6,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.feature.pagination.Pagination;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
+import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotation.specifier.Greedy;
@@ -16,17 +17,19 @@ import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
 public final class DisplayActiveClocksCommand implements Pagination.Renderer.RowRenderer<RedstoneClock> {
 
-    private final AntiRedstoneClockRemastered plugin;
+    private final RedstoneClockService redstoneClockService;
 
     private final Pagination.Builder pagination = Pagination.builder().resultsPerPage(4);
 
-    public DisplayActiveClocksCommand(AntiRedstoneClockRemastered plugin) {
-        this.plugin = plugin;
+    @Inject
+    public DisplayActiveClocksCommand(RedstoneClockService redstoneClockService) {
+        this.redstoneClockService = redstoneClockService;
     }
 
     @Command("arcm display [page]")
@@ -40,7 +43,7 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
         if (page == null) {
             page = 0;
         }
-        build.render(this.plugin.getRedstoneClockService().getRedstoneClocks(), Math.max(1, page))
+        build.render(this.redstoneClockService.getRedstoneClocks(), Math.max(1, page))
                 .forEach(commandSender::sendMessage);
 
     }

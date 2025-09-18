@@ -1,5 +1,7 @@
 package net.onelitefeather.antiredstoneclockremastered;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.papermc.paper.ServerBuildInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -9,6 +11,10 @@ import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.commands.DisplayActiveClocksCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.FeatureCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
+import net.onelitefeather.antiredstoneclockremastered.injection.CommandModule;
+import net.onelitefeather.antiredstoneclockremastered.injection.ExternalSupportModule;
+import net.onelitefeather.antiredstoneclockremastered.injection.ListenerModule;
+import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
@@ -46,38 +52,47 @@ import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public static final String RESOURCE_BUNDLE_NAME = "antiredstoneclockremasterd";
+    
+    // Injector for dependency injection
+    private Injector injector;
+    
+    // Legacy dependencies that are still manually managed
     private CheckTPS tps;
-
     private RedstoneClockService redstoneClockService;
     private WorldGuardSupport worldGuardSupport;
-
     private PlotsquaredSupport plotsquaredSupport;
-
     private Metrics metrics;
     private AnnotationParser<CommandSender> annotationParser;
+    private UpdateService updateService;
 
     public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
-    private UpdateService updateService;
 
     @Override
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-        enableWorldGuardSupport();
+        // WorldGuard flag registration is handled during DI initialization
     }
-
 
     @Override
     public void onEnable() {
-        TranslationService translationService;
-        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-        if (buildInfo.minecraftVersionId().startsWith("1.20")) {
-            translationService = new LegacyTranslationService();
-            getSLF4JLogger().info("Using legacy translation service");
-        } else {
-            translationService = new ModernTranslationService();
-            getSLF4JLogger().info("Using modern translation service");
-        }
+        // Initialize Guice injector
+        injector = Guice.createInjector(
+            new ServiceModule(this),
+            new ExternalSupportModule(this),
+            new CommandModule(),
+            new ListenerModule()
+        );
+        
+        // Get services from injector
+        TranslationService translationService = injector.getInstance(TranslationService.class);
+        this.redstoneClockService = injector.getInstance(RedstoneClockService.class);
+        this.updateService = injector.getInstance(UpdateService.class);
+        this.tps = injector.getInstance(CheckTPS.class);
+        this.worldGuardSupport = injector.getInstance(WorldGuardSupport.class);
+        this.plotsquaredSupport = injector.getInstance(PlotsquaredSupport.class);
+        
+        // Setup translations
         Path langFolder = getDataFolder().toPath().resolve("lang");
         if (Files.notExists(langFolder)) {
             try {
@@ -93,19 +108,18 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             .map(Locale::forLanguageTag)
             .forEach(locale -> loadAndRegisterTranslation(locale, langFolder, translationService));
         translationService.registerGlobal();
+        
+        // Initialize other components
         donationInformation();
         updateService();
         enableCommandFramework();
-        enablePlotsquaredSupport();
         enableTPSChecker();
-        enableRedstoneClockService();
         enableBStatsSupport();
         registerEvents();
         registerCommands();
     }
 
     private void updateService() {
-        this.updateService = new UpdateService(this);
         this.updateService.run();
         this.updateService.notifyConsole(getComponentLogger());
     }
@@ -123,9 +137,9 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private void registerCommands() {
         if (this.annotationParser != null) {
-            this.annotationParser.parse(new ReloadCommand(this));
-            this.annotationParser.parse(new DisplayActiveClocksCommand(this));
-            this.annotationParser.parse(new FeatureCommand(this));
+            this.annotationParser.parse(injector.getInstance(ReloadCommand.class));
+            this.annotationParser.parse(injector.getInstance(DisplayActiveClocksCommand.class));
+            this.annotationParser.parse(injector.getInstance(FeatureCommand.class));
         }
     }
 
@@ -157,53 +171,16 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         );
     }
 
-    private void enablePlotsquaredSupport() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("PlotSquared");
-        if (plugin == null) {
-            this.getLogger().warning("PlotSquared hasn't been found!");
-            return;
-        }
-        @SuppressWarnings("deprecation")
-        int psVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
-        if (psVersion < 6) {
-            getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
-            return;
-        } else if (psVersion < 7) {
-            getLogger().warning("You use a legacy version of PlotSquared!");
-            this.plotsquaredSupport = new PlotSquaredLegacySupport();
-        } else {
-            getLogger().info("Thanks to hold your software up-to date <3");
-            this.plotsquaredSupport = new PlotSquaredModernSupport();
-        }
-        this.plotsquaredSupport.init();
-    }
-
-    private void enableWorldGuardSupport() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-        if (plugin == null) {
-            this.getLogger().warning("WorldGuard hasn't been found!");
-            return;
-        }
-        @SuppressWarnings("deprecation")
-        int wgVersion = Integer.parseInt(plugin.getDescription().getVersion().split("\\.")[0]);
-        if (wgVersion > 6) {
-            this.worldGuardSupport = new WorldGuardModernSupport(this);
-        } else {
-            this.worldGuardSupport = new WorldGuardLegacySupport(this);
-        }
-
-        if (this.worldGuardSupport.registerFlag()) {
-            this.getLogger().info("Flag redstoneclock registered");
-        } else {
-            this.getLogger().severe("An error occurred while registering redstoneclock flag");
-        }
-    }
+    // External support now handled by DI in ExternalSupportModule
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerListener(this.redstoneClockService, this), this);
+        // Register DI-enabled listeners
+        getServer().getPluginManager().registerEvents(injector.getInstance(PlayerListener.class), this);
         if (getConfig().getBoolean("check.observer", true)) {
-            getServer().getPluginManager().registerEvents(new ObserverListener(this), this);
+            getServer().getPluginManager().registerEvents(injector.getInstance(ObserverListener.class), this);
         }
+        
+        // Legacy listeners (to be refactored in future)
         if (getConfig().getBoolean("check.sculk", true)) {
             var sculk = Material.getMaterial("SCULK");
             if (sculk != null) {
@@ -233,16 +210,9 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
     }
 
-    private void enableRedstoneClockService() {
-        this.redstoneClockService = new RedstoneClockService(this);
-    }
-
+    // Remove old manual service creation methods - now handled by DI
+    
     private void enableTPSChecker() {
-        this.tps = new CheckTPS(this,
-                getConfig().getInt("tps.interval", 2),
-                getConfig().getInt("tps.max", 20),
-                getConfig().getInt("tps.min", 15)
-        );
         this.tps.startCheck();
     }
 

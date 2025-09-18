@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.cloud.command.annotations)
     implementation(libs.semver)
     implementation(libs.adventure.text.feature.pagination)
+    implementation(libs.guice)
     annotationProcessor(libs.cloud.command.annotations)
 
     implementation(project(":internal-api"))
