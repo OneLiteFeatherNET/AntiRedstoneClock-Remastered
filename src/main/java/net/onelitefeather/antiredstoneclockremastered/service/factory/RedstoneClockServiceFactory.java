@@ -3,6 +3,7 @@ package net.onelitefeather.antiredstoneclockremastered.service.factory;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRedstoneClockService;
+// import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaRedstoneClockService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,8 +24,14 @@ public final class RedstoneClockServiceFactory {
      */
     @NotNull
     public static RedstoneClockService createService(@NotNull AntiRedstoneClockRemastered plugin) {
-        // For now, only Bukkit implementation is available
-        // Future implementations (e.g., Folia) can be added here based on platform detection
+        if (isFolia()) {
+            plugin.getLogger().info("Folia detected - using FoliaRedstoneClockService");
+            // Uncomment when ready to enable Folia support:
+            // return new FoliaRedstoneClockService(plugin);
+            plugin.getLogger().warning("Folia implementation not yet ready, falling back to Bukkit implementation");
+        }
+        
+        plugin.getLogger().info("Using BukkitRedstoneClockService");
         return new BukkitRedstoneClockService(plugin);
     }
 
