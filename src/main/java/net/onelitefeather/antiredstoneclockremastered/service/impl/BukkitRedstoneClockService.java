@@ -1,7 +1,5 @@
 package net.onelitefeather.antiredstoneclockremastered.service.impl;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -33,7 +31,6 @@ import java.util.logging.Level;
  * @version 2.2.0
  * @since 1.0.0
  */
-@Singleton
 public final class BukkitRedstoneClockService implements RedstoneClockService {
 
     @Inject
@@ -50,7 +47,6 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
-    @Inject
     public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
