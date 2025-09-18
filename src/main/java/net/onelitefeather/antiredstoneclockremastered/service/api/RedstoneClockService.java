@@ -13,8 +13,8 @@ import java.util.Map;
  * Service interface for managing redstone clock detection and handling.
  * This abstraction allows for different implementations (e.g., Bukkit, Folia).
  *
- * @author OneLiteFeather
- * @version 1.0.0
+ * @author TheMeinerLP
+ * @version 2.2.0
  * @since 1.0.0
  */
 public interface RedstoneClockService {

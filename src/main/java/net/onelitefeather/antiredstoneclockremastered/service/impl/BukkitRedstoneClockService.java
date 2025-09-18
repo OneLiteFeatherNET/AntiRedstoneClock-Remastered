@@ -27,8 +27,8 @@ import java.util.logging.Level;
  * Bukkit/Paper implementation of the RedstoneClockService.
  * This implementation uses the standard Bukkit scheduler and APIs.
  *
- * @author OneLiteFeather
- * @version 1.0.0
+ * @author TheMeinerLP
+ * @version 2.2.0
  * @since 1.0.0
  */
 public final class BukkitRedstoneClockService implements RedstoneClockService {

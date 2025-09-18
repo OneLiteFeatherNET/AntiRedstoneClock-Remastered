@@ -6,16 +6,20 @@ import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRedston
 // import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaRedstoneClockService;
 import io.papermc.paper.ServerBuildInfo;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Factory for creating RedstoneClockService implementations.
  * This factory determines the appropriate implementation based on the server platform.
  *
- * @author OneLiteFeather
- * @version 1.0.0
+ * @author TheMeinerLP
+ * @version 2.2.0
  * @since 1.0.0
  */
 public final class RedstoneClockServiceFactory {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedstoneClockServiceFactory.class);
 
     private RedstoneClockServiceFactory() {
         // Utility class
@@ -30,13 +34,13 @@ public final class RedstoneClockServiceFactory {
     @NotNull
     public static RedstoneClockService createService(@NotNull AntiRedstoneClockRemastered plugin) {
         if (isFolia()) {
-            plugin.getLogger().info("Folia detected - using FoliaRedstoneClockService");
+            LOGGER.info("Folia detected - using FoliaRedstoneClockService");
             // Uncomment when ready to enable Folia support:
             // return new FoliaRedstoneClockService(plugin);
-            plugin.getLogger().warning("Folia implementation not yet ready, falling back to Bukkit implementation");
+            LOGGER.warn("Folia implementation not yet ready, falling back to Bukkit implementation");
         }
         
-        plugin.getLogger().info("Using BukkitRedstoneClockService");
+        LOGGER.info("Using BukkitRedstoneClockService");
         return new BukkitRedstoneClockService(plugin);
     }
 
