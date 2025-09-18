@@ -2,7 +2,7 @@ package net.onelitefeather.antiredstoneclockremastered.listener;
 
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
