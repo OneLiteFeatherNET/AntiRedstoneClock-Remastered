@@ -6,6 +6,7 @@ This document explains the Service Layer Architecture implemented for the `Redst
 
 The architecture follows the Service Layer pattern with abstraction to allow multiple implementations:
 
+### Text-based Diagram
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                   Client Code                           │
@@ -29,6 +30,31 @@ The architecture follows the Service Layer pattern with abstraction to allow mul
 │          Platform Implementations                      │
 │  BukkitRedstoneClockService | FoliaRedstoneClockService │
 └─────────────────────────────────────────────────────────┘
+```
+
+### Mermaid Diagram
+```mermaid
+graph TD
+    A[Client Code<br/>Plugin, Listeners, Commands] --> B[Service Interface<br/>RedstoneClockService]
+    B --> C[Service Factory<br/>RedstoneClockServiceFactory]
+    C --> D[Platform Detection<br/>isFolia()]
+    D --> E[BukkitRedstoneClockService<br/>Standard Bukkit Implementation]
+    D --> F[FoliaRedstoneClockService<br/>Region-aware Implementation]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style D fill:#fce4ec
+    style E fill:#e8f5e8
+    style F fill:#fff8e1
+    
+    classDef interfaceBox fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+    classDef factoryBox fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef implBox fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    
+    class B interfaceBox
+    class C,D factoryBox
+    class E,F implBox
 ```
 
 ## Components

@@ -4,11 +4,16 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRedstoneClockService;
 // import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaRedstoneClockService;
+import io.papermc.paper.ServerBuildInfo;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for creating RedstoneClockService implementations.
  * This factory determines the appropriate implementation based on the server platform.
+ *
+ * @author OneLiteFeather
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public final class RedstoneClockServiceFactory {
 
@@ -37,14 +42,22 @@ public final class RedstoneClockServiceFactory {
 
     /**
      * Detects if the server is running on Folia.
-     * This method can be extended in the future to detect Folia and return a FoliaRedstoneClockService.
+     * Folia support is available starting from Paper version 1.20 and above.
      *
      * @return true if Folia is detected, false otherwise
      */
     private static boolean isFolia() {
         try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
+            ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
+            String version = buildInfo.minecraftVersionId();
+            
+            // Check if running Paper 1.20+ which supports Folia
+            if (version.startsWith("1.20") || version.startsWith("1.21") || version.startsWith("1.22")) {
+                // Additional check for Folia-specific classes
+                Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+                return true;
+            }
+            return false;
         } catch (ClassNotFoundException e) {
             return false;
         }
