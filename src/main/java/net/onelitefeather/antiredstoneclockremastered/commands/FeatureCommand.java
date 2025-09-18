@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslationArgument;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.Argument;

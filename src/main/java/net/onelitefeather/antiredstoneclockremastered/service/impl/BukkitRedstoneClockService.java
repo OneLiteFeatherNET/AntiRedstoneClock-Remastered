@@ -1,12 +1,12 @@
-package net.onelitefeather.antiredstoneclockremastered.service;
+package net.onelitefeather.antiredstoneclockremastered.service.impl;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -25,8 +25,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+/**
+ * Bukkit/Paper implementation of the RedstoneClockService.
+ * This implementation uses the standard Bukkit scheduler and APIs.
+ *
+ * @author TheMeinerLP
+ * @version 2.2.0
+ * @since 1.0.0
+ */
 @Singleton
-public final class RedstoneClockService {
+public final class BukkitRedstoneClockService implements RedstoneClockService {
+
+    @Inject
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private int endTimeDelay;
@@ -41,7 +51,7 @@ public final class RedstoneClockService {
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     @Inject
-    public RedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
@@ -53,6 +63,7 @@ public final class RedstoneClockService {
         SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
     }
 
+    @Override
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
@@ -80,14 +91,17 @@ public final class RedstoneClockService {
         addRedstoneClockTest(location);
     }
 
+    @Override
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Block block, boolean state) {
         checkAndUpdateClockStateWithActiveManual(block.getLocation(), state);
     }
 
+    @Override
     public void checkAndUpdateClockStateWithActive(@NotNull Block block) {
         checkAndUpdateClockStateWithActive(block.getLocation());
     }
 
+    @Override
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
@@ -115,10 +129,12 @@ public final class RedstoneClockService {
         addRedstoneClockTest(location);
     }
 
+    @Override
     public void checkAndUpdateClockState(@NotNull Block block) {
         checkAndUpdateClockState(block.getLocation());
     }
 
+    @Override
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
         if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
@@ -185,10 +201,12 @@ public final class RedstoneClockService {
 
     }
 
+    @Override
     public void addRedstoneClockTest(@NotNull Location location) {
         this.activeClockTesters.putIfAbsent(location, new RedstoneClock(location, (System.currentTimeMillis() / 1000) + endTimeDelay));
     }
 
+    @Override
     public void reload() {
         this.antiRedstoneClockRemastered.reloadConfig();
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
@@ -200,36 +218,42 @@ public final class RedstoneClockService {
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
     }
 
+    @Override
     public void removeClockByLocation(@NotNull Location location) {
         this.activeClockTesters.remove(location);
     }
 
+    @Override
     public void removeClockByClock(@NotNull RedstoneClock redstoneClock) {
         removeClockByLocation(redstoneClock.getLocation());
     }
 
+    @Override
     public boolean containsLocation(@NotNull Location location) {
         return this.activeClockTesters.containsKey(location);
     }
 
+    @Override
     @Nullable
     public RedstoneClock getClockByLocation(@NotNull Location location) {
         return this.activeClockTesters.get(location);
     }
 
+    @Override
     @NotNull
     public Collection<RedstoneClock> getRedstoneClocks() {
         return Collections.unmodifiableCollection(this.activeClockTesters.values());
     }
 
+    @Override
     @NotNull
     public Collection<Location> getRedstoneClockLocations() {
         return Collections.unmodifiableCollection(this.activeClockTesters.keySet());
     }
 
+    @Override
     @NotNull
     public Map<Location, RedstoneClock> getActiveTester() {
         return Map.copyOf(this.activeClockTesters);
     }
-
 }

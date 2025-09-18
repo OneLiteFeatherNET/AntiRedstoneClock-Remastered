@@ -2,7 +2,7 @@ package net.onelitefeather.antiredstoneclockremastered.listener;
 
 import jakarta.inject.Inject;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

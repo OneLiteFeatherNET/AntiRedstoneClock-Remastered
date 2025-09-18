@@ -7,7 +7,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.feature.pagination.Pagination;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
-import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotation.specifier.Greedy;
