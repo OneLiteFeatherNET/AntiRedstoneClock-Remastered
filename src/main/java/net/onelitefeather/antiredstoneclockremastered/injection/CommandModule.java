@@ -6,7 +6,11 @@ import net.onelitefeather.antiredstoneclockremastered.commands.FeatureCommand;
 import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
 
 /**
- * Guice module for command dependencies
+ * Guice module for command dependencies.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
  */
 public class CommandModule extends AbstractModule {
     

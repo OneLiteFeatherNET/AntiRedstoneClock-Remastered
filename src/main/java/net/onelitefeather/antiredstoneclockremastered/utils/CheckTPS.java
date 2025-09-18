@@ -1,10 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.utils;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import org.bukkit.plugin.Plugin;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public final class CheckTPS {

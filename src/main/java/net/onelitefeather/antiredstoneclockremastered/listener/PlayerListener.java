@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.listener;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
@@ -11,8 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import javax.inject.Inject;
 
 public final class PlayerListener implements Listener {
 

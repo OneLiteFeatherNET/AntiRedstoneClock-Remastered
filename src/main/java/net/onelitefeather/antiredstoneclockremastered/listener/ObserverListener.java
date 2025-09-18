@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.listener;
 
+import jakarta.inject.Inject;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
@@ -8,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
-
-import javax.inject.Inject;
 
 public final class ObserverListener implements Listener {
     private final Material material;

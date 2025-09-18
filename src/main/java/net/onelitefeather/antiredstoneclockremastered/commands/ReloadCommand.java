@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.commands;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.RedstoneClockService;
@@ -8,8 +9,13 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
-import javax.inject.Inject;
-
+/**
+ * Command for reloading the plugin configuration.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 public final class ReloadCommand {
 
     private final RedstoneClockService redstoneClockService;

@@ -1,6 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
 import com.github.zafarkhaja.semver.Version;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -12,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;

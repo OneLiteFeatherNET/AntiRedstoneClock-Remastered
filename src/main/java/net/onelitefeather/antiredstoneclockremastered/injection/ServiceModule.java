@@ -11,12 +11,19 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationSer
 import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Guice module for core service dependencies
+ * Guice module for core service dependencies.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
  */
 public class ServiceModule extends AbstractModule {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceModule.class);
     private final AntiRedstoneClockRemastered plugin;
     
     public ServiceModule(AntiRedstoneClockRemastered plugin) {
@@ -36,10 +43,10 @@ public class ServiceModule extends AbstractModule {
     public TranslationService provideTranslationService() {
         ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
         if (buildInfo.minecraftVersionId().startsWith("1.20")) {
-            plugin.getSLF4JLogger().info("Using legacy translation service");
+            LOGGER.info("Using legacy translation service");
             return new LegacyTranslationService();
         } else {
-            plugin.getSLF4JLogger().info("Using modern translation service");
+            LOGGER.info("Using modern translation service");
             return new ModernTranslationService();
         }
     }

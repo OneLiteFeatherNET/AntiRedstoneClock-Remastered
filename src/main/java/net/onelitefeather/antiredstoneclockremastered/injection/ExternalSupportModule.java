@@ -12,14 +12,19 @@ import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLe
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Guice module for external plugin support dependencies
+ * Guice module for external plugin support dependencies.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
  */
 public class ExternalSupportModule extends AbstractModule {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalSupportModule.class);
     private final AntiRedstoneClockRemastered plugin;
     
     public ExternalSupportModule(AntiRedstoneClockRemastered plugin) {
@@ -37,7 +42,7 @@ public class ExternalSupportModule extends AbstractModule {
     public WorldGuardSupport provideWorldGuardSupport() {
         Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
         if (wgPlugin == null) {
-            plugin.getLogger().warning("WorldGuard hasn't been found!");
+            LOGGER.warn("WorldGuard hasn't been found!");
             return null;
         }
         
@@ -52,9 +57,9 @@ public class ExternalSupportModule extends AbstractModule {
         }
         
         if (support.registerFlag()) {
-            plugin.getLogger().info("Flag redstoneclock registered");
+            LOGGER.info("Flag redstoneclock registered");
         } else {
-            plugin.getLogger().severe("An error occurred while registering redstoneclock flag");
+            LOGGER.error("An error occurred while registering redstoneclock flag");
         }
         
         return support;
@@ -66,7 +71,7 @@ public class ExternalSupportModule extends AbstractModule {
     public PlotsquaredSupport providePlotsquaredSupport() {
         Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PlotSquared");
         if (psPlugin == null) {
-            plugin.getLogger().warning("PlotSquared hasn't been found!");
+            LOGGER.warn("PlotSquared hasn't been found!");
             return null;
         }
         
@@ -74,16 +79,16 @@ public class ExternalSupportModule extends AbstractModule {
         int psVersion = Integer.parseInt(psPlugin.getDescription().getVersion().split("\\.")[0]);
         
         if (psVersion < 6) {
-            plugin.getLogger().warning("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
+            LOGGER.warn("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
             return null;
         }
         
         PlotsquaredSupport support;
         if (psVersion < 7) {
-            plugin.getLogger().warning("You use a legacy version of PlotSquared!");
+            LOGGER.warn("You use a legacy version of PlotSquared!");
             support = new PlotSquaredLegacySupport();
         } else {
-            plugin.getLogger().info("Thanks to hold your software up-to date <3");
+            LOGGER.info("Thanks to hold your software up-to date <3");
             support = new PlotSquaredModernSupport();
         }
         

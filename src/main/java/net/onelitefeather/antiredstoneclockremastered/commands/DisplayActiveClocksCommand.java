@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.commands;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -17,10 +18,16 @@ import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Command for displaying active redstone clocks.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 public final class DisplayActiveClocksCommand implements Pagination.Renderer.RowRenderer<RedstoneClock> {
 
     private final RedstoneClockService redstoneClockService;

@@ -4,10 +4,15 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import org.bukkit.Location;
 
 /**
- * Example module showing how to add Folia-specific implementations
- * This demonstrates the extensibility benefits of the DI refactoring
+ * Example module showing how to add Folia-specific implementations.
+ * This demonstrates the extensibility benefits of the DI refactoring.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
  */
 public class PlatformModule extends AbstractModule {
     
@@ -77,8 +82,8 @@ public class PlatformModule extends AbstractModule {
      * Folia requires region-aware task scheduling
      */
     public interface RegionService {
-        void executeInRegion(org.bukkit.Location location, Runnable task);
-        boolean isRegionOwner(org.bukkit.Location location);
+        void executeInRegion(Location location, Runnable task);
+        boolean isRegionOwner(Location location);
     }
     
     // Example implementations would be created in separate classes
@@ -136,12 +141,12 @@ public class PlatformModule extends AbstractModule {
         }
         
         @Override
-        public void executeInRegion(org.bukkit.Location location, Runnable task) {
+        public void executeInRegion(Location location, Runnable task) {
             // Folia region-aware execution
         }
         
         @Override
-        public boolean isRegionOwner(org.bukkit.Location location) {
+        public boolean isRegionOwner(Location location) {
             // Folia region ownership check
             return true;
         }
@@ -155,13 +160,13 @@ public class PlatformModule extends AbstractModule {
         }
         
         @Override
-        public void executeInRegion(org.bukkit.Location location, Runnable task) {
+        public void executeInRegion(Location location, Runnable task) {
             // Standard Bukkit execution
             task.run();
         }
         
         @Override
-        public boolean isRegionOwner(org.bukkit.Location location) {
+        public boolean isRegionOwner(Location location) {
             // Always true for non-Folia
             return true;
         }

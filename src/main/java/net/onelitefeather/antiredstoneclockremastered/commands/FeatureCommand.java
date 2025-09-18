@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.commands;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslationArgument;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -11,9 +12,15 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
-import javax.inject.Inject;
 import java.util.List;
 
+/**
+ * Command for managing plugin features and configuration.
+ *
+ * @author TheMeinerLP
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 @Command("arcm feature")
 public final class FeatureCommand {
 

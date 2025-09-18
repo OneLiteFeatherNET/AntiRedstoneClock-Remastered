@@ -33,6 +33,7 @@ dependencyResolutionManagement {
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("semver", "0.10.2")
             version("guice", "7.0.0")
+            version("jakarta-inject", "2.0.1")
 
             // WorldGuard
             version("wgv6", "6.2")
@@ -65,6 +66,7 @@ dependencyResolutionManagement {
 
             library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
             library("guice", "com.google.inject", "guice").versionRef("guice")
+            library("jakarta-inject", "jakarta.inject", "jakarta.inject-api").versionRef("jakarta-inject")
 
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")

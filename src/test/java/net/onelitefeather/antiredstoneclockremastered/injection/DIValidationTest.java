@@ -22,14 +22,14 @@ public class DIValidationTest {
             CommandModule commandModule = new CommandModule();
             ListenerModule listenerModule = new ListenerModule();
             
-            System.out.println("✅ All DI modules instantiated successfully");
-            System.out.println("✅ ServiceModule: " + serviceModule.getClass().getSimpleName());
-            System.out.println("✅ ExternalSupportModule: " + externalModule.getClass().getSimpleName());
-            System.out.println("✅ CommandModule: " + commandModule.getClass().getSimpleName());
-            System.out.println("✅ ListenerModule: " + listenerModule.getClass().getSimpleName());
+            System.out.println("All DI modules instantiated successfully");
+            System.out.println("ServiceModule: " + serviceModule.getClass().getSimpleName());
+            System.out.println("ExternalSupportModule: " + externalModule.getClass().getSimpleName());
+            System.out.println("CommandModule: " + commandModule.getClass().getSimpleName());
+            System.out.println("ListenerModule: " + listenerModule.getClass().getSimpleName());
             
         } catch (Exception e) {
-            System.err.println("❌ DI module validation failed: " + e.getMessage());
+            System.err.println("DI module validation failed: " + e.getMessage());
             e.printStackTrace();
         }
     }
