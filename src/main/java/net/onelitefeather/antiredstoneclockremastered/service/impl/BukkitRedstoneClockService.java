@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.service.impl;
 
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
