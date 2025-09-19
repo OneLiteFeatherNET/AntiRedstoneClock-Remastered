@@ -28,6 +28,22 @@ The following Minecraft versions are actively supported and automatically tested
 
 > **Note**: All versions are tested automatically on every push and pull request to ensure plugin compatibility and detect potential exceptions or issues. The testing workflow verifies plugin builds, checks for critical startup errors, and runs the full unit test suite.
 
+### Automated Testing Workflow
+
+The repository includes a comprehensive GitHub Actions workflow (`minecraft-version-tests.yml`) that:
+
+- **Matrix Testing**: Tests the plugin against all supported Minecraft versions simultaneously
+- **Build Verification**: Ensures the plugin builds successfully for each version
+- **Exception Detection**: Scans for critical startup exceptions like `ClassNotFoundException`, `NoSuchMethodError`
+- **Unit Testing**: Runs the complete test suite to ensure functionality
+- **Artifact Collection**: Uploads build artifacts and logs for debugging
+- **Scheduled Testing**: Runs weekly to catch compatibility issues with new Paper builds
+
+To validate the testing setup locally, run:
+```bash
+./validate_workflow.sh
+```
+
 ## Features
 - 1.20+ Support
 - Java 21 only support

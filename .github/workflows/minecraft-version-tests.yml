@@ -1,4 +1,20 @@
 ---
+# Minecraft Version Testing Workflow
+# 
+# This workflow tests the AntiRedstoneClock-Remastered plugin against multiple 
+# Minecraft Paper versions to ensure compatibility and catch potential exceptions.
+#
+# Features:
+# - Matrix testing across supported Minecraft versions
+# - Plugin build verification 
+# - Critical exception detection during startup
+# - Unit test execution
+# - Artifact collection for debugging
+# - Scheduled weekly testing
+#
+# The workflow helps maintain plugin quality by catching compatibility issues
+# early in the development process.
+
 name: Minecraft Version Tests
 
 on:

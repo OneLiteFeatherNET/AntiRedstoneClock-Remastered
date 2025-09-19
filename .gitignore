@@ -43,3 +43,8 @@ bin/
 
 ### Project
 run-*/
+
+# Test logs
+*_output.log
+*_test.log
+exceptions.log
