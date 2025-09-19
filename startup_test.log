@@ -1,0 +1,43 @@
+> Task :internal-api:compileJava UP-TO-DATE
+> Task :internal-api:processResources NO-SOURCE
+> Task :internal-api:classes UP-TO-DATE
+> Task :internal-api:jar UP-TO-DATE
+> Task :PlotSquaredv6Support:compileJava UP-TO-DATE
+> Task :PlotSquaredv6Support:processResources NO-SOURCE
+> Task :PlotSquaredv6Support:classes UP-TO-DATE
+> Task :PlotSquaredv6Support:jar UP-TO-DATE
+> Task :PlotSquaredv7Support:compileJava UP-TO-DATE
+> Task :PlotSquaredv7Support:processResources NO-SOURCE
+> Task :PlotSquaredv7Support:classes UP-TO-DATE
+> Task :PlotSquaredv7Support:jar UP-TO-DATE
+> Task :WorldGuardv6Support:compileJava UP-TO-DATE
+> Task :WorldGuardv6Support:processResources NO-SOURCE
+> Task :WorldGuardv6Support:classes UP-TO-DATE
+> Task :WorldGuardv6Support:jar UP-TO-DATE
+> Task :WorldGuardv7Support:compileJava UP-TO-DATE
+> Task :WorldGuardv7Support:processResources NO-SOURCE
+> Task :WorldGuardv7Support:classes UP-TO-DATE
+> Task :WorldGuardv7Support:jar UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :generatePaperPluginDescription UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :shadowJar UP-TO-DATE
+
+> Task :run-1.21 FAILED
+Offline mode enabled, attempting to use latest local build of Paper Version(name=1.21, lastUpdateCheck=0, knownJars={}).
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':run-1.21'.
+> Unknown Paper Version: 1.21
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+15 actionable tasks: 1 executed, 14 up-to-date

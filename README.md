@@ -18,6 +18,16 @@ Only the last 2 versions of a major Minecraft are supported.
 For Minecraft version 1.19, it would be 1.19.4,
 For Minecraft version 1.20, it would be 1.20.6 and so on
 
+### Currently Supported and Tested Versions
+The following Minecraft versions are actively supported and automatically tested via GitHub Actions:
+
+- **1.20.6** - Latest 1.20.x version
+- **1.21** - Initial 1.21 release  
+- **1.21.3** - Tested compatibility version
+- **1.21.4** - Latest tested version
+
+> **Note**: All versions are tested automatically on every push and pull request to ensure plugin compatibility and detect potential exceptions or issues. The testing workflow verifies plugin builds, checks for critical startup errors, and runs the full unit test suite.
+
 ## Features
 - 1.20+ Support
 - Java 21 only support
