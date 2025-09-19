@@ -34,10 +34,27 @@ The repository includes a comprehensive GitHub Actions workflow (`minecraft-vers
 
 - **Matrix Testing**: Tests the plugin against all supported Minecraft versions simultaneously
 - **Build Verification**: Ensures the plugin builds successfully for each version
-- **Exception Detection**: Scans for critical startup exceptions like `ClassNotFoundException`, `NoSuchMethodError`
+- **Separated Exception Logging**: Uses custom log4j2 configurations to create separate exception logs per version
+- **Exception Detection**: Scans version-specific exception logs for critical startup errors like `ClassNotFoundException`, `NoSuchMethodError`
+- **Plugin Status Monitoring**: Tracks plugin loading and operational status through dedicated log files
 - **Unit Testing**: Runs the complete test suite to ensure functionality
-- **Artifact Collection**: Uploads build artifacts and logs for debugging
+- **Artifact Collection**: Uploads build artifacts, separated logs, and test reports for debugging
 - **Scheduled Testing**: Runs weekly to catch compatibility issues with new Paper builds
+
+#### Separated Logging Features
+
+Each Minecraft version gets its own logging configuration:
+- **Exception Logs**: `run-{version}/logs/exceptions-{version}.log` - Contains only ERROR level and above
+- **Plugin Status Logs**: `run-{version}/logs/plugin-status-{version}.log` - Tracks plugin lifecycle
+- **General Server Logs**: `run-{version}/logs/latest.log` - Standard server output
+- **Custom log4j2 Configuration**: Version-specific configurations in `run-{version}/log4j2.xml`
+
+#### Available Gradle Tasks
+
+For each supported Minecraft version, the following tasks are available:
+- `run-{version}` - Run the server with separated logging
+- `createLog4jConfig-{version}` - Generate version-specific log4j2 configuration  
+- `checkPluginStatus-{version}` - Analyze logs and report plugin status
 
 To validate the testing setup locally, run:
 ```bash

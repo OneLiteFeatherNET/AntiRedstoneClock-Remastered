@@ -48,3 +48,7 @@ run-*/
 *_output.log
 *_test.log
 exceptions.log
+
+# Version-specific logs
+run-*/logs/
+run-*/log4j2.xml

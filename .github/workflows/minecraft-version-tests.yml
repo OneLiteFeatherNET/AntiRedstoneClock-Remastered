@@ -60,79 +60,77 @@ jobs:
       - name: Build Plugin
         run: ./gradlew clean build shadowJar
 
-      - name: Verify Plugin Build for Minecraft ${{ matrix.minecraft-version }}
+      - name: Test Plugin on Minecraft ${{ matrix.minecraft-version }}
         run: |
-          echo "Verifying plugin compatibility for Minecraft ${{ matrix.minecraft-version }}"
+          echo "Testing plugin on Minecraft version ${{ matrix.minecraft-version }}"
 
-          # Check if the plugin JAR was built successfully
-          if ls build/libs/AntiRedstoneClock-Remastered-*.jar >/dev/null 2>&1; then
-            echo "✅ Plugin JAR built successfully"
-            ls -la build/libs/
-          else
-            echo "❌ Plugin JAR not found!"
-            exit 1
-          fi
+          # Generate log4j2 configuration for this version
+          ./gradlew "createLog4jConfig-${{ matrix.minecraft-version }}"
 
-          # Verify that the Gradle task for this MC version exists
-          if ./gradlew tasks --all | grep -q "run-${{ matrix.minecraft-version }}"; then
-            echo "✅ Gradle task run-${{ matrix.minecraft-version }} exists"
-          else
-            echo "❌ Gradle task run-${{ matrix.minecraft-version }} not found"
-            exit 1
-          fi
-
-          # Try to start the server with a very short timeout to check for immediate crashes
-          echo "Testing server startup for MC ${{ matrix.minecraft-version }}..."
-
-          # Create a test script that attempts to start the server briefly
-          cat > quick_test.sh << 'EOF'
+          # Create test script that uses separated logging
+          cat > test_server.sh << 'EOF'
           #!/bin/bash
           set -e
 
           MC_VERSION="$1"
-          echo "Quick test for Minecraft version $MC_VERSION..."
+          echo "Starting Minecraft server version $MC_VERSION with separated logging..."
 
-          # Try to start the server with timeout
-          timeout 30s ./gradlew "run-$MC_VERSION" --console=plain --offline \
-            > startup_test.log 2>&1 &
+          # Start the server with timeout and custom logging
+          timeout 45s ./gradlew "run-$MC_VERSION" --console=plain --offline &
           SERVER_PID=$!
 
-          # Wait briefly for startup
-          sleep 15
+          # Wait for server startup
+          sleep 30
 
-          # Kill the server if it's still running
+          # Check if server process is still running
           if kill -0 $SERVER_PID 2>/dev/null; then
-            echo "✅ Server started without immediate crash"
+            echo "✅ Server started successfully for MC $MC_VERSION"
+            # Stop the server gracefully
             kill $SERVER_PID 2>/dev/null || true
             wait $SERVER_PID 2>/dev/null || true
+          else
+            echo "⚠️  Server process ended for MC $MC_VERSION"
           fi
 
-          # Check for critical startup errors
-          if [ -f startup_test.log ]; then
-            if grep -E "(ClassNotFoundException|NoSuchMethodError|OutOfMemoryError|Could not create the Java Virtual Machine)" startup_test.log; then
-              echo "❌ Critical startup errors detected:"
-              grep -E "(ClassNotFoundException|NoSuchMethodError|OutOfMemoryError|Could not create the Java Virtual Machine)" startup_test.log
-              exit 1
-            elif grep -E "(SEVERE|FATAL)" startup_test.log; then
-              echo "⚠️  Severe errors detected but not critical:"
-              grep -E "(SEVERE|FATAL)" startup_test.log | head -5
+          # Check plugin status using separated logs
+          ./gradlew "checkPluginStatus-$MC_VERSION"
+
+          # Analyze exception log file
+          EXCEPTION_LOG="run-$MC_VERSION/logs/exceptions-$MC_VERSION.log"
+          if [ -f "$EXCEPTION_LOG" ]; then
+            if [ -s "$EXCEPTION_LOG" ]; then
+              echo "❌ Exceptions found in separated log for MC $MC_VERSION:"
+              head -10 "$EXCEPTION_LOG"
+              
+              # Check for critical exceptions
+              if grep -E "(ClassNotFoundException|NoSuchMethodError|OutOfMemoryError|LinkageError)" "$EXCEPTION_LOG"; then
+                echo "❌ Critical exceptions detected!"
+                exit 1
+              else
+                echo "⚠️  Non-critical exceptions detected"
+              fi
+            else
+              echo "✅ No exceptions logged for MC $MC_VERSION"
             fi
-            echo "✅ No critical startup issues detected"
+          else
+            echo "⚠️  Exception log not found (server may not have started properly)"
           fi
 
-          echo "✅ Quick compatibility test passed for MC $MC_VERSION"
+          # Check plugin status log
+          STATUS_LOG="run-$MC_VERSION/logs/plugin-status-$MC_VERSION.log"
+          if [ -f "$STATUS_LOG" ]; then
+            if grep -q "AntiRedstoneClockRemastered" "$STATUS_LOG"; then
+              echo "✅ Plugin was loaded for MC $MC_VERSION"
+            else
+              echo "⚠️  Plugin loading status unclear for MC $MC_VERSION"
+            fi
+          fi
+
+          echo "✅ Plugin test completed for MC $MC_VERSION"
           EOF
 
-          chmod +x quick_test.sh
-
-          # Run the quick test with error handling
-          if ./quick_test.sh "${{ matrix.minecraft-version }}"; then
-            echo "✅ Plugin compatibility verified for Minecraft ${{ matrix.minecraft-version }}"
-          else
-            echo "⚠️  Could not fully verify server startup (possibly due to missing server files)"
-            echo "This is expected in CI environment without internet access to download server files"
-            echo "Build and basic verification completed successfully"
-          fi
+          chmod +x test_server.sh
+          ./test_server.sh "${{ matrix.minecraft-version }}"
 
       - name: Run Unit Tests
         run: ./gradlew test
@@ -144,7 +142,8 @@ jobs:
           name: plugin-build-${{ matrix.minecraft-version }}
           path: |
             build/libs/*.jar
-            startup_test.log
+            run-${{ matrix.minecraft-version }}/logs/
+            run-${{ matrix.minecraft-version }}/log4j2.xml
             build/reports/tests/test/
           retention-days: 7
 

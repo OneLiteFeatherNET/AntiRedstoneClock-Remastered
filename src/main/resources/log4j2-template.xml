@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="io.papermc.paper.logging">
+    <Appenders>
+        <!-- Console appender for general output -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n"/>
+        </Console>
+        
+        <!-- File appender for general server logs -->
+        <RollingFile name="ServerLogFile" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{HH:mm:ss INFO}] [%t/%level]: %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+        
+        <!-- Separate file appender for exceptions only -->
+        <RollingFile name="ExceptionLogFile" fileName="logs/exceptions-MC_VERSION.log" filePattern="logs/exceptions-MC_VERSION-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{HH:mm:ss INFO}] [%t/%level]: %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="3"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+        
+        <!-- Plugin status log for monitoring -->
+        <File name="PluginStatusFile" fileName="logs/plugin-status-MC_VERSION.log">
+            <PatternLayout pattern="[%d{HH:mm:ss INFO}] %msg%n"/>
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Plugin-specific logger -->
+        <Logger name="net.onelitefeather.antiredstoneclockremastered" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ServerLogFile"/>
+            <AppenderRef ref="ExceptionLogFile"/>
+            <AppenderRef ref="PluginStatusFile"/>
+        </Logger>
+        
+        <!-- Minecraft/Paper loggers -->
+        <Logger name="Minecraft" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ServerLogFile"/>
+            <AppenderRef ref="ExceptionLogFile"/>
+        </Logger>
+        
+        <!-- Root logger -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ServerLogFile"/>
+            <AppenderRef ref="ExceptionLogFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

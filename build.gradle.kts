@@ -105,12 +105,57 @@ tasks {
         finalizedBy(jacocoTestReport)
     }
     supportedMinecraftVersions.forEach { serverVersion ->
+        // Create version-specific log4j2 configuration
+        val createLog4jConfig = register("createLog4jConfig-$serverVersion") {
+            doLast {
+                val templateFile = file("src/main/resources/log4j2-template.xml")
+                val configFile = file("run-$serverVersion/log4j2.xml")
+                
+                // Ensure the run directory exists
+                configFile.parentFile.mkdirs()
+                
+                // Replace MC_VERSION placeholder with actual version
+                val configContent = templateFile.readText()
+                    .replace("MC_VERSION", serverVersion)
+                    .replace("logs/", "run-$serverVersion/logs/")
+                
+                configFile.writeText(configContent)
+                logger.info("Created log4j2 configuration for Minecraft $serverVersion")
+            }
+        }
+        
         register<RunServer>("run-$serverVersion") {
+            dependsOn(createLog4jConfig)
             minecraftVersion(serverVersion)
-            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            jvmArgs(
+                "-DPaper.IgnoreJavaVersion=true", 
+                "-Dcom.mojang.eula.agree=true",
+                "-Dlog4j.configurationFile=log4j2.xml",
+                "-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"
+            )
             group = "run paper"
             runDirectory.set(file("run-$serverVersion"))
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+        }
+        
+        // Create task to check plugin status from logs
+        register("checkPluginStatus-$serverVersion") {
+            doLast {
+                val statusFile = file("run-$serverVersion/logs/plugin-status-$serverVersion.log")
+                val exceptionFile = file("run-$serverVersion/logs/exceptions-$serverVersion.log")
+                
+                if (statusFile.exists()) {
+                    println("=== Plugin Status for Minecraft $serverVersion ===")
+                    statusFile.readLines().takeLast(10).forEach { println(it) }
+                }
+                
+                if (exceptionFile.exists() && exceptionFile.length() > 0) {
+                    println("=== Exceptions found for Minecraft $serverVersion ===")
+                    exceptionFile.readLines().takeLast(5).forEach { println(it) }
+                } else {
+                    println("✅ No exceptions found for Minecraft $serverVersion")
+                }
+            }
         }
     }
     shadowJar {
