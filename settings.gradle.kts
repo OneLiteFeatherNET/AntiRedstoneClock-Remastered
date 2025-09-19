@@ -36,7 +36,7 @@ dependencyResolutionManagement {
             version("jakarta-inject", "2.0.1")
             
             // Testing dependencies
-            version("junit", "5.10.1")
+            version("junit", "5.10.5")
             version("mockito", "5.7.0")
             version("mockbukkit", "3.128.0")
             version("assertj", "3.24.2")
