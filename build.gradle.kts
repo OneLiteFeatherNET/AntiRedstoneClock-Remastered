@@ -82,9 +82,6 @@ dependencies {
 }
 
 tasks {
-    named<Jar>("jar") {
-        archiveClassifier.set("unshaded")
-    }
     named("build") {
         dependsOn(shadowJar)
     }
