@@ -1,3 +1,10 @@
+# [2.3.0-beta.7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.6...v2.3.0-beta.7) (2025-09-20)
+
+
+### Features
+
+* add support for JAR artifact upload and download link in PR comments ([8c7119b](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/8c7119b0c4f31db9ade3ae7005a285735dfacbd7))
+
 # [2.3.0-beta.6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.5...v2.3.0-beta.6) (2025-09-20)
 
 
