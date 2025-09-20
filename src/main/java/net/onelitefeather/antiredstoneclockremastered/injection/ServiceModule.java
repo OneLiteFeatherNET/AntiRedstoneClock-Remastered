@@ -40,8 +40,8 @@ public final class ServiceModule extends AbstractModule {
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService() {
-        return RedstoneClockServiceFactory.createService(plugin);
+    public RedstoneClockService provideRedstoneClockService(PlatformModule.RegionService regionService) {
+        return RedstoneClockServiceFactory.createService(plugin, regionService);
     }
     
     @Provides

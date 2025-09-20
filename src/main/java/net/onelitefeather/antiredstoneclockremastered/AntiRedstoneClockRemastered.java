@@ -14,6 +14,7 @@ import net.onelitefeather.antiredstoneclockremastered.commands.ReloadCommand;
 import net.onelitefeather.antiredstoneclockremastered.injection.CommandModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ExternalSupportModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ListenerModule;
+import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
@@ -73,6 +74,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
         injector = Guice.createInjector(
+            new PlatformModule(this),
             new ServiceModule(this),
             new ExternalSupportModule(this),
             new CommandModule(),

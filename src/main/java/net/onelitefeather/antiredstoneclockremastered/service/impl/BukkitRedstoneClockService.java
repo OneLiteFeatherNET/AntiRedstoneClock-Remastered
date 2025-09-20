@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
@@ -35,6 +36,7 @@ import java.util.logging.Level;
 public final class BukkitRedstoneClockService implements RedstoneClockService {
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
+    private final PlatformModule.RegionService regionService;
     private int endTimeDelay;
     private int maxClockCount;
     private boolean autoBreakBlock;
@@ -47,7 +49,7 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     @Inject
-    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, PlatformModule.RegionService regionService) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
@@ -56,6 +58,7 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
         this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
+        this.regionService = regionService;
         SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
     }
 
@@ -193,7 +196,9 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
         }
         Runnable removeTask = () -> block.setType(Material.AIR, true);
-        Bukkit.getScheduler().runTaskLater(antiRedstoneClockRemastered, removeTask, 1);
+        if (this.regionService.isRegionOwner(location)) {
+            this.regionService.executeInRegion(location, removeTask);
+        }
 
     }
 

@@ -1,6 +1,8 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
+import xyz.jpenilla.runtask.pluginsapi.PluginDownloadService
+import xyz.jpenilla.runtask.service.DownloadsAPIService
 
 plugins {
     id("java")
@@ -113,6 +115,18 @@ tasks {
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
     }
+    supportedMinecraftVersions.forEach { serverVersion ->
+        register<RunServer>("run-folia-$serverVersion") {
+            minecraftVersion(serverVersion)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run folia"
+            runDirectory.set(file("run-folia-$serverVersion"))
+            pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+            downloadsApiService.convention(DownloadsAPIService.folia(project))
+            pluginDownloadService.convention(PluginDownloadService.paper(project))
+        }
+    }
+
     shadowJar {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
@@ -130,11 +144,16 @@ tasks {
     }
 }
 
+runPaper.folia {
+    registerTask()
+}
+
 
 paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
+    foliaSupported = true
     serverDependencies {
         register("PlotSquared") {
             required = false

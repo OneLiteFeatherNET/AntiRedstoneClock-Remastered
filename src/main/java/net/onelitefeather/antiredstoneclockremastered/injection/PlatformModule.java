@@ -3,8 +3,16 @@ package net.onelitefeather.antiredstoneclockremastered.injection;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Example module showing how to add Folia-specific implementations.
@@ -74,6 +82,7 @@ public final class PlatformModule extends AbstractModule {
     public interface SchedulerService {
         void scheduleTask(Runnable task);
         void scheduleRepeatingTask(Runnable task, long delay, long period);
+        ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period);
         void cancelTasks();
     }
     
@@ -96,17 +105,22 @@ public final class PlatformModule extends AbstractModule {
         
         @Override
         public void scheduleTask(Runnable task) {
-            // Folia-specific scheduling logic
+            this.plugin.getServer().getGlobalRegionScheduler().run(plugin, t -> task.run());
         }
         
         @Override
         public void scheduleRepeatingTask(Runnable task, long delay, long period) {
-            // Folia-specific repeating task logic
+            plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, t -> task.run(), delay, period);
         }
-        
+
+        @Override
+        public ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period) {
+            return this.plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay, period, TimeUnit.MILLISECONDS);
+        }
+
         @Override
         public void cancelTasks() {
-            // Folia-specific task cancellation
+            this.plugin.getServer().getScheduler().cancelTasks(plugin);
         }
     }
     
@@ -126,7 +140,12 @@ public final class PlatformModule extends AbstractModule {
         public void scheduleRepeatingTask(Runnable task, long delay, long period) {
             plugin.getServer().getScheduler().runTaskTimer(plugin, task, delay, period);
         }
-        
+
+        @Override
+        public ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period) {
+            return plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay, period, TimeUnit.MILLISECONDS);
+        }
+
         @Override
         public void cancelTasks() {
             plugin.getServer().getScheduler().cancelTasks(plugin);
@@ -142,13 +161,12 @@ public final class PlatformModule extends AbstractModule {
         
         @Override
         public void executeInRegion(Location location, Runnable task) {
-            // Folia region-aware execution
+            this.plugin.getServer().getRegionScheduler().execute(this.plugin,location, task);
         }
         
         @Override
         public boolean isRegionOwner(Location location) {
-            // Folia region ownership check
-            return true;
+            return this.plugin.getServer().isOwnedByCurrentRegion(location);
         }
     }
     
@@ -161,8 +179,7 @@ public final class PlatformModule extends AbstractModule {
         
         @Override
         public void executeInRegion(Location location, Runnable task) {
-            // Standard Bukkit execution
-            task.run();
+            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, task, 1);
         }
         
         @Override
