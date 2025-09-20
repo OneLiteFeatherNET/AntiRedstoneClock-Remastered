@@ -55,10 +55,21 @@ For each supported Minecraft version, the following tasks are available:
 - `run-{version}` - Run the server with separated logging
 - `createLog4jConfig-{version}` - Generate version-specific log4j2 configuration  
 - `checkPluginStatus-{version}` - Analyze logs and report plugin status
+- `testServer-{version}` - Test server startup with plugin and analyze results
+
+Aggregate tasks for all versions:
+- `validateAllVersions` - Validate plugin compatibility across all versions
+- `testAllVersions` - Run server tests for all supported versions
+- `checkAllPluginStatus` - Check plugin status across all versions
 
 To validate the testing setup locally, run:
 ```bash
-./validate_workflow.sh
+./gradlew validateAllVersions
+```
+
+Or to test all versions:
+```bash  
+./gradlew testAllVersions
 ```
 
 ## Features

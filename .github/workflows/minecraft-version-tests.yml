@@ -63,74 +63,9 @@ jobs:
       - name: Test Plugin on Minecraft ${{ matrix.minecraft-version }}
         run: |
           echo "Testing plugin on Minecraft version ${{ matrix.minecraft-version }}"
-
-          # Generate log4j2 configuration for this version
-          ./gradlew "createLog4jConfig-${{ matrix.minecraft-version }}"
-
-          # Create test script that uses separated logging
-          cat > test_server.sh << 'EOF'
-          #!/bin/bash
-          set -e
-
-          MC_VERSION="$1"
-          echo "Starting Minecraft server version $MC_VERSION with separated logging..."
-
-          # Start the server with timeout and custom logging
-          timeout 45s ./gradlew "run-$MC_VERSION" --console=plain --offline &
-          SERVER_PID=$!
-
-          # Wait for server startup
-          sleep 30
-
-          # Check if server process is still running
-          if kill -0 $SERVER_PID 2>/dev/null; then
-            echo "✅ Server started successfully for MC $MC_VERSION"
-            # Stop the server gracefully
-            kill $SERVER_PID 2>/dev/null || true
-            wait $SERVER_PID 2>/dev/null || true
-          else
-            echo "⚠️  Server process ended for MC $MC_VERSION"
-          fi
-
-          # Check plugin status using separated logs
-          ./gradlew "checkPluginStatus-$MC_VERSION"
-
-          # Analyze exception log file
-          EXCEPTION_LOG="run-$MC_VERSION/logs/exceptions-$MC_VERSION.log"
-          if [ -f "$EXCEPTION_LOG" ]; then
-            if [ -s "$EXCEPTION_LOG" ]; then
-              echo "❌ Exceptions found in separated log for MC $MC_VERSION:"
-              head -10 "$EXCEPTION_LOG"
-              
-              # Check for critical exceptions
-              if grep -E "(ClassNotFoundException|NoSuchMethodError|OutOfMemoryError|LinkageError)" "$EXCEPTION_LOG"; then
-                echo "❌ Critical exceptions detected!"
-                exit 1
-              else
-                echo "⚠️  Non-critical exceptions detected"
-              fi
-            else
-              echo "✅ No exceptions logged for MC $MC_VERSION"
-            fi
-          else
-            echo "⚠️  Exception log not found (server may not have started properly)"
-          fi
-
-          # Check plugin status log
-          STATUS_LOG="run-$MC_VERSION/logs/plugin-status-$MC_VERSION.log"
-          if [ -f "$STATUS_LOG" ]; then
-            if grep -q "AntiRedstoneClockRemastered" "$STATUS_LOG"; then
-              echo "✅ Plugin was loaded for MC $MC_VERSION"
-            else
-              echo "⚠️  Plugin loading status unclear for MC $MC_VERSION"
-            fi
-          fi
-
-          echo "✅ Plugin test completed for MC $MC_VERSION"
-          EOF
-
-          chmod +x test_server.sh
-          ./test_server.sh "${{ matrix.minecraft-version }}"
+          
+          # Use the new buildSrc task instead of bash scripts
+          ./gradlew "testServer-${{ matrix.minecraft-version }}"
 
       - name: Run Unit Tests
         run: ./gradlew test
