@@ -72,25 +72,21 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-        // WorldGuard flag registration is handled during DI initialization
-    }
-
-    @Override
-    public void onEnable() {
-        // Initialize Guice injector
         injector = Guice.createInjector(
             new ServiceModule(this),
             new ExternalSupportModule(this),
             new CommandModule(),
             new ListenerModule()
         );
-        
-        // Get services from injector
+        this.worldGuardSupport = injector.getInstance(WorldGuardSupport.class);
+    }
+
+    @Override
+    public void onEnable() {
         TranslationService translationService = injector.getInstance(TranslationService.class);
         this.redstoneClockService = injector.getInstance(RedstoneClockService.class);
         this.updateService = injector.getInstance(UpdateService.class);
         this.tps = injector.getInstance(CheckTPS.class);
-        this.worldGuardSupport = injector.getInstance(WorldGuardSupport.class);
         this.plotsquaredSupport = injector.getInstance(PlotsquaredSupport.class);
         
         // Setup translations
@@ -225,11 +221,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(listener2, this);
             }
         }
-    }
-
-    private void enableRedstoneClockService() {
-        // RedstoneClockService now provided via dependency injection
-        // using the interface-based architecture from the factory
     }
 
     private void enableTPSChecker() {
