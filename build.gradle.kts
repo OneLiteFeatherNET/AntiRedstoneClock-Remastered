@@ -185,9 +185,9 @@ paper {
 val baseVersion = version as String
 val baseChannel = with(baseVersion) {
     when {
-        contains("SNAPSHOT") -> "Snapshot"
-        contains("ALPHA") -> "Alpha"
-        contains("BETA") -> "Beta"
+        contains("SNAPSHOT", true) -> "Snapshot"
+        contains("ALPHA", true) -> "Alpha"
+        contains("BETA", true) -> "Beta"
         else -> "Release"
     }
 }
@@ -220,4 +220,5 @@ modrinth {
     gameVersions.addAll(supportedMinecraftVersions)
     loaders.add("paper")
     loaders.add("bukkit")
+    loaders.add("folia")
 }
