@@ -127,8 +127,13 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
+        dependsOn(jar)
     }
     this.modrinth {
+        dependsOn(shadowJar)
+    }
+
+    this.publishAllPublicationsToHangar {
         dependsOn(shadowJar)
     }
     
