@@ -1,3 +1,10 @@
+# [2.3.0-beta.8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.7...v2.3.0-beta.8) (2025-09-20)
+
+
+### Features
+
+* implement JAR upload and PR comment functionality for publish-pr label ([58e96cb](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/58e96cbaddb688ad4f0b795b2a7202ed8332090d))
+
 # [2.3.0-beta.7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.6...v2.3.0-beta.7) (2025-09-20)
 
 
