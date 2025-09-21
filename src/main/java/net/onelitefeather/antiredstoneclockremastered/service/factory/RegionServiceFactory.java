@@ -1,17 +1,12 @@
 package net.onelitefeather.antiredstoneclockremastered.service.factory;
 
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaRegionService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static net.onelitefeather.antiredstoneclockremastered.service.factory.FoliaHelper.isFolia;
 
 /**
  * Factory for creating instances of RegionService based on the server environment.
@@ -20,7 +15,7 @@ import static net.onelitefeather.antiredstoneclockremastered.service.factory.Fol
  * @version 1.0.0
  * @author TheMeinerLP
  */
-public class RegionServiceFactory {
+public final class RegionServiceFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegionServiceFactory.class);
 
@@ -30,14 +25,14 @@ public class RegionServiceFactory {
 
 
     /**
-     * Creates the appropriate RedstoneClockService implementation for the current platform.
+     * Creates the appropriate RegionService implementation for the current platform.
      *
      * @param plugin the main plugin instance
-     * @return the appropriate RedstoneClockService implementation
+     * @return the appropriate RegionService implementation
      */
     @NotNull
     public static RegionService createService(@NotNull AntiRedstoneClockRemastered plugin) {
-        if (isFolia()) {
+        if (FoliaHelper.isFolia()) {
             LOGGER.info("Folia detected - using FoliaRegionService");
             return new FoliaRegionService(plugin);
         }

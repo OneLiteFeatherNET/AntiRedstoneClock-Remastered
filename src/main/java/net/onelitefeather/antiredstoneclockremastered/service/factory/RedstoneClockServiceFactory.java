@@ -34,7 +34,7 @@ public final class RedstoneClockServiceFactory {
      */
     @NotNull
     public static RedstoneClockService createService(@NotNull AntiRedstoneClockRemastered plugin, RegionService regionService) {
-        if (isFolia()) {
+        if (FoliaHelper.isFolia()) {
             LOGGER.info("Folia detected - using FoliaRedstoneClockService");
             // Uncomment when ready to enable Folia support:
             // return new FoliaRedstoneClockService(plugin);
