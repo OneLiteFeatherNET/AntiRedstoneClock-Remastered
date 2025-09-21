@@ -5,6 +5,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
+import net.onelitefeather.antiredstoneclockremastered.service.factory.RegionServiceFactory;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -15,8 +17,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
- * Example module showing how to add Folia-specific implementations.
- * This demonstrates the extensibility benefits of the DI refactoring.
+ * Guice module for platform-specific dependencies.
+ *
+ * <p>
+ *     This module handles bindings and providers that differ between Folia and Paper platforms.
+ * </p>
  *
  * @author TheMeinerLP
  * @since 2.2.0
@@ -52,13 +57,8 @@ public final class PlatformModule extends AbstractModule {
     
     @Provides
     @Singleton  
-    public RegionService provideRegionService() {
-        // Folia has different region handling requirements
-        if (isFolia()) {
-            return new FoliaRegionService(plugin);
-        } else {
-            return new DefaultRegionService(plugin);
-        }
+    public RegionService provideRegionService(AntiRedstoneClockRemastered plugin) {
+        return RegionServiceFactory.createService(plugin);
     }
     
     /**
@@ -72,9 +72,6 @@ public final class PlatformModule extends AbstractModule {
             return false;
         }
     }
-    
-    // Example service interfaces that would need to be created
-    
     /**
      * Abstraction for scheduling tasks
      * Allows different implementations for Folia's threaded regions
@@ -84,15 +81,6 @@ public final class PlatformModule extends AbstractModule {
         void scheduleRepeatingTask(Runnable task, long delay, long period);
         ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period);
         void cancelTasks();
-    }
-    
-    /**
-     * Abstraction for region-based operations
-     * Folia requires region-aware task scheduling
-     */
-    public interface RegionService {
-        void executeInRegion(Location location, Runnable task);
-        boolean isRegionOwner(Location location);
     }
     
     // Example implementations would be created in separate classes
@@ -149,43 +137,6 @@ public final class PlatformModule extends AbstractModule {
         @Override
         public void cancelTasks() {
             plugin.getServer().getScheduler().cancelTasks(plugin);
-        }
-    }
-    
-    private static class FoliaRegionService implements RegionService {
-        private final AntiRedstoneClockRemastered plugin;
-        
-        public FoliaRegionService(AntiRedstoneClockRemastered plugin) {
-            this.plugin = plugin;
-        }
-        
-        @Override
-        public void executeInRegion(Location location, Runnable task) {
-            this.plugin.getServer().getRegionScheduler().execute(this.plugin,location, task);
-        }
-        
-        @Override
-        public boolean isRegionOwner(Location location) {
-            return this.plugin.getServer().isOwnedByCurrentRegion(location);
-        }
-    }
-    
-    private static class DefaultRegionService implements RegionService {
-        private final AntiRedstoneClockRemastered plugin;
-        
-        public DefaultRegionService(AntiRedstoneClockRemastered plugin) {
-            this.plugin = plugin;
-        }
-        
-        @Override
-        public void executeInRegion(Location location, Runnable task) {
-            this.plugin.getServer().getScheduler().runTaskLater(this.plugin, task, 1);
-        }
-        
-        @Override
-        public boolean isRegionOwner(Location location) {
-            // Always true for non-Folia
-            return true;
         }
     }
 }

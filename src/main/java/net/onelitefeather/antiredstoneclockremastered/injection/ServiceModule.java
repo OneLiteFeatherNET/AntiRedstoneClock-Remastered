@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import io.papermc.paper.ServerBuildInfo;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
@@ -40,7 +41,7 @@ public final class ServiceModule extends AbstractModule {
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService(PlatformModule.RegionService regionService) {
+    public RedstoneClockService provideRedstoneClockService(RegionService regionService) {
         return RedstoneClockServiceFactory.createService(plugin, regionService);
     }
     
