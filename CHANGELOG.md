@@ -1,3 +1,10 @@
+# [2.3.0-beta.11](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.10...v2.3.0-beta.11) (2025-09-21)
+
+
+### Features
+
+* update permissions in build-pr.yml to allow write access for checks ([ce986d0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/ce986d0acb4795dc3e8029c7a77bb6e8d22ed495))
+
 # [2.3.0-beta.10](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.9...v2.3.0-beta.10) (2025-09-21)
 
 
