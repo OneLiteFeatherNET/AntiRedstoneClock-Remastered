@@ -1,3 +1,10 @@
+# [2.3.0-beta.13](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.12...v2.3.0-beta.13) (2025-09-21)
+
+
+### Features
+
+* **i18n:** add Hungarian localization for AntiRedstone Clock Remastered ([43c6536](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/43c6536ad19869ca672d49e61355ee013f3eac55))
+
 # [2.3.0-beta.12](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.11...v2.3.0-beta.12) (2025-09-21)
 
 
