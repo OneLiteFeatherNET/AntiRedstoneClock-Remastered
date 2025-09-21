@@ -2,7 +2,6 @@ package net.onelitefeather.antiredstoneclockremastered;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.papermc.paper.ServerBuildInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
@@ -17,23 +16,15 @@ import net.onelitefeather.antiredstoneclockremastered.injection.ListenerModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
 import net.onelitefeather.antiredstoneclockremastered.listener.*;
-import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
-import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
-import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
-import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
-import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
@@ -75,8 +66,8 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         reloadConfig();
         injector = Guice.createInjector(
             new PlatformModule(this),
-            new ServiceModule(this),
-            new ExternalSupportModule(this),
+            new ServiceModule(),
+            new ExternalSupportModule(),
             new CommandModule(),
             new ListenerModule()
         );

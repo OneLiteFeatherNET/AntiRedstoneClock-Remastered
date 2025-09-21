@@ -3,18 +3,11 @@ package net.onelitefeather.antiredstoneclockremastered.injection;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RegionServiceFactory;
-import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import net.onelitefeather.antiredstoneclockremastered.service.factory.SchedulerServiceFactory;
 
 /**
  * Guice module for platform-specific dependencies.
@@ -28,16 +21,16 @@ import java.util.function.Consumer;
  * @version 1.0.0
  */
 public final class PlatformModule extends AbstractModule {
-    
+
     private final AntiRedstoneClockRemastered plugin;
-    
+
     public PlatformModule(AntiRedstoneClockRemastered plugin) {
         this.plugin = plugin;
     }
-    
+
     @Override
     protected void configure() {
-        // Platform-specific bindings can be configured here
+        bind(AntiRedstoneClockRemastered.class).toInstance(plugin);
     }
     
     /**
@@ -46,97 +39,13 @@ public final class PlatformModule extends AbstractModule {
      */
     @Provides
     @Singleton
-    public SchedulerService provideSchedulerService() {
-        // Check if running on Folia
-        if (isFolia()) {
-            return new FoliaSchedulerService(plugin);
-        } else {
-            return new BukkitSchedulerService(plugin);
-        }
+    public SchedulerService provideSchedulerService(AntiRedstoneClockRemastered plugin) {
+        return SchedulerServiceFactory.createService(plugin);
     }
     
     @Provides
     @Singleton  
     public RegionService provideRegionService(AntiRedstoneClockRemastered plugin) {
         return RegionServiceFactory.createService(plugin);
-    }
-    
-    /**
-     * Detect if running on Folia
-     */
-    private boolean isFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-    /**
-     * Abstraction for scheduling tasks
-     * Allows different implementations for Folia's threaded regions
-     */
-    public interface SchedulerService {
-        void scheduleTask(Runnable task);
-        void scheduleRepeatingTask(Runnable task, long delay, long period);
-        ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period);
-        void cancelTasks();
-    }
-    
-    // Example implementations would be created in separate classes
-    private static class FoliaSchedulerService implements SchedulerService {
-        private final AntiRedstoneClockRemastered plugin;
-        
-        public FoliaSchedulerService(AntiRedstoneClockRemastered plugin) {
-            this.plugin = plugin;
-        }
-        
-        @Override
-        public void scheduleTask(Runnable task) {
-            this.plugin.getServer().getGlobalRegionScheduler().run(plugin, t -> task.run());
-        }
-        
-        @Override
-        public void scheduleRepeatingTask(Runnable task, long delay, long period) {
-            plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, t -> task.run(), delay, period);
-        }
-
-        @Override
-        public ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period) {
-            return this.plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay, period, TimeUnit.MILLISECONDS);
-        }
-
-        @Override
-        public void cancelTasks() {
-            this.plugin.getServer().getScheduler().cancelTasks(plugin);
-        }
-    }
-    
-    private static class BukkitSchedulerService implements SchedulerService {
-        private final AntiRedstoneClockRemastered plugin;
-        
-        public BukkitSchedulerService(AntiRedstoneClockRemastered plugin) {
-            this.plugin = plugin;
-        }
-        
-        @Override
-        public void scheduleTask(Runnable task) {
-            plugin.getServer().getScheduler().runTask(plugin, task);
-        }
-        
-        @Override
-        public void scheduleRepeatingTask(Runnable task, long delay, long period) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, task, delay, period);
-        }
-
-        @Override
-        public ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period) {
-            return plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay, period, TimeUnit.MILLISECONDS);
-        }
-
-        @Override
-        public void cancelTasks() {
-            plugin.getServer().getScheduler().cancelTasks(plugin);
-        }
     }
 }

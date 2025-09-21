@@ -7,7 +7,7 @@ import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
+import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public final class UpdateService implements Runnable {
     private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
 
     @Inject
-    public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, PlatformModule.SchedulerService schedulerService) {
+    public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, SchedulerService schedulerService) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
         this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, 20 * 60 * 60 * 3);
     }

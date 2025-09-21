@@ -25,12 +25,7 @@ import org.slf4j.LoggerFactory;
 public final class ExternalSupportModule extends AbstractModule {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalSupportModule.class);
-    private final AntiRedstoneClockRemastered plugin;
-    
-    public ExternalSupportModule(AntiRedstoneClockRemastered plugin) {
-        this.plugin = plugin;
-    }
-    
+
     @Override
     protected void configure() {
         // External support bindings are provided through @Provides methods
@@ -39,7 +34,7 @@ public final class ExternalSupportModule extends AbstractModule {
     @Provides
     @Singleton
     @Nullable
-    public WorldGuardSupport provideWorldGuardSupport() {
+    public WorldGuardSupport provideWorldGuardSupport(AntiRedstoneClockRemastered plugin) {
         Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
         if (wgPlugin == null) {
             LOGGER.warn("WorldGuard hasn't been found!");
@@ -68,7 +63,7 @@ public final class ExternalSupportModule extends AbstractModule {
     @Provides
     @Singleton
     @Nullable
-    public PlotsquaredSupport providePlotsquaredSupport() {
+    public PlotsquaredSupport providePlotsquaredSupport(AntiRedstoneClockRemastered plugin) {
         Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PlotSquared");
         if (psPlugin == null) {
             LOGGER.warn("PlotSquared hasn't been found!");

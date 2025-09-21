@@ -26,22 +26,16 @@ import org.slf4j.LoggerFactory;
 public final class ServiceModule extends AbstractModule {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceModule.class);
-    private final AntiRedstoneClockRemastered plugin;
-    
-    public ServiceModule(AntiRedstoneClockRemastered plugin) {
-        this.plugin = plugin;
-    }
-    
+
     @Override
     protected void configure() {
-        bind(AntiRedstoneClockRemastered.class).toInstance(plugin);
         bind(UpdateService.class).in(Singleton.class);
         bind(CheckTPS.class).in(Singleton.class);
     }
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService(RegionService regionService) {
+    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin, RegionService regionService) {
         return RedstoneClockServiceFactory.createService(plugin, regionService);
     }
     
