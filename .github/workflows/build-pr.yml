@@ -1,5 +1,7 @@
 name: Build PR
 on: [pull_request]
+permissions:
+  contents: read
 jobs:
   build_pr:
     if: github.repository_owner == 'OneLiteFeatherNET'
@@ -44,6 +46,9 @@ jobs:
           path: build/reports/jacoco/test/
   upload_jar_and_comment:
     name: Upload JAR and comment PR
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     needs: build_pr
     if: contains(github.event.pull_request.labels.*.name, 'publish-pr')
