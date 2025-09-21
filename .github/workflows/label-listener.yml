@@ -1,4 +1,7 @@
 name: PR Label Listener
+permissions:
+  issues: write
+  actions: write
 on:
   pull_request:
     types: [labeled, unlabeled]
