@@ -172,6 +172,7 @@ paper {
         }
         register("antiredstoneclockremastered.command.reload")
         register("antiredstoneclockremastered.command.help")
+        register("antiredstoneclockremastered.command.display")
         register("antiredstoneclockremastered.command.feature.check.observer")
         register("antiredstoneclockremastered.command.feature.check.piston")
         register("antiredstoneclockremastered.command.feature.check.sculk")
@@ -185,6 +186,41 @@ paper {
         register("antiredstoneclockremastered.command.feature.clock.drop")
         register("antiredstoneclockremastered.command.feature.clock.enddelay")
         register("antiredstoneclockremastered.command.feature.clock.maxCount")
+        register("antiredstoneclockremastered.bundle.admin") {
+            children = listOf(
+                "antiredstoneclockremastered.notify.admin",
+                "antiredstoneclockremastered.notify.disable.donation",
+                "antiredstoneclockremastered.notify.admin.update",
+                "antiredstoneclockremastered.command.reload",
+                "antiredstoneclockremastered.command.help",
+                "antiredstoneclockremastered.command.feature.check.observer",
+                "antiredstoneclockremastered.command.feature.check.piston",
+                "antiredstoneclockremastered.command.feature.check.sculk",
+                "antiredstoneclockremastered.command.feature.check.redstone_and_repeater",
+                "antiredstoneclockremastered.command.feature.check.world.add",
+                "antiredstoneclockremastered.command.feature.check.world.remove",
+                "antiredstoneclockremastered.command.feature.check.region.remove",
+                "antiredstoneclockremastered.command.feature.check.region.add",
+                "antiredstoneclockremastered.command.feature.clock.notifyAdmins",
+                "antiredstoneclockremastered.command.feature.clock.notifyConsole",
+                "antiredstoneclockremastered.command.feature.clock.drop",
+                "antiredstoneclockremastered.command.feature.clock.enddelay",
+                "antiredstoneclockremastered.command.feature.clock.maxCount",
+                "antiredstoneclockremastered.command.display"
+            )
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "All permissions for AntiRedstoneClock-Remastered"
+        }
+
+        register("antiredstoneclockremastered.bundle.developers") {
+            children = listOf(
+                "antiredstoneclockremastered.command.reload",
+                "antiredstoneclockremastered.command.help",
+                "antiredstoneclockremastered.command.display"
+            )
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Permissions for developers of AntiRedstoneClock-Remastered"
+        }
     }
 }
 val baseVersion = version as String
