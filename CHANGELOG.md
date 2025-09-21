@@ -1,3 +1,11 @@
+# [2.3.0-beta.9](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.8...v2.3.0-beta.9) (2025-09-21)
+
+
+### Features
+
+* update permissions for PR label listener and JAR upload job ([29a9bda](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/29a9bda16a9a418542d15b9ea2d15580c8312edd))
+* update PR label listener permissions for issues and actions ([60e505c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/60e505c24462260cbfbc0169a25c90d0893421c5))
+
 # [2.3.0-beta.8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.7...v2.3.0-beta.8) (2025-09-20)
 
 
