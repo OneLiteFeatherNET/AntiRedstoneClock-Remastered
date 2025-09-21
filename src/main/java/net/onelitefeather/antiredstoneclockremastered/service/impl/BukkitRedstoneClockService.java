@@ -4,6 +4,8 @@ import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
+import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
@@ -37,6 +39,8 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final RegionService regionService;
+    private final WorldGuardSupport worldGuardSupport;
+    private final PlotsquaredSupport plotsquaredSupport;
     private int endTimeDelay;
     private int maxClockCount;
     private boolean autoBreakBlock;
@@ -49,7 +53,7 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     @Inject
-    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, RegionService regionService) {
+    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, RegionService regionService, WorldGuardSupport worldGuardSupport, PlotsquaredSupport plotsquaredSupport) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
@@ -59,15 +63,17 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
         this.regionService = regionService;
+        this.worldGuardSupport = worldGuardSupport;
+        this.plotsquaredSupport = plotsquaredSupport;
         SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
     }
 
     @Override
     public void checkAndUpdateClockStateWithActiveManual(@NotNull Location location, boolean state) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+        if (this.worldGuardSupport.isRegionAllowed(location))
             return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+        if (this.plotsquaredSupport.isAllowedPlot(location))
             return;
         var clock = getClockByLocation(location);
         if (clock != null) {
@@ -103,9 +109,9 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     @Override
     public void checkAndUpdateClockStateWithActive(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+        if (this.worldGuardSupport.isRegionAllowed(location))
             return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+        if (this.plotsquaredSupport.isAllowedPlot(location))
             return;
         var clock = getClockByLocation(location);
         if (clock != null) {
@@ -136,9 +142,9 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     @Override
     public void checkAndUpdateClockState(@NotNull Location location) {
         if (this.ignoredWorlds.contains(location.getWorld().getName())) return;
-        if (this.antiRedstoneClockRemastered.getWorldGuardSupport() != null && this.antiRedstoneClockRemastered.getWorldGuardSupport().isRegionAllowed(location))
+        if (this.worldGuardSupport.isRegionAllowed(location))
             return;
-        if (this.antiRedstoneClockRemastered.getPlotsquaredSupport() != null && this.antiRedstoneClockRemastered.getPlotsquaredSupport().isAllowedPlot(location))
+        if (this.plotsquaredSupport.isAllowedPlot(location))
             return;
         var clock = getClockByLocation(location);
         if (clock != null) {

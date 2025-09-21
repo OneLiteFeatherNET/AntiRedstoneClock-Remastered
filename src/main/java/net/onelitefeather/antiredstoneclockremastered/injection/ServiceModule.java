@@ -5,6 +5,8 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.papermc.paper.ServerBuildInfo;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
+import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
@@ -35,8 +37,9 @@ public final class ServiceModule extends AbstractModule {
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin, RegionService regionService) {
-        return RedstoneClockServiceFactory.createService(plugin, regionService);
+    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin, RegionService regionService,
+                                                            PlotsquaredSupport plotsquaredSupport, WorldGuardSupport worldGuardSupport) {
+        return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport);
     }
     
     @Provides

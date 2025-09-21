@@ -1,6 +1,8 @@
 package net.onelitefeather.antiredstoneclockremastered.service.factory;
 
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
+import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRedstoneClockService;
@@ -33,7 +35,7 @@ public final class RedstoneClockServiceFactory {
      * @return the appropriate RedstoneClockService implementation
      */
     @NotNull
-    public static RedstoneClockService createService(@NotNull AntiRedstoneClockRemastered plugin, RegionService regionService) {
+    public static RedstoneClockService createService(@NotNull AntiRedstoneClockRemastered plugin, RegionService regionService, PlotsquaredSupport plotsquaredSupport, WorldGuardSupport worldGuardSupport) {
         if (FoliaHelper.isFolia()) {
             LOGGER.info("Folia detected - using FoliaRedstoneClockService");
             // Uncomment when ready to enable Folia support:
@@ -42,6 +44,6 @@ public final class RedstoneClockServiceFactory {
         }
         
         LOGGER.info("Using BukkitRedstoneClockService");
-        return new BukkitRedstoneClockService(plugin, regionService);
+        return new BukkitRedstoneClockService(plugin, regionService, worldGuardSupport, plotsquaredSupport);
     }
 }

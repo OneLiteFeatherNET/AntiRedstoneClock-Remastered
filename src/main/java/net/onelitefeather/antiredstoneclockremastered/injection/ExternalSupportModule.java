@@ -8,6 +8,8 @@ import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v6.PlotSquaredLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.plotsquared.v7.PlotSquaredModernSupport;
+import net.onelitefeather.antiredstoneclockremastered.support.NoOpPlotSquaredSupport;
+import net.onelitefeather.antiredstoneclockremastered.support.NoOpWorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
 import org.bukkit.plugin.Plugin;
@@ -38,7 +40,7 @@ public final class ExternalSupportModule extends AbstractModule {
         Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
         if (wgPlugin == null) {
             LOGGER.warn("WorldGuard hasn't been found!");
-            return null;
+            return new NoOpWorldGuardSupport(plugin);
         }
         
         @SuppressWarnings("deprecation")
@@ -67,7 +69,7 @@ public final class ExternalSupportModule extends AbstractModule {
         Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PlotSquared");
         if (psPlugin == null) {
             LOGGER.warn("PlotSquared hasn't been found!");
-            return null;
+            return new NoOpPlotSquaredSupport();
         }
         
         @SuppressWarnings("deprecation")
@@ -75,7 +77,7 @@ public final class ExternalSupportModule extends AbstractModule {
         
         if (psVersion < 6) {
             LOGGER.warn("We don't support PS5 currently also you use a unsupported version of PlotSquared!!!");
-            return null;
+            return new NoOpPlotSquaredSupport();
         }
         
         PlotsquaredSupport support;

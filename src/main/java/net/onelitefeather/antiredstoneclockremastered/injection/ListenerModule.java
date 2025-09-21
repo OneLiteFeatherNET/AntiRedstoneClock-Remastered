@@ -40,4 +40,8 @@ public final class ListenerModule extends AbstractModule {
                                                  CheckTPS checkTPS, Plugin plugin) {
         return new RedstoneListener(material, redstoneClockService, checkTPS, plugin);
     }
+
+    public void registerEvents() {
+
+    }
 }

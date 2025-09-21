@@ -51,9 +51,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     
     // Legacy dependencies that are still manually managed
     private CheckTPS tps;
-    private RedstoneClockService redstoneClockService;
-    private WorldGuardSupport worldGuardSupport;
-    private PlotsquaredSupport plotsquaredSupport;
     private Metrics metrics;
     private AnnotationParser<CommandSender> annotationParser;
     private UpdateService updateService;
@@ -71,16 +68,13 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             new CommandModule(),
             new ListenerModule()
         );
-        this.worldGuardSupport = injector.getInstance(WorldGuardSupport.class);
     }
 
     @Override
     public void onEnable() {
         TranslationService translationService = injector.getInstance(TranslationService.class);
-        this.redstoneClockService = injector.getInstance(RedstoneClockService.class);
         this.updateService = injector.getInstance(UpdateService.class);
         this.tps = injector.getInstance(CheckTPS.class);
-        this.plotsquaredSupport = injector.getInstance(PlotsquaredSupport.class);
         
         // Setup translations
         Path langFolder = getDataFolder().toPath().resolve("lang");
@@ -187,13 +181,13 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             var comparator = Material.getMaterial("COMPARATOR");
             if (comparator != null) {
                 var listener = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(comparator, redstoneClockService, tps, this);
+                    .createComparatorListener(comparator, this.injector.getInstance(RedstoneClockService.class), tps, this);
                 getServer().getPluginManager().registerEvents(listener, this);
             } else {
                 var listener1 = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"), redstoneClockService, tps, this);
+                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
                 var listener2 = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"), redstoneClockService, tps, this);
+                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
                 getServer().getPluginManager().registerEvents(listener1, this);
                 getServer().getPluginManager().registerEvents(listener2, this);
             }
@@ -203,13 +197,13 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
             var repeater = Material.getMaterial("REPEATER");
             if (repeater != null) {
                 var listener = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(repeater, redstoneClockService, tps, this);
+                    .createRedstoneListener(repeater,  this.injector.getInstance(RedstoneClockService.class), tps, this);
                 getServer().getPluginManager().registerEvents(listener, this);
             } else {
                 var listener1 = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"), redstoneClockService, tps, this);
+                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
                 var listener2 = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"), redstoneClockService, tps, this);
+                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
                 getServer().getPluginManager().registerEvents(listener1, this);
                 getServer().getPluginManager().registerEvents(listener2, this);
             }
@@ -244,17 +238,11 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private String bstatsPlotSquaredVersion() {
-        if (this.plotsquaredSupport != null) {
-            return this.plotsquaredSupport.getVersion();
-        }
-        return "unknown";
+        return this.injector.getInstance(PlotsquaredSupport.class).getVersion();
     }
 
     private String bstatsWorldGuardVersion() {
-        if (this.worldGuardSupport != null) {
-            return this.worldGuardSupport.getVersion();
-        }
-        return "unknown";
+        return this.injector.getInstance(WorldGuardSupport.class).getVersion();
     }
 
     private void loadAndRegisterTranslation(Locale locale, Path langFolder, TranslationService translationService) {
@@ -280,23 +268,4 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         }
     }
 
-    public CheckTPS getTps() {
-        return tps;
-    }
-
-    public RedstoneClockService getRedstoneClockService() {
-        return redstoneClockService;
-    }
-
-    public WorldGuardSupport getWorldGuardSupport() {
-        return worldGuardSupport;
-    }
-
-    public PlotsquaredSupport getPlotsquaredSupport() {
-        return plotsquaredSupport;
-    }
-
-    public UpdateService getUpdateService() {
-        return updateService;
-    }
 }
