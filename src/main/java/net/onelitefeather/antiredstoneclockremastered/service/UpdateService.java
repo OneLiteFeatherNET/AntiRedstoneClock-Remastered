@@ -21,17 +21,18 @@ import java.net.http.HttpResponse;
 
 @Singleton
 public final class UpdateService implements Runnable {
-    private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
+    private static final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
+    private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private final Version localVersion;
+    private final SchedulerService schedulerService;
     private Version remoteVersion;
-    private final ScheduledTask scheduler;
-    private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
+    private ScheduledTask scheduler;
 
     @Inject
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, SchedulerService schedulerService) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
-        this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, 20 * 60 * 60 * 3);
+        this.schedulerService = schedulerService;
     }
 
 
@@ -72,6 +73,10 @@ public final class UpdateService implements Runnable {
                         Component.text(localVersion.toString()),
                         Component.text(remoteVersion.toString())
                 ));
+    }
+
+    public void schedule() {
+        this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, 20 * 60 * 60 * 3);
     }
 
 

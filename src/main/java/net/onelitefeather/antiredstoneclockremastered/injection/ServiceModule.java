@@ -41,17 +41,4 @@ public final class ServiceModule extends AbstractModule {
                                                             PlotsquaredSupport plotsquaredSupport, WorldGuardSupport worldGuardSupport) {
         return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport);
     }
-    
-    @Provides
-    @Singleton
-    public TranslationService provideTranslationService() {
-        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-        if (buildInfo.minecraftVersionId().startsWith("1.20")) {
-            LOGGER.info("Using legacy translation service");
-            return new LegacyTranslationService();
-        } else {
-            LOGGER.info("Using modern translation service");
-            return new ModernTranslationService();
-        }
-    }
 }

@@ -8,6 +8,8 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RegionServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.SchedulerServiceFactory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Guice module for platform-specific dependencies.
@@ -31,6 +33,8 @@ public final class PlatformModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(AntiRedstoneClockRemastered.class).toInstance(plugin);
+        bind(Plugin.class).toInstance(plugin);
+        bind(JavaPlugin.class).toInstance(plugin);
     }
     
     /**

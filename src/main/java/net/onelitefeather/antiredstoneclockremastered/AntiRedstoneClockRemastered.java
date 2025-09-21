@@ -2,9 +2,9 @@ package net.onelitefeather.antiredstoneclockremastered;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
 import net.onelitefeather.antiredstoneclockremastered.commands.DisplayActiveClocksCommand;
@@ -15,15 +15,12 @@ import net.onelitefeather.antiredstoneclockremastered.injection.ExternalSupportM
 import net.onelitefeather.antiredstoneclockremastered.injection.ListenerModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
-import net.onelitefeather.antiredstoneclockremastered.listener.*;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.injection.TranslationModule;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
-import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.DrilldownPie;
 import org.bstats.charts.SimplePie;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -34,17 +31,13 @@ import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.incendo.cloud.parser.standard.StringParser.greedyStringParser;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
-    public static final String RESOURCE_BUNDLE_NAME = "antiredstoneclockremasterd";
     
     // Injector for dependency injection
     private Injector injector;
@@ -53,7 +46,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     private CheckTPS tps;
     private Metrics metrics;
     private AnnotationParser<CommandSender> annotationParser;
-    private UpdateService updateService;
 
     public static final Component PREFIX = MiniMessage.miniMessage().deserialize("<gradient:red:white>[AntiRedstoneClock]</gradient>");
 
@@ -61,58 +53,41 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
-        injector = Guice.createInjector(
-            new PlatformModule(this),
-            new ServiceModule(),
-            new ExternalSupportModule(),
-            new CommandModule(),
-            new ListenerModule()
+        injector = Guice.createInjector(Stage.PRODUCTION, Arrays.asList(
+                new PlatformModule(this),
+                new TranslationModule(),
+                new ServiceModule(),
+                new ExternalSupportModule(),
+                new CommandModule(),
+                new ListenerModule()
+                )
         );
     }
 
     @Override
     public void onEnable() {
-        TranslationService translationService = injector.getInstance(TranslationService.class);
-        this.updateService = injector.getInstance(UpdateService.class);
+        injector.getInstance(TranslationModule.class);
         this.tps = injector.getInstance(CheckTPS.class);
-        
-        // Setup translations
-        Path langFolder = getDataFolder().toPath().resolve("lang");
-        if (Files.notExists(langFolder)) {
-            try {
-                Files.createDirectories(langFolder);
-            } catch (IOException e) {
-                getSLF4JLogger().error("An error occurred while creating lang folder");
-                return;
-            }
-        }
-        var languages = new HashSet<>(getConfig().getStringList("translations"));
-        languages.add("en-US");
-        languages.stream()
-            .map(Locale::forLanguageTag)
-            .forEach(locale -> loadAndRegisterTranslation(locale, langFolder, translationService));
-        translationService.registerGlobal();
-        
+
         // Initialize other components
         donationInformation();
         updateService();
         enableCommandFramework();
         enableTPSChecker();
         enableBStatsSupport();
-        registerEvents();
+        this.injector.getInstance(ListenerModule.class).registerEvents(injector, this);
         registerCommands();
     }
 
     private void updateService() {
-        this.updateService.run();
-        this.updateService.notifyConsole(getComponentLogger());
+        injector.getInstance(UpdateService.class).schedule();
+        injector.getInstance(UpdateService.class).run();
+        injector.getInstance(UpdateService.class).notifyConsole(getComponentLogger());
     }
 
     @Override
     public void onDisable() {
-        if (this.updateService != null) {
-            this.updateService.shutdown();
-        }
+        injector.getInstance(UpdateService.class).shutdown();
     }
 
     private void donationInformation() {
@@ -157,59 +132,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     // External support now handled by DI in ExternalSupportModule
 
-    private void registerEvents() {
-        // Register DI-enabled listeners
-        getServer().getPluginManager().registerEvents(injector.getInstance(PlayerListener.class), this);
-        
-        if (getConfig().getBoolean("check.observer", true)) {
-            getServer().getPluginManager().registerEvents(injector.getInstance(ObserverListener.class), this);
-        }
-        
-        if (getConfig().getBoolean("check.sculk", true)) {
-            var sculk = Material.getMaterial("SCULK");
-            if (sculk != null) {
-                getServer().getPluginManager().registerEvents(injector.getInstance(SculkListener.class), this);
-            }
-        }
-        
-        if (getConfig().getBoolean("check.piston", true)) {
-            getServer().getPluginManager().registerEvents(injector.getInstance(PistonListener.class), this);
-        }
-        
-        // Material-dependent listeners now use dependency injection
-        if (getConfig().getBoolean("check.comparator", true)) {
-            var comparator = Material.getMaterial("COMPARATOR");
-            if (comparator != null) {
-                var listener = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(comparator, this.injector.getInstance(RedstoneClockService.class), tps, this);
-                getServer().getPluginManager().registerEvents(listener, this);
-            } else {
-                var listener1 = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_OFF"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
-                var listener2 = injector.getInstance(ListenerModule.class)
-                    .createComparatorListener(Material.getMaterial("REDSTONE_COMPARATOR_ON"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
-                getServer().getPluginManager().registerEvents(listener1, this);
-                getServer().getPluginManager().registerEvents(listener2, this);
-            }
-        }
-        
-        if (getConfig().getBoolean("check.redstoneAndRepeater", true)) {
-            var repeater = Material.getMaterial("REPEATER");
-            if (repeater != null) {
-                var listener = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(repeater,  this.injector.getInstance(RedstoneClockService.class), tps, this);
-                getServer().getPluginManager().registerEvents(listener, this);
-            } else {
-                var listener1 = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_ON"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
-                var listener2 = injector.getInstance(ListenerModule.class)
-                    .createRedstoneListener(Material.getMaterial("DIODE_BLOCK_OFF"),  this.injector.getInstance(RedstoneClockService.class), tps, this);
-                getServer().getPluginManager().registerEvents(listener1, this);
-                getServer().getPluginManager().registerEvents(listener2, this);
-            }
-        }
-    }
-
     private void enableTPSChecker() {
         this.tps.startCheck();
     }
@@ -243,29 +165,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private String bstatsWorldGuardVersion() {
         return this.injector.getInstance(WorldGuardSupport.class).getVersion();
-    }
-
-    private void loadAndRegisterTranslation(Locale locale, Path langFolder, TranslationService translationService) {
-        try {
-            ResourceBundle bundle = loadResourceBundle(locale, langFolder);
-            if (bundle != null) {
-                translationService.registerAll(locale, bundle, false);
-            }
-        } catch (Exception e) {
-            getSLF4JLogger().error("An error occurred while loading language file for locale {}", locale, e);
-        }
-    }
-
-    private ResourceBundle loadResourceBundle(Locale locale, Path langFolder) throws Exception {
-        Path langFile = langFolder.resolve(RESOURCE_BUNDLE_NAME + "_" + locale.toLanguageTag() + ".properties");
-
-        if (Files.exists(langFile)) {
-            try (URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{langFolder.toUri().toURL()})) {
-                return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, locale, urlClassLoader, UTF8ResourceBundleControl.get());
-            }
-        } else {
-            return ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, locale, UTF8ResourceBundleControl.get());
-        }
     }
 
 }
