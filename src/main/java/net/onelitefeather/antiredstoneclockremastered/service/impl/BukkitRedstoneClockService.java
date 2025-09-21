@@ -4,9 +4,9 @@ import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,7 +36,7 @@ import java.util.logging.Level;
 public final class BukkitRedstoneClockService implements RedstoneClockService {
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
-    private final PlatformModule.RegionService regionService;
+    private final RegionService regionService;
     private int endTimeDelay;
     private int maxClockCount;
     private boolean autoBreakBlock;
@@ -49,7 +49,7 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     @Inject
-    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, PlatformModule.RegionService regionService) {
+    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, RegionService regionService) {
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
