@@ -1,3 +1,10 @@
+# [2.3.0-beta.10](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.9...v2.3.0-beta.10) (2025-09-21)
+
+
+### Features
+
+* update permissions for JAR upload job to allow write access ([0694c99](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/0694c99ca6e237d027275576eddd954ffcc622eb))
+
 # [2.3.0-beta.9](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.8...v2.3.0-beta.9) (2025-09-21)
 
 
