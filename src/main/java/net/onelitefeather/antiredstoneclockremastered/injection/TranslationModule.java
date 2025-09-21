@@ -10,7 +10,6 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
-import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
