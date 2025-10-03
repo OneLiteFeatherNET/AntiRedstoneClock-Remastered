@@ -21,6 +21,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -42,10 +44,10 @@ public final class DiscordNotificationService implements NotificationService {
 
     private WebhookClient createWebHook() {
         if (this.plugin.getConfig().getString("notification.discord.webhook", "").isEmpty()) return null;
-        if (!this.plugin.getConfig().getStringList("notification.discord.enabled").contains("discord")) return null;
+        if (!this.plugin.getConfig().getStringList("notification.enabled").contains("discord")) return null;
         try {
-            var url = new URL(this.plugin.getConfig().getString("notification.discord.webhook", ""));
-        } catch (Exception e) {
+            URI.create(this.plugin.getConfig().getString("notification.discord.webhook", ""));
+        } catch (IllegalArgumentException e) {
             LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml");
             LOGGER.error("Disabling plugin...");
             Bukkit.getPluginManager().disablePlugin(this.plugin);
