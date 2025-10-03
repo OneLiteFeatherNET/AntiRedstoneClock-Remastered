@@ -15,7 +15,9 @@ public final class Constants {
     public static final String DISABLE_DONATION_NOTIFY = "antiredstoneclockremastered.notify.disable.donation";
     public static final URI LATEST_RELEASE_VERSION_URI = URI.create("https://hangar.papermc.io/api/v1/projects/AntiRedstoneClock-Remastered/latestrelease");
     public static final HttpRequest LATEST_RELEASE_VERSION_REQUEST = HttpRequest.newBuilder().GET().uri(LATEST_RELEASE_VERSION_URI).build();
-
+    public static final int MAX_SIGN_LINES = 4;
+    public static final int MAX_SIGN_LINE_LENGTH = 16;
+    public static final String META_KEY_ARCR_SIGN = "arcr-sign";
     public static final Collection<Material> REDSTONE_ITEMS = new ArrayList<>(initRedstoneItems());
 
     private static Collection<Material> initRedstoneItems() {
