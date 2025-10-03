@@ -22,3 +22,21 @@ tps:
   interval: 2
   max: 20
   min: 15
+
+notification:
+  # Should be lowercase
+  enabled:
+    - console
+    - admins
+    - discord
+    - sign
+  sign:
+    material: OAK_SIGN
+    front:
+      - "<red>RedstoneClocks!"
+      - "<red>Are"
+      - "<red>prohibited"
+    back:
+      - "<red>RedstoneClocks!"
+      - "<red>Are"
+      - "<red>prohibited"

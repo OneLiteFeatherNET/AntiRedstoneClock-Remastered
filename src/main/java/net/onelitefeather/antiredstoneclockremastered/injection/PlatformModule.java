@@ -83,6 +83,7 @@ public final class PlatformModule extends AbstractModule {
      */
     public interface RegionService {
         void executeInRegion(Location location, Runnable task);
+        void executeInRegion(Location location, Runnable task, long delay);
         boolean isRegionOwner(Location location);
     }
     
@@ -144,7 +145,12 @@ public final class PlatformModule extends AbstractModule {
         public void executeInRegion(Location location, Runnable task) {
             // Folia region-aware execution
         }
-        
+
+        @Override
+        public void executeInRegion(Location location, Runnable task, long delay) {
+
+        }
+
         @Override
         public boolean isRegionOwner(Location location) {
             // Folia region ownership check
@@ -164,7 +170,12 @@ public final class PlatformModule extends AbstractModule {
             // Standard Bukkit execution
             task.run();
         }
-        
+
+        @Override
+        public void executeInRegion(Location location, Runnable task, long delay) {
+
+        }
+
         @Override
         public boolean isRegionOwner(Location location) {
             // Always true for non-Folia

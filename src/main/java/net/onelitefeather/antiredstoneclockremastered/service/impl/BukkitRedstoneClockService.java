@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
+import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
@@ -38,22 +39,20 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
     private int endTimeDelay;
     private int maxClockCount;
     private boolean autoBreakBlock;
-    private boolean notifyAdmins;
-    private boolean notifyConsole;
     private boolean dropItems;
     private List<String> ignoredWorlds;
+    private final NotificationService notificationService;
 
     private final ConcurrentHashMap<Location, RedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final ItemStack SILK_TOUCH_PICKAXE = new ItemStack(Material.DIAMOND_PICKAXE);
 
     @Inject
-    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    public BukkitRedstoneClockService(@NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered, NotificationService notificationService) {
+        this.notificationService = notificationService;
         this.antiRedstoneClockRemastered = antiRedstoneClockRemastered;
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
         this.autoBreakBlock = antiRedstoneClockRemastered.getConfig().getBoolean("clock.autoBreak", true);
-        this.notifyAdmins = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyAdmins", true);
-        this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
         SILK_TOUCH_PICKAXE.addEnchantment(Enchantment.SILK_TOUCH, 1);
@@ -157,33 +156,9 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
         if (this.autoBreakBlock) breakBlock(location);
         if (!clock.isDetected()) {
             clock.setDetected(true);
-            if (this.notifyConsole) {
-                this.antiRedstoneClockRemastered.getLogger().log(Level.WARNING, "Redstone Clock detected at: X,Y,Z({0},{1},{2})", new Object[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()});
-            }
-            if (this.notifyAdmins) {
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY)) {
-                        sendNotification(player, location);
-                    }
-                }
-            }
-
+            this.notificationService.sendNotificationMessage(location);
         }
         removeClockByClock(clock);
-    }
-
-    private void sendNotification(final Player player, final Location location) {
-        final var component = Component.translatable("service.notify.detected.clock")
-                .arguments(AntiRedstoneClockRemastered.PREFIX,
-                        Component.text(location.getBlockX()),
-                        Component.text(location.getBlockY()),
-                        Component.text(location.getBlockZ()),
-                        Component.empty().clickEvent(ClickEvent.callback(audience -> {
-                            if (audience instanceof final Player executor) {
-                                executor.teleport(location);
-                            }
-                        })));
-        player.sendMessage(component);
     }
 
     private void breakBlock(@NotNull Location location) {
@@ -208,8 +183,6 @@ public final class BukkitRedstoneClockService implements RedstoneClockService {
         this.endTimeDelay = antiRedstoneClockRemastered.getConfig().getInt("clock.endDelay", 300);
         this.maxClockCount = antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150);
         this.autoBreakBlock = antiRedstoneClockRemastered.getConfig().getBoolean("clock.autoBreak", true);
-        this.notifyAdmins = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyAdmins", true);
-        this.notifyConsole = antiRedstoneClockRemastered.getConfig().getBoolean("clock.notifyConsole", true);
         this.dropItems = antiRedstoneClockRemastered.getConfig().getBoolean("clock.drop", false);
         this.ignoredWorlds = antiRedstoneClockRemastered.getConfig().getStringList("check.ignoredWorlds");
     }
