@@ -1,3 +1,17 @@
+# [2.3.0-beta.14](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.13...v2.3.0-beta.14) (2025-10-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.assertj:assertj-core to v3.27.6 ([a9e1b67](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/a9e1b677475e7d18b6a82e8fa98d3557ca139f84))
+* **deps:** update dependency org.assertj:assertj-core to v3.27.6 ([#168](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/168)) ([833204f](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/833204fac237a75fae92e07c8e14c86a4fa3d2e3))
+* **deps:** update dependency org.junit.jupiter:junit-jupiter to v6 ([2f9c873](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/2f9c873a3bc9318974ebd1ece5aa04e5891f9b2f))
+* **deps:** update dependency org.junit.jupiter:junit-jupiter to v6 ([#171](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/171)) ([6c2ba23](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/6c2ba2341f306f30905208dd2aee359bdb7f709b))
+* **deps:** update mockito monorepo to v5.20.0 ([7f52ee3](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/7f52ee38fdae64ffd71ccaac23d6d904fc7813c5))
+* **deps:** update mockito monorepo to v5.20.0 (minor) ([#167](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/167)) ([a74cf09](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/a74cf0931d2734f4f2988c8dd3f031083cb61a48))
+* update Sonatype OSS repository URL in settings.gradle.kts ([6804444](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/68044448ade05e8cb6c0c98067d47e6c6eb1313f))
+* update Sonatype OSS repository URL in settings.gradle.kts ([#174](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/174)) ([ce41f1b](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/ce41f1b37765166c4bfadfcafdacafeb4228dbe6))
+
 # [2.3.0-beta.13](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0-beta.12...v2.3.0-beta.13) (2025-09-21)
 
 
