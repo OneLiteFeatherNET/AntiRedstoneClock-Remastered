@@ -5,12 +5,15 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.papermc.paper.ServerBuildInfo;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
+import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
+import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.impl.*;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,35 +28,33 @@ import org.slf4j.LoggerFactory;
 public final class ServiceModule extends AbstractModule {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceModule.class);
-    private final AntiRedstoneClockRemastered plugin;
-    
-    public ServiceModule(AntiRedstoneClockRemastered plugin) {
-        this.plugin = plugin;
-    }
-    
+
     @Override
     protected void configure() {
-        bind(AntiRedstoneClockRemastered.class).toInstance(plugin);
         bind(UpdateService.class).in(Singleton.class);
         bind(CheckTPS.class).in(Singleton.class);
     }
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService() {
-        return RedstoneClockServiceFactory.createService(plugin);
+    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin,
+                                                            RegionService regionService,
+                                                            PlotsquaredSupport plotsquaredSupport,
+                                                            WorldGuardSupport worldGuardSupport,
+                                                            NotificationService notificationService) {
+        return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport,
+                notificationService);
     }
-    
+
     @Provides
     @Singleton
-    public TranslationService provideTranslationService() {
-        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-        if (buildInfo.minecraftVersionId().startsWith("1.20")) {
-            LOGGER.info("Using legacy translation service");
-            return new LegacyTranslationService();
-        } else {
-            LOGGER.info("Using modern translation service");
-            return new ModernTranslationService();
-        }
+    public NotificationService providesNotificationService(AntiRedstoneClockRemastered antiRedstoneClockRemastered,
+                                                           RegionService regionService) {
+        var adminNotifications = new AdminNotificationService(antiRedstoneClockRemastered, null);
+        var consoleNotification = new ConsoleNotificationService(antiRedstoneClockRemastered, adminNotifications);
+        var signNotifications = new SignNotificationService(antiRedstoneClockRemastered, consoleNotification, regionService);
+        var discordNotification = new DiscordNotificationService(antiRedstoneClockRemastered, signNotifications);
+        return discordNotification;
     }
+
 }

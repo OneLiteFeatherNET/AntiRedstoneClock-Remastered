@@ -3,6 +3,7 @@ package net.onelitefeather.antiredstoneclockremastered.utils;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 
 @Singleton
 public final class CheckTPS {
@@ -11,13 +12,15 @@ public final class CheckTPS {
     private boolean tpsOk = true;
     private long tps = 20;
     private final AntiRedstoneClockRemastered plugin;
+    private final SchedulerService scheduler;
     private final int interval;
     private final int maximimumTPS;
     private final int minimumTPS;
 
     @Inject
-    public CheckTPS(AntiRedstoneClockRemastered plugin) {
+    public CheckTPS(AntiRedstoneClockRemastered plugin, SchedulerService scheduler) {
         this.plugin = plugin;
+        this.scheduler = scheduler;
         this.interval = plugin.getConfig().getInt("tps.interval", 2);
         this.maximimumTPS = plugin.getConfig().getInt("tps.max", 20);
         this.minimumTPS = plugin.getConfig().getInt("tps.min", 15);
@@ -25,7 +28,7 @@ public final class CheckTPS {
 
     public void startCheck() {
         if (this.minimumTPS > 0 || this.maximimumTPS > 0) {
-            this.plugin.getServer().getScheduler().runTaskTimer(this.plugin, this::runCheck, 0, 20L * this.interval);
+            this.scheduler.scheduleRepeatingTask(this::runCheck, 1, 20L * this.interval);
         }
     }
 

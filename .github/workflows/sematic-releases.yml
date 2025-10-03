@@ -5,6 +5,7 @@ name: Release
       - main
       - next
       - beta
+      - alpha
       - "*.x"
 
 permissions:
