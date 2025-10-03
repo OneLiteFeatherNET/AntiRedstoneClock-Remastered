@@ -48,16 +48,14 @@ public final class DiscordNotificationService implements NotificationService {
         try {
             URI.create(this.plugin.getConfig().getString("notification.discord.webhook", ""));
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml");
-            LOGGER.error("Disabling plugin...");
+            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml", e);
             Bukkit.getPluginManager().disablePlugin(this.plugin);
             return null;
         }
         try {
             return WebhookClient.withUrl(this.plugin.getConfig().getString("notification.discord.webhook", ""));
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml");
-            LOGGER.error("Disabling plugin...");
+            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml", e);
             Bukkit.getPluginManager().disablePlugin(this.plugin);
             return null;
         }
