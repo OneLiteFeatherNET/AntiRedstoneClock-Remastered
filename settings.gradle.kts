@@ -12,15 +12,15 @@ dependencyResolutionManagement {
         maven("https://maven.enginehub.org/repo/")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://repo.papermc.io/repository/maven-public/")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
     versionCatalogs {
         create("libs") {
             version("modrinth", "2.+")
             version("hangar", "0.1.3")
             version("paper.yml", "0.6.0")
-            version("paper.run", "3.0.0")
-            version("shadowJar", "9.1.0")
+            version("paper.run", "3.0.1")
+            version("shadowJar", "9.2.2")
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
@@ -36,10 +36,10 @@ dependencyResolutionManagement {
             version("jakarta-inject", "2.0.1")
             
             // Testing dependencies
-            version("junit", "5.13.4")
-            version("mockito", "5.19.0")
+            version("junit", "6.0.0")
+            version("mockito", "5.20.0")
             version("mockbukkit", "3.133.2")
-            version("assertj", "3.27.5")
+            version("assertj", "3.27.6")
 
             // WorldGuard
             version("wgv6", "6.2")
