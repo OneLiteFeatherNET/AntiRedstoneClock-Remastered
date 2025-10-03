@@ -12,6 +12,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -20,6 +21,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +41,22 @@ public final class DiscordNotificationService implements NotificationService {
     }
 
     private WebhookClient createWebHook() {
+        if (this.plugin.getConfig().getString("notification.discord.webhook", "").isEmpty()) return null;
+        if (!this.plugin.getConfig().getStringList("notification.discord.enabled").contains("discord")) return null;
+        try {
+            var url = new URL(this.plugin.getConfig().getString("notification.discord.webhook", ""));
+        } catch (Exception e) {
+            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml");
+            LOGGER.error("Disabling plugin...");
+            Bukkit.getPluginManager().disablePlugin(this.plugin);
+            return null;
+        }
         try {
             return WebhookClient.withUrl(this.plugin.getConfig().getString("notification.discord.webhook", ""));
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Failed to create webhook client");
+            LOGGER.error("Failed to create webhook client. Please check your webhook URL in the config.yml");
+            LOGGER.error("Disabling plugin...");
+            Bukkit.getPluginManager().disablePlugin(this.plugin);
             return null;
         }
     }

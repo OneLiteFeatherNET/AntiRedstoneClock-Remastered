@@ -45,6 +45,8 @@ notification:
 
   sign:
     material: OAK_SIGN
+    # Should be a list of strings for each line of the sign
+    # The max length of each line is 16 characters
     front:
       - "<red>RedstoneClocks!"
       - "<red>Are"
