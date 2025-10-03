@@ -1,6 +1,8 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import xyz.jpenilla.runpaper.task.RunServer
+import xyz.jpenilla.runtask.pluginsapi.PluginDownloadService
+import xyz.jpenilla.runtask.service.DownloadsAPIService
 
 plugins {
     id("java")
@@ -80,9 +82,6 @@ dependencies {
 }
 
 tasks {
-    named<Jar>("jar") {
-        archiveClassifier.set("unshaded")
-    }
     named("build") {
         dependsOn(shadowJar)
     }
@@ -113,11 +112,28 @@ tasks {
             pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
         }
     }
+    supportedMinecraftVersions.forEach { serverVersion ->
+        register<RunServer>("run-folia-$serverVersion") {
+            minecraftVersion(serverVersion)
+            jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
+            group = "run folia"
+            runDirectory.set(file("run-folia-$serverVersion"))
+            pluginJars(rootProject.tasks.shadowJar.map { it.archiveFile }.get())
+            downloadsApiService.convention(DownloadsAPIService.folia(project))
+            pluginDownloadService.convention(PluginDownloadService.paper(project))
+        }
+    }
+
     shadowJar {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
+        dependsOn(jar)
     }
     this.modrinth {
+        dependsOn(shadowJar)
+    }
+
+    this.publishAllPublicationsToHangar {
         dependsOn(shadowJar)
     }
     
@@ -130,11 +146,16 @@ tasks {
     }
 }
 
+runPaper.folia {
+    registerTask()
+}
+
 
 paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
+    foliaSupported = true
     serverDependencies {
         register("PlotSquared") {
             required = false
@@ -151,6 +172,7 @@ paper {
         }
         register("antiredstoneclockremastered.command.reload")
         register("antiredstoneclockremastered.command.help")
+        register("antiredstoneclockremastered.command.display")
         register("antiredstoneclockremastered.command.feature.check.observer")
         register("antiredstoneclockremastered.command.feature.check.piston")
         register("antiredstoneclockremastered.command.feature.check.sculk")
@@ -164,14 +186,49 @@ paper {
         register("antiredstoneclockremastered.command.feature.clock.drop")
         register("antiredstoneclockremastered.command.feature.clock.enddelay")
         register("antiredstoneclockremastered.command.feature.clock.maxCount")
+        register("antiredstoneclockremastered.bundle.admin") {
+            children = listOf(
+                "antiredstoneclockremastered.notify.admin",
+                "antiredstoneclockremastered.notify.disable.donation",
+                "antiredstoneclockremastered.notify.admin.update",
+                "antiredstoneclockremastered.command.reload",
+                "antiredstoneclockremastered.command.help",
+                "antiredstoneclockremastered.command.feature.check.observer",
+                "antiredstoneclockremastered.command.feature.check.piston",
+                "antiredstoneclockremastered.command.feature.check.sculk",
+                "antiredstoneclockremastered.command.feature.check.redstone_and_repeater",
+                "antiredstoneclockremastered.command.feature.check.world.add",
+                "antiredstoneclockremastered.command.feature.check.world.remove",
+                "antiredstoneclockremastered.command.feature.check.region.remove",
+                "antiredstoneclockremastered.command.feature.check.region.add",
+                "antiredstoneclockremastered.command.feature.clock.notifyAdmins",
+                "antiredstoneclockremastered.command.feature.clock.notifyConsole",
+                "antiredstoneclockremastered.command.feature.clock.drop",
+                "antiredstoneclockremastered.command.feature.clock.enddelay",
+                "antiredstoneclockremastered.command.feature.clock.maxCount",
+                "antiredstoneclockremastered.command.display"
+            )
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "All permissions for AntiRedstoneClock-Remastered"
+        }
+
+        register("antiredstoneclockremastered.bundle.developers") {
+            children = listOf(
+                "antiredstoneclockremastered.command.reload",
+                "antiredstoneclockremastered.command.help",
+                "antiredstoneclockremastered.command.display"
+            )
+            default = BukkitPluginDescription.Permission.Default.OP
+            description = "Permissions for developers of AntiRedstoneClock-Remastered"
+        }
     }
 }
 val baseVersion = version as String
 val baseChannel = with(baseVersion) {
     when {
-        contains("SNAPSHOT") -> "Snapshot"
-        contains("ALPHA") -> "Alpha"
-        contains("BETA") -> "Beta"
+        contains("SNAPSHOT", true) -> "Snapshot"
+        contains("ALPHA", true) -> "Alpha"
+        contains("BETA", true) -> "Beta"
         else -> "Release"
     }
 }
@@ -204,4 +261,5 @@ modrinth {
     gameVersions.addAll(supportedMinecraftVersions)
     loaders.add("paper")
     loaders.add("bukkit")
+    loaders.add("folia")
 }

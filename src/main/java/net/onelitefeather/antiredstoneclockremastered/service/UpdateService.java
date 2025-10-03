@@ -1,15 +1,16 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
 import com.github.zafarkhaja.semver.Version;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
+import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +21,18 @@ import java.net.http.HttpResponse;
 
 @Singleton
 public final class UpdateService implements Runnable {
-    private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
+    private static final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
+    private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private final Version localVersion;
+    private final SchedulerService schedulerService;
     private Version remoteVersion;
-    private final BukkitTask scheduler;
-    private final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
+    private ScheduledTask scheduler;
 
     @Inject
-    public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered) {
+    public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, SchedulerService schedulerService) {
         this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
-        this.scheduler = Bukkit.getScheduler().runTaskTimerAsynchronously(antiRedstoneClockRemastered, this, 0, 20 * 60 * 60 * 3);
+        this.schedulerService = schedulerService;
     }
 
 
@@ -71,6 +73,10 @@ public final class UpdateService implements Runnable {
                         Component.text(localVersion.toString()),
                         Component.text(remoteVersion.toString())
                 ));
+    }
+
+    public void schedule() {
+        this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, 20 * 60 * 60 * 3);
     }
 
 
