@@ -13,6 +13,18 @@
         "publishCmd": "./gradlew -Pversion=${nextRelease.version} shadowJar publishAllPublicationsToHangar modrinth"
       }
     ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md"]
+      }
+    ],
     "@semantic-release/git",
     "@semantic-release/release-notes-generator",
     [
