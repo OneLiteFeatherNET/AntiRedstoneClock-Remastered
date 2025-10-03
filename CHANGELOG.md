@@ -1,3 +1,21 @@
+# [2.4.0-beta.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0...v2.4.0-beta.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* correct notification configuration keys and method name for clarity ([bf77855](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/bf77855b6cc963b100a8cb9b86f98c182daab4ef))
+* enhance error logging for webhook client creation failures ([201b18e](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/201b18e9d86e657b2dc9da0e1a5f6723236607fa))
+* update Discord notification configuration keys for consistency and improve error handling ([89c46fc](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/89c46fccbe699614fcae5aac05348af1d721c8c1))
+
+
+### Features
+
+* add Discord notification service with webhook integration ([c527a2e](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c527a2e9b24da2e9ff83af853802021a2b6e6401))
+* enhance notification system with new services and configuration options ([7b2e5ef](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/7b2e5efb46dca0a3dc2bff98342b6c0e27e69425))
+* implement notification system for redstone clock detection ([9a42292](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/9a422921687670fa53af6365fe9498d1f0f1d99a))
+* implement sign block break handling and metadata management ([d737be4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/d737be4be32760383b588ffd6bb9736c2b54a41a))
+* improve Discord webhook handling and error logging ([b9f196b](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/b9f196b8bb839f96e7d3b805710150136b7f5497))
+
 # [2.3.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.2.8...v2.3.0) (2025-10-03)
 
 

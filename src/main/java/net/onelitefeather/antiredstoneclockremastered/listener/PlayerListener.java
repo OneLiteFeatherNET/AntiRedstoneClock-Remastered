@@ -46,4 +46,13 @@ public final class PlayerListener implements Listener {
             break recheck;
         }
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void onSignBlockBreak(BlockBreakEvent blockBreakEvent) {
+        var block = blockBreakEvent.getBlock();
+        var hasKey = block.hasMetadata(Constants.META_KEY_ARCR_SIGN);
+        if (hasKey) {
+            blockBreakEvent.setDropItems(false);
+        }
+    }
 }

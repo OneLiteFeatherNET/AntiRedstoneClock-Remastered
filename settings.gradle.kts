@@ -31,6 +31,10 @@ dependencyResolutionManagement {
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
+            version("adventure-text-discord-serializer", "4.3.0")
+            version("jda", "5.6.1")
+            version("jda-webhook", "0.8.4")
+
             version("semver", "0.10.2")
             version("guice", "7.0.0")
             version("jakarta-inject", "2.0.1")
@@ -64,6 +68,9 @@ dependencyResolutionManagement {
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("adventure.text.feature.pagination", "net.kyori", "adventure-text-feature-pagination").versionRef("adventure-text-feature-pagination")
+            library("adventure.text.discord", "dev.vankka", "mcdiscordreserializer").versionRef("adventure-text-discord-serializer")
+            library("jda", "net.dv8tion", "JDA").versionRef("jda")
+            library("jda-webhook", "club.minnced", "discord-webhooks").versionRef("jda-webhook")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
 
             library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommandPaper")
