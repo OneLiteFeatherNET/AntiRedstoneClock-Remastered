@@ -53,7 +53,8 @@ public final class ServiceModule extends AbstractModule {
         var adminNotifications = new AdminNotificationService(antiRedstoneClockRemastered, null);
         var consoleNotification = new ConsoleNotificationService(antiRedstoneClockRemastered, adminNotifications);
         var signNotifications = new SignNotificationService(antiRedstoneClockRemastered, consoleNotification, regionService);
-        return signNotifications;
+        var discordNotification = new DiscordNotificationService(antiRedstoneClockRemastered, signNotifications);
+        return discordNotification;
     }
 
 }

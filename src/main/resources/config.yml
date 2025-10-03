@@ -30,6 +30,19 @@ notification:
     - admins
     - discord
     - sign
+  discord:
+    webhook: "_here_comes_the_webhook_url_"
+    avatar: "https://cdn.modrinth.com/data/UWh9tyEa/ea7b1aded47652100a1f0e8673e87c124b38fc08_96.webp"
+    # Should be a hex color code without the #
+    color: 0xFF00FF
+    description: |
+      <red><bold>There is a redstone clock in <world> at <x>,<y>,<z></bold>
+    fields:
+      - name: "Teleport Command"
+        value: "/teleport <x> <y> <z>"
+        inline: true
+      
+
   sign:
     material: OAK_SIGN
     front:

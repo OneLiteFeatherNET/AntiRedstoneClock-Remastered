@@ -72,13 +72,13 @@ public final class SignNotificationService implements NotificationService {
         if (!isEnabled()) return;
         if (!this.regionService.isRegionOwner(location)) return;
         this.regionService.executeInRegion(location, () -> {
-            LOGGER.info("Sending sign notification at {}", location);
+            LOGGER.debug("Sending sign notification at {}", location);
             var blockMaterialString = this.plugin.getConfig().getString("notification.sign.material", "OAK_SIGN");
             var blockMaterial = Optional.ofNullable(Material.matchMaterial(blockMaterialString)).orElse(Material.OAK_SIGN);
             var block = location.getWorld().getBlockAt(location);
             block.setType(blockMaterial, false);
             var state = block.getState();
-            LOGGER.info("Block state is {}", state);
+            LOGGER.debug("Block state is {}", state);
             if (state instanceof Sign sign) {
                 var side = sign.getSide(Side.BACK);
                 var lines = this.plugin.getConfig().getStringList("notification.sign.back")
@@ -101,7 +101,7 @@ public final class SignNotificationService implements NotificationService {
                 }
                 sign.update(true, false);
             }
-            LOGGER.info("Updating sign at {}", location);
+            LOGGER.debug("Updating sign at {}", location);
             block.getState().update();
         }, 2);
 
