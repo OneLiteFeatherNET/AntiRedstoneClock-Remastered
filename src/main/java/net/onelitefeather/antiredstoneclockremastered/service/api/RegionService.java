@@ -20,6 +20,14 @@ public interface RegionService {
     void executeInRegion(Location location, Runnable task);
 
     /**
+     * Executes a task within the context of a specific region.
+     * @param location The location to determine the region.
+     * @param task The task to execute.
+     * @param delay The delay in ticks before the task is executed.
+     */
+    void executeInRegion(Location location, Runnable task, long delay);
+
+    /**
      * Checks if the current server instance is the owner of the region at the specified location.
      *
      * @param location The location to check.

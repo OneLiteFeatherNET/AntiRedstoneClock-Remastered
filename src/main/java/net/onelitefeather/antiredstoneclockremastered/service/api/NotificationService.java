@@ -2,7 +2,6 @@ package net.onelitefeather.antiredstoneclockremastered.service.api;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -19,13 +18,13 @@ public interface NotificationService {
      * @param location where the notification gets sent from
      * @return the notification message
      */
-    @Nullable Component getNotificationMessage(@NotNull Location location);
+    @Nullable Component getNotificationMessage(Location location);
 
     /**
      * Send a notification message to the given audience.
      * @param location where the notification gets sent from
      */
-    void sendNotificationMessage(@NotNull Location location);
+    void sendNotificationMessage(Location location);
 
     boolean isEnabled();
 }

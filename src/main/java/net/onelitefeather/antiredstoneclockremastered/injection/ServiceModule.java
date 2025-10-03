@@ -7,13 +7,13 @@ import io.papermc.paper.ServerBuildInfo;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
+import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.impl.*;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +37,23 @@ public final class ServiceModule extends AbstractModule {
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin, RegionService regionService,
-                                                            PlotsquaredSupport plotsquaredSupport, WorldGuardSupport worldGuardSupport) {
-        return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport);
+    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin,
+                                                            RegionService regionService,
+                                                            PlotsquaredSupport plotsquaredSupport,
+                                                            WorldGuardSupport worldGuardSupport,
+                                                            NotificationService notificationService) {
+        return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport,
+                notificationService);
     }
+
+    @Provides
+    @Singleton
+    public NotificationService providesNotificationService(AntiRedstoneClockRemastered antiRedstoneClockRemastered,
+                                                           RegionService regionService) {
+        var adminNotifications = new AdminNotificationService(antiRedstoneClockRemastered, null);
+        var consoleNotification = new ConsoleNotificationService(antiRedstoneClockRemastered, adminNotifications);
+        var signNotifications = new SignNotificationService(antiRedstoneClockRemastered, consoleNotification, regionService);
+        return signNotifications;
+    }
+
 }

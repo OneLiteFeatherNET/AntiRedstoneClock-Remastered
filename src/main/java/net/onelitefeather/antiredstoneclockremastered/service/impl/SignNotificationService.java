@@ -1,34 +1,62 @@
 package net.onelitefeather.antiredstoneclockremastered.service.impl;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
+import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 public final class SignNotificationService implements NotificationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SignNotificationService.class);
+    private static final ComponentLogger LOGGER = ComponentLogger.logger(SignNotificationService.class);
     private final AntiRedstoneClockRemastered plugin;
     private final NotificationService notificationService;
-    private final PlatformModule.RegionService regionService;
+    private final RegionService regionService;
 
     public SignNotificationService(@NotNull AntiRedstoneClockRemastered plugin,
                                    @Nullable NotificationService notificationService,
-                                   @NotNull PlatformModule.RegionService regionService) {
+                                   @NotNull RegionService regionService) {
         this.plugin = plugin;
         this.notificationService = notificationService;
         this.regionService = regionService;
+        if (isEnabled()) {
+            this.warnForToLongText();
+        }
+    }
+
+    private void warnForToLongText() {
+        var size = this.plugin.getConfig().getStringList("notification.sign.back").size();
+        if (size > Constants.MAX_SIGN_LINES) {
+            LOGGER.warn("Sign notification 'back' side has too many lines: {}", size);
+        }
+        size = this.plugin.getConfig().getStringList("notification.sign.front").size();
+        if (size > Constants.MAX_SIGN_LINES) {
+            LOGGER.warn("Sign notification 'front' side has too many lines: {}", size);
+        }
+        this.plugin.getConfig().getStringList("notification.sign.back")
+                .stream()
+                .map(MiniMessage.miniMessage()::stripTags)
+                .filter(this::isLineToLongForSign)
+                .forEach(line -> LOGGER.warn("Sign notification line is too long for back side: {}", line));
+        this.plugin.getConfig().getStringList("notification.sign.front")
+                .stream()
+                .map(MiniMessage.miniMessage()::stripTags)
+                .filter(this::isLineToLongForSign)
+                .forEach(line -> LOGGER.warn("Sign notification line is too long for front side: {}", line));
+    }
+
+    private boolean isLineToLongForSign(String line) {
+        return line.length() > Constants.MAX_SIGN_LINE_LENGTH;
     }
 
     @Override
@@ -56,24 +84,26 @@ public final class SignNotificationService implements NotificationService {
                 var lines = this.plugin.getConfig().getStringList("notification.sign.back")
                         .stream()
                         .map(MiniMessage.miniMessage()::deserialize)
-                        .limit(4)
+                        .limit(Constants.MAX_SIGN_LINES)
                         .toList();
                 for (var i = 0; i < lines.size(); i++) {
                     side.line(i, lines.get(i));
                 }
+                sign.update(true, false);
                 lines = this.plugin.getConfig().getStringList("notification.sign.front")
                         .stream()
                         .map(MiniMessage.miniMessage()::deserialize)
-                        .limit(4)
+                        .limit(Constants.MAX_SIGN_LINES)
                         .toList();
                 side = sign.getSide(Side.FRONT);
                 for (var i = 0; i < lines.size(); i++) {
                     side.line(i, lines.get(i));
                 }
+                sign.update(true, false);
             }
             LOGGER.info("Updating sign at {}", location);
             block.getState().update();
-        });
+        }, 2);
 
     }
 

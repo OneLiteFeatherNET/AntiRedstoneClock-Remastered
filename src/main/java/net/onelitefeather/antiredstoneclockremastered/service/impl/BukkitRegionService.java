@@ -18,6 +18,11 @@ public final class BukkitRegionService implements RegionService {
     }
 
     @Override
+    public void executeInRegion(Location location, Runnable task, long delay) {
+        this.plugin.getServer().getScheduler().runTaskLater(this.plugin, task, delay);
+    }
+
+    @Override
     public boolean isRegionOwner(Location location) {
         // Always true for non-Folia
         return true;

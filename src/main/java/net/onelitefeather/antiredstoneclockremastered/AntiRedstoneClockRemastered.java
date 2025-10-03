@@ -30,6 +30,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         reloadConfig();
+        saveConfig();
         injector = Guice.createInjector(Stage.PRODUCTION, Arrays.asList(
                 new PlatformModule(this),
                 new TranslationModule(),
