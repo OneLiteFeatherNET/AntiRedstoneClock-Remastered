@@ -33,11 +33,11 @@ public final class SignNotificationService implements NotificationService {
         this.regionService = regionService;
         this.metaValue = new FixedMetadataValue(plugin, Constants.META_KEY_ARCR_SIGN);
         if (isEnabled()) {
-            this.warnForToLongText();
+            this.warnForTooLongText();
         }
     }
 
-    private void warnForToLongText() {
+    private void warnForTooLongText() {
         var size = this.plugin.getConfig().getStringList("notification.sign.back").size();
         if (size > Constants.MAX_SIGN_LINES) {
             LOGGER.warn("Sign notification 'back' side has too many lines: {}", size);

@@ -41,7 +41,7 @@ public final class ConsoleNotificationService implements NotificationService {
 
     @Override
     public boolean isEnabled() {
-        return this.plugin.getConfig().getBoolean("clock.notifyAdmins", true)
-                || this.plugin.getConfig().getStringList("notification.enabled").contains("admins");
+        return this.plugin.getConfig().getBoolean("clock.notifyConsole", true)
+                || this.plugin.getConfig().getStringList("notification.enabled").contains("console");
     }
 }
