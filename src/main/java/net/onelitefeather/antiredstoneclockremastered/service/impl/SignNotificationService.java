@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,7 @@ public final class SignNotificationService implements NotificationService {
     private final AntiRedstoneClockRemastered plugin;
     private final NotificationService notificationService;
     private final RegionService regionService;
+    private final FixedMetadataValue metaValue;
 
     public SignNotificationService(@NotNull AntiRedstoneClockRemastered plugin,
                                    @Nullable NotificationService notificationService,
@@ -29,6 +31,7 @@ public final class SignNotificationService implements NotificationService {
         this.plugin = plugin;
         this.notificationService = notificationService;
         this.regionService = regionService;
+        this.metaValue = new FixedMetadataValue(plugin, Constants.META_KEY_ARCR_SIGN);
         if (isEnabled()) {
             this.warnForToLongText();
         }
@@ -80,6 +83,7 @@ public final class SignNotificationService implements NotificationService {
             var state = block.getState();
             LOGGER.debug("Block state is {}", state);
             if (state instanceof Sign sign) {
+                sign.setMetadata(Constants.META_KEY_ARCR_SIGN, this.metaValue);
                 var side = sign.getSide(Side.BACK);
                 var lines = this.plugin.getConfig().getStringList("notification.sign.back")
                         .stream()
