@@ -33,7 +33,7 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
     private final Pagination.Builder pagination = Pagination.builder().resultsPerPage(4);
 
     @Inject
-    public DisplayActiveClocksCommand(@Named("staticTrackingService") RedstoneTrackingService trackingService) {
+    public DisplayActiveClocksCommand(RedstoneTrackingService trackingService) {
         this.trackingService = trackingService;
     }
 

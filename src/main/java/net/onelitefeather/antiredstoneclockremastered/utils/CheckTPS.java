@@ -11,7 +11,6 @@ public final class CheckTPS {
     private long lastPoll = System.currentTimeMillis();
     private boolean tpsOk = true;
     private long tps = 20;
-    private final AntiRedstoneClockRemastered plugin;
     private final SchedulerService scheduler;
     private final int interval;
     private final int maximimumTPS;
@@ -19,7 +18,6 @@ public final class CheckTPS {
 
     @Inject
     public CheckTPS(AntiRedstoneClockRemastered plugin, SchedulerService scheduler) {
-        this.plugin = plugin;
         this.scheduler = scheduler;
         this.interval = plugin.getConfig().getInt("tps.interval", 2);
         this.maximimumTPS = plugin.getConfig().getInt("tps.max", 20);

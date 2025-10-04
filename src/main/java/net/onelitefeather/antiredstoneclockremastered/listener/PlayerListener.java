@@ -20,7 +20,7 @@ public final class PlayerListener implements Listener {
     private final UpdateService updateService;
 
     @Inject
-    public PlayerListener(@Named("staticTrackingService") RedstoneTrackingService trackingService, UpdateService updateService) {
+    public PlayerListener(RedstoneTrackingService trackingService, UpdateService updateService) {
         this.trackingService = trackingService;
         this.updateService = updateService;
     }

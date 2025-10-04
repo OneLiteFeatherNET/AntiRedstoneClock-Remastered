@@ -46,8 +46,8 @@ public final class BukkitDecisionService implements DecisionService {
         if (resultState == RedstoneClockMiddleware.ResultState.SKIP) {
             return;
         }
+        this.notificationService.sendNotificationMessage(context.location());
         if (resultState == RedstoneClockMiddleware.ResultState.ONLY_NOTIFY) {
-            this.notificationService.sendNotificationMessage(context.location());
             return;
         }
 

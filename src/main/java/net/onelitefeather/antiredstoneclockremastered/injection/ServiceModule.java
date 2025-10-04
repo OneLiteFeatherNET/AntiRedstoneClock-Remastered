@@ -14,6 +14,7 @@ import net.onelitefeather.antiredstoneclockremastered.service.notification.Admin
 import net.onelitefeather.antiredstoneclockremastered.service.notification.ConsoleNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.notification.DiscordNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.notification.SignNotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.DelegatedTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.StaticTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
@@ -50,8 +51,14 @@ public final class ServiceModule extends AbstractModule {
     @Provides
     @Named("staticTrackingService")
     @Singleton
-    public RedstoneTrackingService providesStaticTrackingService(StaticTrackingService staticTrackingService) {
-        return staticTrackingService;
+    public RedstoneTrackingService providesStaticTrackingService(Injector injector) {
+        return injector.getInstance(StaticTrackingService.class);
+    }
+
+    @Provides
+    @Singleton
+    public RedstoneTrackingService providesDelegatedTrackingService(Injector injector) {
+        return injector.getInstance(DelegatedTrackingService.class);
     }
 
     @Provides
@@ -69,10 +76,10 @@ public final class ServiceModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public DecisionService provideRedstoneClockService(AntiRedstoneClockRemastered plugin,
-                                                       RegionService regionService,
-                                                       RedstoneClockMiddleware middleware,
-                                                       NotificationService notificationService) {
+    public DecisionService provideDecisionService(AntiRedstoneClockRemastered plugin,
+                                                  RegionService regionService,
+                                                  RedstoneClockMiddleware middleware,
+                                                  NotificationService notificationService) {
         return DecisionServiceFactory.createService(plugin, regionService, middleware, notificationService);
     }
 
