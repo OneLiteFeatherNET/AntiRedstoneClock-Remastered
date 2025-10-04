@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslationArgument;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.DecisionService;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.Argument;
@@ -25,12 +25,12 @@ import java.util.List;
 public final class FeatureCommand {
 
     private final AntiRedstoneClockRemastered plugin;
-    private final RedstoneClockService redstoneClockService;
+    private final DecisionService decisionService;
 
     @Inject
-    public FeatureCommand(AntiRedstoneClockRemastered plugin, RedstoneClockService redstoneClockService) {
+    public FeatureCommand(AntiRedstoneClockRemastered plugin, DecisionService decisionService) {
         this.plugin = plugin;
-        this.redstoneClockService = redstoneClockService;
+        this.decisionService = decisionService;
     }
 
     @Command("check observer")
@@ -39,7 +39,7 @@ public final class FeatureCommand {
     public void toggleObserver(CommandSender sender) {
         plugin.getConfig().set("check.observer", !plugin.getConfig().getBoolean("check.observer"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.observer"));
     }
 
@@ -49,7 +49,7 @@ public final class FeatureCommand {
     public void togglePiston(CommandSender sender) {
         plugin.getConfig().set("check.piston", !plugin.getConfig().getBoolean("check.piston"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.piston"));
     }
 
@@ -59,7 +59,7 @@ public final class FeatureCommand {
     public void toggleComparator(CommandSender sender) {
         plugin.getConfig().set("check.comparator", !plugin.getConfig().getBoolean("check.comparator"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.comparator"));
     }
 
@@ -69,7 +69,7 @@ public final class FeatureCommand {
     public void toggleSculk(CommandSender sender) {
         plugin.getConfig().set("check.sculk", !plugin.getConfig().getBoolean("check.sculk"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.sculk"));
     }
 
@@ -79,7 +79,7 @@ public final class FeatureCommand {
     public void toggleRedstoneAndRepeater(CommandSender sender) {
         plugin.getConfig().set("check.redstoneAndRepeater", !plugin.getConfig().getBoolean("check.redstoneAndRepeater"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.redstoneAndRepeater"));
     }
 
@@ -99,7 +99,7 @@ public final class FeatureCommand {
         worlds.add(world.getName());
         plugin.getConfig().set("check.ignoredWorlds", worlds);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
     }
 
@@ -111,7 +111,7 @@ public final class FeatureCommand {
         worlds.remove(world.getName());
         plugin.getConfig().set("check.ignoredWorlds", worlds);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.world.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(world.getName())));
     }
 
@@ -123,7 +123,7 @@ public final class FeatureCommand {
         regions.add(region);
         plugin.getConfig().set("check.ignoredRegions", regions);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.add").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
     }
 
@@ -135,7 +135,7 @@ public final class FeatureCommand {
         regions.remove(region);
         plugin.getConfig().set("check.ignoredRegions", regions);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.region.remove").arguments(AntiRedstoneClockRemastered.PREFIX, Component.text(region)));
     }
 
@@ -145,7 +145,7 @@ public final class FeatureCommand {
     public void toggleAutoBreak(CommandSender sender) {
         plugin.getConfig().set("clock.autoBreak", !plugin.getConfig().getBoolean("clock.autoBreak"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("clock.autoBreak"));
     }
 
@@ -155,7 +155,7 @@ public final class FeatureCommand {
     public void toggleNotifyAdmins(CommandSender sender) {
         plugin.getConfig().set("clock.notifyAdmins", !plugin.getConfig().getBoolean("clock.notifyAdmins"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("clock.notifyAdmins"));
     }
 
@@ -165,7 +165,7 @@ public final class FeatureCommand {
     public void toggleNotifyConsole(CommandSender sender) {
         plugin.getConfig().set("clock.notifyConsole", !plugin.getConfig().getBoolean("clock.notifyConsole"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("clock.notifyConsole"));
     }
 
@@ -175,7 +175,7 @@ public final class FeatureCommand {
     public void toggleDrop(CommandSender sender) {
         plugin.getConfig().set("clock.drop", !plugin.getConfig().getBoolean("clock.drop"));
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("clock.drop"));
     }
 
@@ -185,7 +185,7 @@ public final class FeatureCommand {
     public void setEndDelay(CommandSender sender,@Argument("delay") Integer endDeplay) {
         plugin.getConfig().set("clock.endDelay", endDeplay);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageSetMessage(sender, plugin.getConfig().getInt("clock.endDelay"));
     }
 
@@ -195,7 +195,7 @@ public final class FeatureCommand {
     public void setMaxCount(CommandSender sender,@Argument("count") Integer count) {
         plugin.getConfig().set("clock.maxCount", count);
         plugin.saveConfig();
-        redstoneClockService.reload();
+        decisionService.reload();
         sendMessageSetMessage(sender, plugin.getConfig().getInt("clock.maxCount"));
     }
 

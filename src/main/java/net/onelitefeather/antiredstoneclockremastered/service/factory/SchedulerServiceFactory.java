@@ -2,8 +2,8 @@ package net.onelitefeather.antiredstoneclockremastered.service.factory;
 
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitSchedulerService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaSchedulerService;
+import net.onelitefeather.antiredstoneclockremastered.service.scheduler.BukkitSchedulerService;
+import net.onelitefeather.antiredstoneclockremastered.service.scheduler.FoliaSchedulerService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
