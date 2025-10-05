@@ -1,4 +1,4 @@
-package net.onelitefeather.antiredstoneclockremastered.service.impl;
+package net.onelitefeather.antiredstoneclockremastered.service.translation;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;

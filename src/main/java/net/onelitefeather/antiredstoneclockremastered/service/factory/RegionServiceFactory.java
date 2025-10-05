@@ -2,8 +2,8 @@ package net.onelitefeather.antiredstoneclockremastered.service.factory;
 
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.BukkitRegionService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.FoliaRegionService;
+import net.onelitefeather.antiredstoneclockremastered.service.region.BukkitRegionService;
+import net.onelitefeather.antiredstoneclockremastered.service.region.FoliaRegionService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

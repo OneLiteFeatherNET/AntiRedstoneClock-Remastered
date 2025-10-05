@@ -3,7 +3,7 @@ package net.onelitefeather.antiredstoneclockremastered.commands;
 import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.DecisionService;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
@@ -18,18 +18,18 @@ import org.incendo.cloud.annotations.Permission;
  */
 public final class ReloadCommand {
 
-    private final RedstoneClockService redstoneClockService;
+    private final DecisionService decisionService;
 
     @Inject
-    public ReloadCommand(RedstoneClockService redstoneClockService) {
-        this.redstoneClockService = redstoneClockService;
+    public ReloadCommand(DecisionService decisionService) {
+        this.decisionService = decisionService;
     }
 
     @Command("arcm reload")
     @CommandDescription("antiredstoneclockremastered.command.reload.description")
     @Permission("antiredstoneclockremastered.command.reload")
     public void reloadConfig(CommandSender commandSender) {
-        this.redstoneClockService.reload();
+        this.decisionService.reload();
         commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.reload.success").arguments(AntiRedstoneClockRemastered.PREFIX));
     }
 }

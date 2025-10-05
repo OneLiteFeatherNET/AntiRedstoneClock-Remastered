@@ -117,7 +117,7 @@ The plugin automatically selects the appropriate implementation:
 ```java
 // In AntiRedstoneClockRemastered.java
 private void enableRedstoneClockService() {
-    this.redstoneClockService = RedstoneClockServiceFactory.createService(this);
+    this.decisionService = RedstoneClockServiceFactory.createService(this);
 }
 ```
 

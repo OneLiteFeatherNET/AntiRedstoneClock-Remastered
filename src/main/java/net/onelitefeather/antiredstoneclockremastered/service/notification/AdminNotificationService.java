@@ -1,4 +1,4 @@
-package net.onelitefeather.antiredstoneclockremastered.service.impl;
+package net.onelitefeather.antiredstoneclockremastered.service.notification;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
