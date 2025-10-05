@@ -15,6 +15,7 @@ import net.onelitefeather.antiredstoneclockremastered.service.notification.Conso
 import net.onelitefeather.antiredstoneclockremastered.service.notification.DiscordNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.notification.SignNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.DelegatedTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.DynamicTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.StaticTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
@@ -53,6 +54,12 @@ public final class ServiceModule extends AbstractModule {
     @Singleton
     public RedstoneTrackingService providesStaticTrackingService(Injector injector) {
         return injector.getInstance(StaticTrackingService.class);
+    }
+
+    @Provides
+    @Named("dynamicTrackingService")
+    public RedstoneTrackingService providesDynamicTrackingService(Injector injector) {
+        return injector.getInstance(DynamicTrackingService.class);
     }
 
     @Provides

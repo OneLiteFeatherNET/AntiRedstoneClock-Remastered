@@ -27,7 +27,6 @@ public abstract class RedstoneClockMiddleware {
         REMOVE_AND_DROP,
         REMOVE_AND_WITHOUT_DROP,
         ONLY_NOTIFY,
-        TIMEOUT,
         SKIP
     }
 

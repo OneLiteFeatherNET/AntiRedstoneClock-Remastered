@@ -7,7 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public final class StaticRedstoneClock implements RedstoneClock {
+import java.util.UUID;
+
+public class DynamicRedstoneClock implements RedstoneClock {
 
     /**
      * How often the clocks gets triggered
@@ -23,12 +25,14 @@ public final class StaticRedstoneClock implements RedstoneClock {
     /**
      * Where's the clock located
      */
-    private final @NotNull Location location;
+    private Location currentLocation;
     private final long endTime;
+    private final UUID uuid;
 
-    public StaticRedstoneClock(@NotNull Location location, long endTime) {
-        this.location = location;
+    public DynamicRedstoneClock(@NotNull Location currentLocation, long endTime) {
+        this.currentLocation = currentLocation;
         this.endTime = endTime;
+        this.uuid = UUID.randomUUID();
     }
 
     public void incrementTriggerCount() {
@@ -60,13 +64,23 @@ public final class StaticRedstoneClock implements RedstoneClock {
     }
 
     @NotNull
-    public Location getLocation() {
-        return location;
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
+
+    public void setCurrentLocation(@NotNull Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+
 
     @Override
     public Component render() {
-        var location = getLocation();
+        var location = getCurrentLocation();
         return Component.empty().hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent()).append(
                 Component.translatable("antiredstoneclockremastered.command.display.clock.text")
                         .arguments(
