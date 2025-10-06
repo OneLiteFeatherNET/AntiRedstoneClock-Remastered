@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("adventure-text-discord-serializer", "4.3.0")
-            version("jda", "5.6.1")
+            version("jda", "6.0.0")
             version("jda-webhook", "0.8.4")
 
             version("semver", "0.10.2")
