@@ -1,8 +1,11 @@
 name: Feature Request
 description: Suggest an idea for AntiRedstoneClock-Remastered
 labels: [ "status: needs triage", "type: feature" ]
+projects: ["OneLiteFeatherNET/6"]
+assignees: ["OneLiteFeatherNET/antiredstoneclock-remastered-triage"]
 body:
   - type: markdown
+    id: intro
     attributes:
       value: |
         Thank you for filling out a feature request for AntiRedstoneClock-Remastered! Please be as detailed as possible so that we may consider and review the request easier.
@@ -10,6 +13,7 @@ body:
         Before requesting a new feature, please make sure you are using the latest version and that the feature you are requesting is not already in AntiRedstoneClock-Remastered.
 
   - type: textarea
+    id: problem-context
     attributes:
       label: Is your feature request related to a problem?
       description: Please give some context for this request. Why do you want it added?
@@ -17,6 +21,7 @@ body:
       required: true
 
   - type: textarea
+    id: solution-description
     attributes:
       label: Describe the solution you'd like.
       description: A clear and concise description of what you want.
@@ -24,6 +29,7 @@ body:
       required: true
 
   - type: textarea
+    id: alternatives-considered
     attributes:
       label: Describe alternatives you've considered.
       description: List any alternatives you might have tried to get the feature you want.
@@ -31,6 +37,7 @@ body:
       required: true
 
   - type: textarea
+    id: additional-context
     attributes:
       label: Other
       description: Add any other context or screenshots about the feature request below.
@@ -38,6 +45,7 @@ body:
       required: false
 
   - type: markdown
+    id: search-reminder
     attributes:
       value: |
         Before submitting this feature request, please search our issue tracker to ensure your feature has not
