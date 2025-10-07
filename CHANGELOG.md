@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.4.0...v2.5.0) (2025-10-07)
+
+
+### Features
+
+* enhance issue templates with additional fields for better reporting ([c0598f8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c0598f832c01b829e926bf8b01315762113710c9))
+
 # [2.4.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.3.0...v2.4.0) (2025-10-07)
 
 
