@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.5.0...v2.5.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* update field identifier for steps to reproduce in issue template ([193a14c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/193a14cbb3673287b0e78185055db8244598edcc))
+
 # [2.5.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.4.0...v2.5.0) (2025-10-07)
 
 
