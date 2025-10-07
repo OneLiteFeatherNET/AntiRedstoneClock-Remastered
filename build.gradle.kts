@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.adventure.text.feature.pagination)
     implementation(libs.adventure.text.discord)
     implementation(libs.jda.webhook)
-    implementation(libs.jda)
     implementation(libs.guice)
     implementation(libs.jakarta.inject)
     annotationProcessor(libs.cloud.command.annotations)
