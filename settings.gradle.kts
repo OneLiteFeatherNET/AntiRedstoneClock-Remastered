@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             version("paper.run", "3.0.2")
             version("shadowJar", "9.2.2")
 
-            version("paper", "1.21.8-R0.1-SNAPSHOT")
+            version("paper", "1.21.9-pre3-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
 
             version("cloudcommand", "2.0.0")
