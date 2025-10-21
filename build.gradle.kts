@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
     jacoco
+    signing
 }
 
 if (!File("$rootDir/.git").exists()) {
@@ -264,4 +265,8 @@ modrinth {
     loaders.add("paper")
     loaders.add("bukkit")
     loaders.add("folia")
+}
+
+signing {
+    sign(tasks["shadowJar"])
 }

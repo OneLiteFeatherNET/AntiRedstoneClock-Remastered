@@ -17,7 +17,12 @@ import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     
@@ -28,6 +33,11 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        try {
+            if (!isJarSigned()) return;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         saveDefaultConfig();
         reloadConfig();
         saveConfig();
@@ -61,6 +71,26 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     private void donationInformation() {
         getComponentLogger().info(Component.translatable("antiredstoneclockremastered.notify.donation.console"));
+    }
+
+    public static boolean isJarSigned() throws IOException {
+        try (JarFile jar = new JarFile(getPlugin(AntiRedstoneClockRemastered.class).getFile())) {
+            Manifest manifest = jar.getManifest();
+            if (manifest == null) {
+                return false; // Kein Manifest, daher nicht signiert
+            }
+
+            Set<String> signedEntries = manifest.getEntries().keySet();
+            for (String entryName : signedEntries) {
+                if (entryName.endsWith(".class")) {
+                    JarEntry entry = jar.getJarEntry(entryName);
+                    if (entry.getCodeSigners() != null && entry.getCodeSigners().length > 0) {
+                        return true; // Mindestens eine signierte Klasse gefunden
+                    }
+                }
+            }
+            return false; // Keine signierten Klassen gefunden
+        }
     }
 
 }
