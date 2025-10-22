@@ -88,8 +88,6 @@ public final class ExternalSupportModule extends AbstractModule {
             LOGGER.info("Thanks to hold your software up-to date <3");
             support = new PlotSquaredModernSupport();
         }
-        
-        support.init();
         return support;
     }
 }
