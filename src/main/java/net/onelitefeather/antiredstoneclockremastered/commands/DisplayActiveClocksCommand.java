@@ -66,7 +66,8 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
                                 TranslationArgument.numeric(redstoneClock.getTriggerCount()),
                                 TranslationArgument.numeric(location.getBlockX()),
                                 TranslationArgument.numeric(location.getBlockY()),
-                                TranslationArgument.numeric(location.getBlockZ())
+                                TranslationArgument.numeric(location.getBlockZ()),
+                                Component.empty() // TODO: Temporary fix for display issue
                         ).clickEvent(ClickEvent.callback(audience -> {
                             if (audience instanceof final Player executor) {
                                 executor.teleport(location);
