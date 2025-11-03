@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.service.tracking;
 
+import com.jeff_media.customblockdata.CustomBlockData;
 import jakarta.inject.Inject;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -7,8 +8,9 @@ import net.onelitefeather.antiredstoneclockremastered.model.DynamicRedstoneClock
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockMiddleware;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.utils.UUIDTagType;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
+import org.bukkit.NamespacedKey;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,14 +23,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class DynamicTrackingService implements RedstoneTrackingService {
 
     private static final ComponentLogger LOGGER = ComponentLogger.logger(DynamicTrackingService.class);
-    private static final String REDSTONE_CLOCK_METADATA_KEY = "clock-id";
-    // Replaced kotlin ArrayDeque with standard ArrayList to avoid potential interop issues.
+    private static final NamespacedKey REDSTONE_CLOCK_METADATA_KEY = NamespacedKey.fromString("antiredstoneclock:redstone_clock");
     private final ConcurrentHashMap<UUID, DynamicRedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final AntiRedstoneClockRemastered plugin;
 
     @Inject
     public DynamicTrackingService(AntiRedstoneClockRemastered plugin) {
         this.plugin = plugin;
+        CustomBlockData.registerListener(plugin);
     }
 
     @Override
@@ -38,7 +40,6 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
         final boolean desiredState = Optional.ofNullable(context.state()).orElse(false);
         var clock = getClockByLocation(location);
         if (clock != null) {
-            clock.setCurrentLocation(location);
             if (expireOrDestroyIfNeeded(clock)) return true;
 
             if (eventType == RedstoneClockMiddleware.EventType.REDSTONE_AND_REPEATER) {
@@ -49,7 +50,6 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
                     clock.setActive(false);
                     return false;
                 } else {
-                    clock.incrementTriggerCount();
                     clock.setActive(desiredState);
                 }
             }
@@ -76,13 +76,9 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
 
     private DynamicRedstoneClock getClockByLocation(Location location) {
         var block = location.getBlock();
-        var state = block.getState();
-        if (state.hasMetadata(REDSTONE_CLOCK_METADATA_KEY)) {
-            var metadata = state.getMetadata(REDSTONE_CLOCK_METADATA_KEY);
-            if (metadata.isEmpty()) {
-                return null;
-            }
-            var uuid = (UUID) metadata.getFirst().value();
+        var customBlockData = new CustomBlockData(block, this.plugin);
+        if (customBlockData.has(REDSTONE_CLOCK_METADATA_KEY)) {
+            var uuid = customBlockData.get(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID);
             return this.activeClockTesters.get(uuid);
         }
         return null;
@@ -90,13 +86,12 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
 
     public void addRedstoneClockTest(@NotNull Location location) {
         var block = location.getBlock();
-        var state = block.getState();
-        if (state.hasMetadata(REDSTONE_CLOCK_METADATA_KEY)) {
+        var customBlockData = new CustomBlockData(block, this.plugin);
+        if (customBlockData.has(REDSTONE_CLOCK_METADATA_KEY)) {
             return;
         }
         var dynamicRedstoneClock = new DynamicRedstoneClock(location, (System.currentTimeMillis() / 1000) + plugin.getConfig().getInt("clock.endDelay", 300));
-        state.setMetadata(REDSTONE_CLOCK_METADATA_KEY, new FixedMetadataValue(plugin, dynamicRedstoneClock.getUuid()));
-        state.update(true, false);
+        customBlockData.set(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID, dynamicRedstoneClock.getUuid());
         this.activeClockTesters.put(dynamicRedstoneClock.getUuid(), dynamicRedstoneClock);
     }
 
