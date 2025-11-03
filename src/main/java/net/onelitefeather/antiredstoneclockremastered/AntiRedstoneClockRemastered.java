@@ -3,6 +3,7 @@ package net.onelitefeather.antiredstoneclockremastered;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
+import com.jeff_media.customblockdata.CustomBlockData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
@@ -15,7 +16,9 @@ import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.TranslationModule;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.ConfigMode;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -46,7 +49,10 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        CustomBlockData.registerListener(this);
         injector.getInstance(TranslationModule.class);
+        var mode = ConfigMode.getEnum(getConfig(), "check.mode", ConfigMode.STATIC);
+        getComponentLogger().info(mode.getEnableMessage());
         injector.getInstance(CheckTPS.class).startCheck();
         Optional.ofNullable(injector.getInstance(PlotsquaredSupport.class)).ifPresent(PlotsquaredSupport::init);
         donationInformation();

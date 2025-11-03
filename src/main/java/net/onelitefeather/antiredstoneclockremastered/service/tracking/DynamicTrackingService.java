@@ -30,7 +30,6 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
     @Inject
     public DynamicTrackingService(AntiRedstoneClockRemastered plugin) {
         this.plugin = plugin;
-        CustomBlockData.registerListener(plugin);
     }
 
     @Override
@@ -44,9 +43,11 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
 
             if (eventType == RedstoneClockMiddleware.EventType.REDSTONE_AND_REPEATER) {
                 clock.incrementTriggerCount();
+                clock.setCurrentLocation(location);
             } else {
                 if (clock.isActive()) {
                     clock.incrementTriggerCount();
+                    clock.setCurrentLocation(location);
                     clock.setActive(false);
                     return false;
                 } else {
