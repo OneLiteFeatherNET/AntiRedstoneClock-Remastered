@@ -61,21 +61,19 @@ public final class DisplayActiveClocksCommand implements Pagination.Renderer.Row
 
     private Component mapClockToMessage(RedstoneClock redstoneClock) {
         var location = redstoneClock.getLocation();
-        return Component.empty().hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent()).append(
-                Component.translatable("antiredstoneclockremastered.command.display.clock.text")
-                        .arguments(
+        return Component.empty().hoverEvent(Component.translatable("antiredstoneclockremastered.command.display.clock.hover").asHoverEvent())
+                .append(Component.translatable("antiredstoneclockremastered.command.display.clock.text").arguments(
                                 TranslationArgument.numeric(redstoneClock.getTriggerCount()),
                                 TranslationArgument.numeric(location.getBlockX()),
                                 TranslationArgument.numeric(location.getBlockY()),
                                 TranslationArgument.numeric(location.getBlockZ()),
-                                Component.empty()
-                                        .clickEvent(ClickEvent.callback(audience -> {
-                                            if (audience instanceof final Player executor) {
-                                                executor.teleport(location);
-                                            }
-                                        }))
-                        )
-        );
+                                Component.empty() // TODO: Temporary fix for display issue
+                        ).clickEvent(ClickEvent.callback(audience -> {
+                            if (audience instanceof final Player executor) {
+                                executor.teleport(location);
+                            }
+                        }))
+                );
     }
 
     @Override
