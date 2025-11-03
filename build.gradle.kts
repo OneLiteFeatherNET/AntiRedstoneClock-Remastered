@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.adventure.text.feature.pagination)
     implementation(libs.adventure.text.discord)
     implementation(libs.jda.webhook)
+    implementation(libs.customblockdata)
     implementation(libs.guice)
     implementation(libs.jakarta.inject)
     annotationProcessor(libs.cloud.command.annotations)
@@ -131,6 +132,7 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
+        relocate("com.jeff_media.customblockdata", "net.onelitefeather.antiredstoneclockremastered.com.jeff_media.customblockdata")
         dependsOn(jar)
     }
     this.modrinth {
