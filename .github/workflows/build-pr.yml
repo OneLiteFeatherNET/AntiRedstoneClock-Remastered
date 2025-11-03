@@ -36,13 +36,13 @@ jobs:
           check_name: "Test Results"
           comment_title: "Unit Test Results"
       - name: Upload Test Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always() && matrix.os == 'ubuntu-latest'
         with:
           name: test-report
           path: build/reports/tests/test/
       - name: Upload Coverage Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always() && matrix.os == 'ubuntu-latest'
         with:
           name: coverage-report
@@ -68,7 +68,7 @@ jobs:
       - name: Build
         run: ./gradlew clean build test
       - name: Upload JAR for PR
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pr-jar
           path: build/libs/*.jar
