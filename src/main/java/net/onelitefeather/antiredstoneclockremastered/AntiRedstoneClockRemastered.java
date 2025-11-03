@@ -19,6 +19,7 @@ import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     
@@ -47,7 +48,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onEnable() {
         injector.getInstance(TranslationModule.class);
         injector.getInstance(CheckTPS.class).startCheck();
-        injector.getInstance(PlotsquaredSupport.class).init();
+        Optional.ofNullable(injector.getInstance(PlotsquaredSupport.class)).ifPresent(PlotsquaredSupport::init);
         donationInformation();
         injector.getInstance(UpdateService.class).schedule();
         injector.getInstance(UpdateService.class).run();
