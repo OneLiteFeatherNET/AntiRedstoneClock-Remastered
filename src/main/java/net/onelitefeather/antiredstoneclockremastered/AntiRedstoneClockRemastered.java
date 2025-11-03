@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Stage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
 import net.onelitefeather.antiredstoneclockremastered.injection.MetricsModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.CommandFrameworkModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.CommandModule;
@@ -18,6 +19,7 @@ import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public final class AntiRedstoneClockRemastered extends JavaPlugin {
     
@@ -46,6 +48,7 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     public void onEnable() {
         injector.getInstance(TranslationModule.class);
         injector.getInstance(CheckTPS.class).startCheck();
+        Optional.ofNullable(injector.getInstance(PlotsquaredSupport.class)).ifPresent(PlotsquaredSupport::init);
         donationInformation();
         injector.getInstance(UpdateService.class).schedule();
         injector.getInstance(UpdateService.class).run();

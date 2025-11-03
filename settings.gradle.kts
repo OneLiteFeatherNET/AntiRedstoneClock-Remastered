@@ -19,7 +19,7 @@ dependencyResolutionManagement {
             version("modrinth", "2.+")
             version("hangar", "0.1.3")
             version("paper.yml", "0.6.0")
-            version("paper.run", "3.0.1")
+            version("paper.run", "3.0.2")
             version("shadowJar", "9.2.2")
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
@@ -40,7 +40,7 @@ dependencyResolutionManagement {
             version("jakarta-inject", "2.0.1")
             
             // Testing dependencies
-            version("junit", "6.0.0")
+            version("junit", "6.0.1")
             version("mockito", "5.20.0")
             version("mockbukkit", "3.133.2")
             version("assertj", "3.27.6")
@@ -69,7 +69,6 @@ dependencyResolutionManagement {
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
             library("adventure.text.feature.pagination", "net.kyori", "adventure-text-feature-pagination").versionRef("adventure-text-feature-pagination")
             library("adventure.text.discord", "dev.vankka", "mcdiscordreserializer").versionRef("adventure-text-discord-serializer")
-            library("jda", "net.dv8tion", "JDA").versionRef("jda")
             library("jda-webhook", "club.minnced", "discord-webhooks").versionRef("jda-webhook")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
 
