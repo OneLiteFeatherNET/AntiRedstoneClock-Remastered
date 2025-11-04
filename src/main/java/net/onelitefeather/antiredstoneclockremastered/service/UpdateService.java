@@ -22,7 +22,7 @@ import java.net.http.HttpResponse;
 @Singleton
 public final class UpdateService implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
-    private static final Long UPDATE_CHECK_INTERVAL_TICKS = Long.getLong("ARCR_UPDATE_SERVICE_SCHEDULE", 20 * 60 * 60 * 3L); // 3 hours
+    private static final long UPDATE_CHECK_INTERVAL_TICKS = Long.getLong("ARCR_UPDATE_SERVICE_SCHEDULE", 20 * 60 * 60 * 3L); // 3 hours
     private static final int MAX_RETRY_COUNT = Integer.getInteger("ARCR_UPDATE_SERVICE_MAX_RETRY", 5);
     private static final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
     private final HttpClient hangarClient = HttpClient.newBuilder().build();
