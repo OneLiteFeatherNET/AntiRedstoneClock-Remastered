@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.4...v2.7.0) (2025-11-05)
+
+
+### Features
+
+* add additional badges to README for better visibility ([f0aba6f](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/f0aba6fbc1676c6d78e86baf4065eecf195a691f))
+
 ## [2.6.4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.3...v2.6.4) (2025-11-05)
 
 
