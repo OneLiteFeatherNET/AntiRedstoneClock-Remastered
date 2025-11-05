@@ -1,3 +1,10 @@
+## [2.6.4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.3...v2.6.4) (2025-11-05)
+
+
+### Bug Fixes
+
+* add parent reference in semantic releases configuration ([5178120](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/517812048efe9ea784a8a15cd556cb3b3e5c4905))
+
 ## [2.6.3](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.2...v2.6.3) (2025-11-05)
 
 
