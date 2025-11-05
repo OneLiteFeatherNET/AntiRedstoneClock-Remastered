@@ -1,3 +1,10 @@
+## [2.6.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.0...v2.6.1) (2025-11-05)
+
+
+### Bug Fixes
+
+* update project name in semantic releases configuration ([556d84c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/556d84c915629eea162fb9a1bc3384e6e98ccdc2))
+
 # [2.6.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.5.2...v2.6.0) (2025-11-05)
 
 
