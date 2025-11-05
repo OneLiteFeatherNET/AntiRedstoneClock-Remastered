@@ -1,3 +1,10 @@
+## [2.6.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.1...v2.6.2) (2025-11-05)
+
+
+### Bug Fixes
+
+* update project name and disable auto-creation in semantic releases configuration ([e6c28ae](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/e6c28ae8a273fffb8fac6b6cb05b22052879b7e3))
+
 ## [2.6.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.0...v2.6.1) (2025-11-05)
 
 
