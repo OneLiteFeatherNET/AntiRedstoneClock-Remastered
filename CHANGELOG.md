@@ -1,3 +1,21 @@
+# [2.6.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.5.2...v2.6.0) (2025-11-05)
+
+
+### Bug Fixes
+
+* add temporary workaround for display issue in DisplayActiveClocksCommand ([1cd213a](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/1cd213a21e7f1a444d72d2810fa5a408de801390))
+* initialize PlotsquaredSupport during plugin startup ([b682802](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/b682802bb347ea14ca0926240ec73fd6baae741c))
+* initialize PlotsquaredSupport during plugin startup ([#195](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/195)) ([a59bff9](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/a59bff96a658311aa05119cd5b2fa397f944ec22))
+* **project:** Triggerbuild ([76e063f](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/76e063f038e64cbaab078946e2736f8e71648ec8))
+* safely initialize PlotsquaredSupport if present during startup ([4bb34eb](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/4bb34eb4daaebd09cdce9f37b09379eaec05347f))
+* teleport in display command and add 1.21.9 + 1.21.10 for testing (remove useless <arg:4> in crowdin) ([008a34c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/008a34c838c99c00d5ac4bcb54265b53dcbf29ae))
+* teleport in display command and add 1.21.9 + 1.21.10 for testing… ([#192](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/192)) ([0abf127](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/0abf1275bc50b07d0c0e31b37ef774dacaa3eed5))
+
+
+### Features
+
+* add CycloneDX support and update release process for BOM generation ([ec4d7e7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/ec4d7e77182c95f554377a8a19e4c947627bfbd0))
+
 ## [2.5.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.5.1...v2.5.2) (2025-11-03)
 
 
