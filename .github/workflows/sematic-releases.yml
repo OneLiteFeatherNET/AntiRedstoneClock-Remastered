@@ -59,7 +59,7 @@ jobs:
         with:
           serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
           apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectname: 'AntiRedstoneClock-Remastered'
+          project: '682857a9-0cd2-4ffd-a2b3-098eeba5ab74'
           projectversion: ${{ env.VERSION }}
           projecttags: 'bukkit,paper,plugin'
           bomfilename: "build/reports/cyclonedx/bom.xml"
