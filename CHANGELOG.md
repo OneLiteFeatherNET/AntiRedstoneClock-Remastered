@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.0...v2.7.1) (2025-11-05)
+
+
+### Bug Fixes
+
+* **project:** Triggerbuild ([63d539d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/63d539da9ca1c1dacc0f26b5361dec2788857a39))
+
 # [2.7.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.6.4...v2.7.0) (2025-11-05)
 
 
