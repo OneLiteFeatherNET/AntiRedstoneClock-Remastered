@@ -63,4 +63,4 @@ jobs:
           projectversion: ${{ env.VERSION }}
           projecttags: 'bukkit,paper,plugin'
           bomfilename: "build/reports/cyclonedx/bom.xml"
-          autocreate: false
+          autocreate: true
