@@ -64,3 +64,4 @@ jobs:
           projecttags: 'bukkit,paper,plugin'
           bomfilename: "build/reports/cyclonedx/bom.xml"
           autocreate: true
+          parent: '682857a9-0cd2-4ffd-a2b3-098eeba5ab74'
