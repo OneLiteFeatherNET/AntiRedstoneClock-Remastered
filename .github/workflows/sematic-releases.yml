@@ -51,3 +51,16 @@ jobs:
           # Token with permissions to push to the client repository
           CLIENT_REPO_TOKEN: ${{ secrets.CLIENT_REPO_TOKEN }}
         run: npx semantic-release
+      - name: Get Version
+        id: get_version
+        run: echo "VERSION=$(cat VERSION.txt)" >> $GITHUB_ENV
+      - name: Upload BOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
+          apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectname: 'AntiRedstoneClock-Remastered'
+          projectversion: ${{ env.VERSION }}
+          projecttags: 'bukkit,paper,plugin'
+          bomfilename: "build/reports/cyclonedx/bom.xml"
+          autocreate: true

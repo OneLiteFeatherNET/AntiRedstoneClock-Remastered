@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.paper.yml)
     alias(libs.plugins.hangar)
     alias(libs.plugins.modrinth)
+    alias(libs.plugins.cyclonedx)
     jacoco
 }
 
