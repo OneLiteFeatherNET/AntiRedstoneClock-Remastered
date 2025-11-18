@@ -45,7 +45,7 @@ public final class UpdateService implements Runnable {
             LOGGER.error("Max retry count reached for update check, stopping further attempts");
             LOGGER.error("Please check your internet connection or https://hangar.papermc.io/ status.");
             if (this.scheduler != null) {
-                this.shutdown();
+                this.scheduler.cancel();
             }
             return;
         }
