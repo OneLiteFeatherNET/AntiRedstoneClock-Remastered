@@ -44,7 +44,9 @@ public final class UpdateService implements Runnable {
         if (retryCount >= MAX_RETRY_COUNT) {
             LOGGER.error("Max retry count reached for update check, stopping further attempts");
             LOGGER.error("Please check your internet connection or https://hangar.papermc.io/ status.");
-
+            if (this.scheduler != null) {
+                this.shutdown();
+            }
             return;
         }
         var remoteVersion = getNewerVersion();
@@ -98,6 +100,7 @@ public final class UpdateService implements Runnable {
                 retryCount++;
                 return null;
             }
+            this.retryCount = 0;
             Version remoteVersion = Version.parse(httpResponse.body());
             if (remoteVersion.isHigherThan(this.localVersion)) {
                 return remoteVersion;
