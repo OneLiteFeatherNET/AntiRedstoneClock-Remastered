@@ -33,9 +33,9 @@ public final class TranslationModule extends AbstractModule {
     protected void configure() {
     }
 
+    @SuppressWarnings("removal")
     @Provides
     @Singleton
-    @SuppressWarnings("deprecation")
     public TranslationService provideTranslationService() {
         if (isLegacyVersion()) {
             LOGGER.info("Using legacy translation service");
