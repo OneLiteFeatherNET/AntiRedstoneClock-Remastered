@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.injection;
 
+import com.github.zafarkhaja.semver.Version;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public final class TranslationModule extends AbstractModule {
@@ -31,17 +33,30 @@ public final class TranslationModule extends AbstractModule {
     protected void configure() {
     }
 
+    @SuppressWarnings("removal")
     @Provides
     @Singleton
     public TranslationService provideTranslationService() {
-        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-        if (buildInfo.minecraftVersionId().startsWith("1.20")) {
+        if (isLegacyVersion()) {
             LOGGER.info("Using legacy translation service");
             return new LegacyTranslationService();
         } else {
             LOGGER.info("Using modern translation service");
             return new ModernTranslationService();
         }
+    }
+
+    private boolean isLegacyVersion() {
+        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
+        Optional<Version> optionalVersion = Version.tryParse(buildInfo.minecraftVersionId());
+        if (optionalVersion.isEmpty()) {
+            return true;
+        }
+        Version version = optionalVersion.get();
+        if (version.isHigherThanOrEquivalentTo(Version.of(1, 21, 4))) {
+            return false;
+        }
+        return version.isLowerThanOrEquivalentTo(Version.of(1, 21, 3));
     }
 
     @Inject
