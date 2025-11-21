@@ -1,3 +1,12 @@
+## [2.7.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.1...v2.7.2) (2025-11-21)
+
+
+### Bug Fixes
+
+* improve legacy version detection for translation service ([2108329](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/2108329ba667d9699ed576b881ff8b87e14639da))
+* improve legacy version detection for translation service ([#207](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/207)) ([ae1396c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/ae1396cef5a29406b2cba999c3d945524398d76c))
+* suppress deprecation warning in translation service provider ([8e843ac](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/8e843ac98edd8e61428e54f666ec7caf4fa2eb94))
+
 ## [2.7.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.0...v2.7.1) (2025-11-05)
 
 
