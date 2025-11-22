@@ -22,12 +22,15 @@ import java.net.http.HttpResponse;
 @Singleton
 public final class UpdateService implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
+    private static final long UPDATE_CHECK_INTERVAL_TICKS = Long.getLong("ARCR_UPDATE_SERVICE_SCHEDULE", 20 * 60 * 60 * 3L); // 3 hours
+    private static final int MAX_RETRY_COUNT = Integer.getInteger("ARCR_UPDATE_SERVICE_MAX_RETRY", 5);
     private static final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
     private final HttpClient hangarClient = HttpClient.newBuilder().build();
     private final Version localVersion;
     private final SchedulerService schedulerService;
     private Version remoteVersion;
     private ScheduledTask scheduler;
+    private int retryCount = 0;
 
     @Inject
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, SchedulerService schedulerService) {
@@ -38,6 +41,14 @@ public final class UpdateService implements Runnable {
 
     @Override
     public void run() {
+        if (retryCount >= MAX_RETRY_COUNT) {
+            LOGGER.error("Max retry count reached for update check, stopping further attempts");
+            LOGGER.error("Please check your internet connection or https://hangar.papermc.io/ status.");
+            if (this.scheduler != null) {
+                this.scheduler.cancel();
+            }
+            return;
+        }
         var remoteVersion = getNewerVersion();
         if (remoteVersion != null) {
             this.remoteVersion = remoteVersion;
@@ -76,7 +87,7 @@ public final class UpdateService implements Runnable {
     }
 
     public void schedule() {
-        this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, 20 * 60 * 60 * 3);
+        this.scheduler = schedulerService.runTaskTimerAsynchronously(scheduledTask -> this.run(), 0, UPDATE_CHECK_INTERVAL_TICKS);
     }
 
 
@@ -84,6 +95,12 @@ public final class UpdateService implements Runnable {
     private Version getNewerVersion() {
         try {
             HttpResponse<String> httpResponse = hangarClient.send(Constants.LATEST_RELEASE_VERSION_REQUEST, HttpResponse.BodyHandlers.ofString());
+            if (httpResponse.statusCode() != 200) {
+                LOGGER.error("Failed to check for updates, status code: {}", httpResponse.statusCode());
+                retryCount++;
+                return null;
+            }
+            this.retryCount = 0;
             Version remoteVersion = Version.parse(httpResponse.body());
             if (remoteVersion.isHigherThan(this.localVersion)) {
                 return remoteVersion;
