@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.2...v2.8.0) (2025-11-22)
+
+
+### Features
+
+* add retry mechanism and configurable interval for update checks ([#201](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/201)) ([12c104f](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/12c104fd2fa87e17a6c1fd9ecba0b14a882e1c90))
+
 ## [2.7.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.1...v2.7.2) (2025-11-21)
 
 
