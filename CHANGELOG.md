@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.0...v2.8.1) (2025-11-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.jeff-media:custom-block-data to v2.2.5 ([#210](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/210)) ([bee00d8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/bee00d86b28d5203f44426656a7829c18794588f))
+
 # [2.8.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.7.2...v2.8.0) (2025-11-22)
 
 
