@@ -1,10 +1,11 @@
 package net.onelitefeather.antiredstoneclockremastered.listener;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import net.kyori.adventure.text.Component;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -15,12 +16,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public final class PlayerListener implements Listener {
 
-    private final RedstoneClockService redstoneClockService;
+    private final RedstoneTrackingService trackingService;
     private final UpdateService updateService;
 
     @Inject
-    public PlayerListener(RedstoneClockService redstoneClockService, UpdateService updateService) {
-        this.redstoneClockService = redstoneClockService;
+    public PlayerListener(RedstoneTrackingService trackingService, UpdateService updateService) {
+        this.trackingService = trackingService;
         this.updateService = updateService;
     }
 
@@ -40,7 +41,7 @@ public final class PlayerListener implements Listener {
         var block = blockBreakEvent.getBlock();
         recheck:
         if (Constants.REDSTONE_ITEMS.contains(block.getType())) {
-            this.redstoneClockService.removeClockByLocation(block.getLocation());
+            this.trackingService.removeClockByLocation(block.getLocation());
         } else {
             block = block.getRelative(BlockFace.UP);
             break recheck;

@@ -1,4 +1,4 @@
-package net.onelitefeather.antiredstoneclockremastered.service.impl;
+package net.onelitefeather.antiredstoneclockremastered.service.region;
 
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;

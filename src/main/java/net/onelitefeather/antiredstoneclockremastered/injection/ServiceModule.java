@@ -1,19 +1,22 @@
 package net.onelitefeather.antiredstoneclockremastered.injection;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import io.papermc.paper.ServerBuildInfo;
+import jakarta.inject.Named;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
-import net.onelitefeather.antiredstoneclockremastered.api.PlotsquaredSupport;
-import net.onelitefeather.antiredstoneclockremastered.api.WorldGuardSupport;
-import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockService;
-import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
-import net.onelitefeather.antiredstoneclockremastered.service.factory.RedstoneClockServiceFactory;
+import net.onelitefeather.antiredstoneclockremastered.service.api.*;
+import net.onelitefeather.antiredstoneclockremastered.service.chain.*;
+import net.onelitefeather.antiredstoneclockremastered.service.factory.DecisionServiceFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
-import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.*;
+import net.onelitefeather.antiredstoneclockremastered.service.notification.AdminNotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.notification.ConsoleNotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.notification.DiscordNotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.notification.SignNotificationService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.DelegatedTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.DynamicTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.service.tracking.StaticTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,17 +40,6 @@ public final class ServiceModule extends AbstractModule {
     
     @Provides
     @Singleton
-    public RedstoneClockService provideRedstoneClockService(AntiRedstoneClockRemastered plugin,
-                                                            RegionService regionService,
-                                                            PlotsquaredSupport plotsquaredSupport,
-                                                            WorldGuardSupport worldGuardSupport,
-                                                            NotificationService notificationService) {
-        return RedstoneClockServiceFactory.createService(plugin, regionService, plotsquaredSupport, worldGuardSupport,
-                notificationService);
-    }
-
-    @Provides
-    @Singleton
     public NotificationService providesNotificationService(AntiRedstoneClockRemastered antiRedstoneClockRemastered,
                                                            RegionService regionService) {
         var adminNotifications = new AdminNotificationService(antiRedstoneClockRemastered, null);
@@ -55,6 +47,47 @@ public final class ServiceModule extends AbstractModule {
         var signNotifications = new SignNotificationService(antiRedstoneClockRemastered, consoleNotification, regionService);
         var discordNotification = new DiscordNotificationService(antiRedstoneClockRemastered, signNotifications);
         return discordNotification;
+    }
+
+    @Provides
+    @Named("staticTrackingService")
+    @Singleton
+    public RedstoneTrackingService providesStaticTrackingService(Injector injector) {
+        return injector.getInstance(StaticTrackingService.class);
+    }
+
+    @Provides
+    @Named("dynamicTrackingService")
+    public RedstoneTrackingService providesDynamicTrackingService(Injector injector) {
+        return injector.getInstance(DynamicTrackingService.class);
+    }
+
+    @Provides
+    @Singleton
+    public RedstoneTrackingService providesDelegatedTrackingService(Injector injector) {
+        return injector.getInstance(DelegatedTrackingService.class);
+    }
+
+    @Provides
+    @Singleton
+    public RedstoneClockMiddleware provideRedstoneClockMiddleware(Injector injector) {
+        return RedstoneClockMiddleware.link(
+                injector.getInstance(TPSRedstoneClockMiddleware.class),
+                injector.getInstance(SkipEventTypeRedstoneClockMiddleware.class),
+                injector.getInstance(WorldRedstoneClockMiddleware.class),
+                injector.getInstance(WorldGuardRedstoneClockMiddleware.class),
+                injector.getInstance(PlotSquaredRedstoneClockMiddleware.class),
+                injector.getInstance(TrackingRedstoneClockMiddleware.class)
+                );
+    }
+
+    @Provides
+    @Singleton
+    public DecisionService provideDecisionService(AntiRedstoneClockRemastered plugin,
+                                                  RegionService regionService,
+                                                  RedstoneClockMiddleware middleware,
+                                                  NotificationService notificationService) {
+        return DecisionServiceFactory.createService(plugin, regionService, middleware, notificationService);
     }
 
 }

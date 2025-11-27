@@ -25,6 +25,7 @@ dependencyResolutionManagement {
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
+            version("customblockdata", "2.2.4")
 
             version("cloudcommand", "2.0.0")
             version("cloudcommandPaper", "2.0.0-SNAPSHOT")
@@ -72,6 +73,7 @@ dependencyResolutionManagement {
             library("adventure.text.discord", "dev.vankka", "mcdiscordreserializer").versionRef("adventure-text-discord-serializer")
             library("jda-webhook", "club.minnced", "discord-webhooks").versionRef("jda-webhook")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")
+            library("customblockdata", "com.jeff-media", "custom-block-data").versionRef("customblockdata")
 
             library("cloud.command.paper", "org.incendo", "cloud-paper").versionRef("cloudcommandPaper")
             library("cloud.command.annotations", "org.incendo", "cloud-annotations").versionRef("cloudcommandAnnotations")

@@ -9,8 +9,8 @@ import io.papermc.paper.ServerBuildInfo;
 import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.LegacyTranslationService;
-import net.onelitefeather.antiredstoneclockremastered.service.impl.ModernTranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.translation.LegacyTranslationService;
+import net.onelitefeather.antiredstoneclockremastered.service.translation.ModernTranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

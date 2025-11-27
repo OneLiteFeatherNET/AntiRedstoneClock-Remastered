@@ -1,6 +1,8 @@
 translations:
   - 'en-US'
+
 check:
+  mode: 'dynamic' # 'dynamic' or 'static'
   redstoneAndRepeater: true
   observer: true
   piston: true
