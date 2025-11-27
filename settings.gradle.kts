@@ -25,7 +25,7 @@ dependencyResolutionManagement {
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("bstats", "3.1.0")
-            version("customblockdata", "2.2.4")
+            version("customblockdata", "2.2.5")
 
             version("cloudcommand", "2.0.0")
             version("cloudcommandPaper", "2.0.0-SNAPSHOT")
