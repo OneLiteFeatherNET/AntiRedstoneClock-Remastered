@@ -1,3 +1,10 @@
+## [2.8.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.1...v2.8.2) (2025-12-11)
+
+
+### Bug Fixes
+
+* **deps:** update mockito monorepo to v5.21.0 (minor) ([#214](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/214)) ([8e74f65](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/8e74f656c73e32d375e40b0996cd1f471a373ed6))
+
 ## [2.8.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.0...v2.8.1) (2025-11-27)
 
 
