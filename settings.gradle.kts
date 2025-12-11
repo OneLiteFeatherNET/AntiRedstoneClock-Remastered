@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
             version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
-            version("adventure-text-discord-serializer", "4.3.0")
+            version("adventure-text-discord-serializer", "4.4.0")
             version("jda", "5.6.1")
             version("jda-webhook", "0.8.4")
 
