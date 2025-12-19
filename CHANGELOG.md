@@ -1,3 +1,10 @@
+## [2.8.3](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.2...v2.8.3) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency dev.vankka:mcdiscordreserializer to v4.4.0 ([#215](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/215)) ([67f2a07](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/67f2a07fcae8bd0703764837161cc6c2c5de254d))
+
 ## [2.8.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.1...v2.8.2) (2025-12-11)
 
 
