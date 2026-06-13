@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             version("shadowJar", "9.4.2")
             version("cyclonedx", "3.1.0")
 
-            version("paper", "26.1.2.build.69-stable")
+            version("paper", "26.1.2.build.+")
             version("bstats", "3.1.0")
             version("customblockdata", "2.2.5")
 
@@ -32,7 +32,6 @@ dependencyResolutionManagement {
             version("cloudcommandAnnotations", "2.0.0")
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
-            version("adventure-text-feature-pagination", "4.0.0-SNAPSHOT")
             version("adventure-text-discord-serializer", "4.4.0")
             version("jda", "5.6.1")
             version("jda-webhook", "0.8.4")
@@ -49,14 +48,14 @@ dependencyResolutionManagement {
 
             // WorldGuard
             version("wgv6", "6.2")
-            version("wgv7", "7.0.14")
+            version("wgv7", "7.0.17")
             library("wg6", "com.sk89q.worldguard", "worldguard-legacy").versionRef("wgv6")
             library("wg7", "com.sk89q.worldguard", "worldguard-bukkit").versionRef("wgv7")
 
             // PlotSquared
             version("psv4", "4.453")
             version("psv6", "1.52")
-            version("psv7", "1.55")
+            version("psv7", "1.56")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
             library("psv4.bukkit", "com.github.IntellectualSites.PlotSquared","Bukkit").versionRef("psv4")
@@ -69,7 +68,6 @@ dependencyResolutionManagement {
             library("psv7.bukkit", "com.intellectualsites.plotsquared","plotsquared-bukkit").withoutVersion()
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
-            library("adventure.text.feature.pagination", "net.kyori", "adventure-text-feature-pagination").versionRef("adventure-text-feature-pagination")
             library("adventure.text.discord", "dev.vankka", "mcdiscordreserializer").versionRef("adventure-text-discord-serializer")
             library("jda-webhook", "club.minnced", "discord-webhooks").versionRef("jda-webhook")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")

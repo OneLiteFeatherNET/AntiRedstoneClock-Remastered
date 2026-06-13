@@ -41,7 +41,8 @@ val supportedMinecraftVersions = listOf(
     "1.21.11",
     "26.0",
     "26.1",
-    "26.1.2.build.69-stable"
+    "26.1.1",
+    "26.1.2"
 )
 allprojects {
     apply {
@@ -68,7 +69,6 @@ dependencies {
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
     implementation(libs.semver)
-    implementation(libs.adventure.text.feature.pagination)
     implementation(libs.adventure.text.discord)
     implementation(libs.jda.webhook)
     implementation(libs.customblockdata)
