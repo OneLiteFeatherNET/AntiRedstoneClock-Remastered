@@ -18,12 +18,12 @@ dependencyResolutionManagement {
         create("libs") {
             version("modrinth", "2.+")
             version("hangar", "0.1.4")
-            version("paper.yml", "0.6.0")
+            version("paper.yml", "0.9.0")
             version("paper.run", "3.0.2")
-            version("shadowJar", "9.3.0")
+            version("shadowJar", "9.4.2")
             version("cyclonedx", "3.1.0")
 
-            version("paper", "1.21.8-R0.1-SNAPSHOT")
+            version("paper", "26.1.2.build.+")
             version("bstats", "3.1.0")
             version("customblockdata", "2.2.5")
 
@@ -48,14 +48,14 @@ dependencyResolutionManagement {
 
             // WorldGuard
             version("wgv6", "6.2")
-            version("wgv7", "7.0.14")
+            version("wgv7", "7.0.17")
             library("wg6", "com.sk89q.worldguard", "worldguard-legacy").versionRef("wgv6")
             library("wg7", "com.sk89q.worldguard", "worldguard-bukkit").versionRef("wgv7")
 
             // PlotSquared
             version("psv4", "4.453")
             version("psv6", "1.52")
-            version("psv7", "1.55")
+            version("psv7", "1.56")
 
             library("psv4.core", "com.github.IntellectualSites.PlotSquared","Core").versionRef("psv4")
             library("psv4.bukkit", "com.github.IntellectualSites.PlotSquared","Bukkit").versionRef("psv4")
@@ -91,7 +91,7 @@ dependencyResolutionManagement {
 
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")
-            plugin("paper.yml", "net.minecrell.plugin-yml.paper").versionRef("paper.yml")
+            plugin("paper.yml", "de.eldoria.plugin-yml.paper").versionRef("paper.yml")
             plugin("paper.run", "xyz.jpenilla.run-paper").versionRef("paper.run")
             plugin("shadowJar", "com.gradleup.shadow").versionRef("shadowJar")
             plugin("cyclonedx", "org.cyclonedx.bom").versionRef("cyclonedx")

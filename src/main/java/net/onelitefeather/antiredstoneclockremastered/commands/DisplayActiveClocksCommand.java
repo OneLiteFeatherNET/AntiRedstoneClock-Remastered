@@ -2,10 +2,10 @@ package net.onelitefeather.antiredstoneclockremastered.commands;
 
 import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.feature.pagination.Pagination;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.text.Pagination;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotation.specifier.Greedy;
 import org.incendo.cloud.annotations.Argument;
