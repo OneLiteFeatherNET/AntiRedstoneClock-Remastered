@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.cloud.command.extras)
     implementation(libs.cloud.command.annotations)
     implementation(libs.semver)
-    implementation(libs.adventure.text.feature.pagination)
     implementation(libs.adventure.text.discord)
     implementation(libs.jda.webhook)
     implementation(libs.customblockdata)
