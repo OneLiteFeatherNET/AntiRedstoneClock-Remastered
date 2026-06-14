@@ -1,7 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.commands;
 
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.feature.pagination.Pagination;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
