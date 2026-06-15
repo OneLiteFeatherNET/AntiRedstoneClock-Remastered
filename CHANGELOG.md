@@ -1,3 +1,10 @@
+## [2.8.5](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.4...v2.8.5) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** update junit-framework monorepo to v6.1.0 ([#239](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/239)) ([5ebe3e4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/5ebe3e4b255230c0a34edaa209b31a6a8e792e82))
+
 ## [2.8.4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.3...v2.8.4) (2026-06-15)
 
 
