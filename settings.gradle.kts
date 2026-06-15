@@ -42,7 +42,7 @@ dependencyResolutionManagement {
             
             // Testing dependencies
             version("junit", "6.1.0")
-            version("mockito", "5.21.0")
+            version("mockito", "5.23.0")
             version("mockbukkit", "3.133.2")
             version("assertj", "3.27.7")
 
