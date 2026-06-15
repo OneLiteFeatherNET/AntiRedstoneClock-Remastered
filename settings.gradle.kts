@@ -44,7 +44,7 @@ dependencyResolutionManagement {
             version("junit", "6.0.3")
             version("mockito", "5.21.0")
             version("mockbukkit", "3.133.2")
-            version("assertj", "3.27.6")
+            version("assertj", "3.27.7")
 
             // WorldGuard
             version("wgv6", "6.2")
