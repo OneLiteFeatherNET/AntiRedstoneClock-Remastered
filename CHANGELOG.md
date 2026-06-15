@@ -1,3 +1,12 @@
+## [2.8.4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.3...v2.8.4) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** update assertj to v3.27.7 ([#221](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/221)) ([6af868c](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/6af868c102f865face39eca218136f06a9853487))
+* **deps:** update bstats to v3.2.1 ([#228](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/228)) ([01765ae](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/01765aed7154f24f4a37cc3c3398864d1e9246c7))
+* **deps:** update junit-framework monorepo to v6.0.3 ([#222](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/222)) ([372fb40](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/372fb4074078e7035e1b937a6e7ee5acddad7eeb))
+
 ## [2.8.3](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.2...v2.8.3) (2025-12-19)
 
 
