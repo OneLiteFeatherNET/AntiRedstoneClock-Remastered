@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             version("cyclonedx", "3.2.4")
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
-            version("bstats", "3.1.0")
+            version("bstats", "3.2.1")
             version("customblockdata", "2.2.5")
 
             version("cloudcommand", "2.0.0")
