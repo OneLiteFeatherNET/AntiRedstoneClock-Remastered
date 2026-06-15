@@ -1,3 +1,11 @@
+## [2.8.6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.5...v2.8.6) (2026-06-15)
+
+
+### Bug Fixes
+
+* **deps:** update psv6 to v1.55 ([#224](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/224)) ([d1b3146](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/d1b3146d9b4378669b1a02ca260b7a6b4dd6cd83))
+* **deps:** update wgv7 to v7.0.17 ([#220](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/220)) ([e55f5c7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/e55f5c7c2bf5048c5a241d6a6cfe6ffe5aa02d8b))
+
 ## [2.8.5](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.4...v2.8.5) (2026-06-15)
 
 
