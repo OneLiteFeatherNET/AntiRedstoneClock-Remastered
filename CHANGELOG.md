@@ -1,3 +1,11 @@
+## [2.8.7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.6...v2.8.7) (2026-06-17)
+
+
+### Bug Fixes
+
+* **deps:** update mockito monorepo to v5.23.0 ([#240](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/240)) ([bb6ac71](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/bb6ac71aa2b109cf6779aa6dab9708f7da678199))
+* **deps:** update psv7 to v1.56 ([#241](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/241)) ([969d8a1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/969d8a1d6cf7a9c0d70e03b75648453bf4d7d186))
+
 ## [2.8.6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.5...v2.8.6) (2026-06-15)
 
 
