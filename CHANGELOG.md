@@ -1,3 +1,10 @@
+## [2.8.8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.7...v2.8.8) (2026-06-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.1 ([#251](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/251)) ([341d017](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/341d017b582da46566a03e982d167580bd017660))
+
 ## [2.8.7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.6...v2.8.7) (2026-06-17)
 
 
