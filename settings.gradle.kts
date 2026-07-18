@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             version("shadowJar", "9.4.3")
             version("cyclonedx", "3.2.4")
 
-            version("paper", "1.21.8-R0.1-SNAPSHOT")
+            version("paper", "1.21.9-pre3-R0.1-SNAPSHOT")
             version("bstats", "3.2.1")
             version("customblockdata", "2.2.5")
 
