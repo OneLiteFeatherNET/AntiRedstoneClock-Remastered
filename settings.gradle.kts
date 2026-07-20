@@ -21,7 +21,7 @@ dependencyResolutionManagement {
             version("paper.yml", "0.6.0")
             version("paper.run", "3.0.2")
             version("shadowJar", "9.6.0")
-            version("cyclonedx", "3.2.4")
+            version("cyclonedx", "3.3.0")
 
             version("paper", "1.21.8-R0.1-SNAPSHOT")
             version("bstats", "3.2.1")
