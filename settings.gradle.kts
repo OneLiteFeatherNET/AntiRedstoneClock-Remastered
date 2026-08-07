@@ -18,12 +18,12 @@ dependencyResolutionManagement {
         create("libs") {
             version("modrinth", "2.+")
             version("hangar", "0.1.4")
-            version("paper.yml", "0.6.0")
+            version("paper.yml", "0.9.0")
             version("paper.run", "3.0.2")
             version("shadowJar", "9.6.0")
             version("cyclonedx", "3.3.0")
 
-            version("paper", "1.21.8-R0.1-SNAPSHOT")
+            version("paper", "26.1.2.build.+")
             version("bstats", "3.2.1")
             version("customblockdata", "2.2.5")
 
@@ -91,7 +91,7 @@ dependencyResolutionManagement {
 
             plugin("modrinth", "com.modrinth.minotaur").versionRef("modrinth")
             plugin("hangar", "io.papermc.hangar-publish-plugin").versionRef("hangar")
-            plugin("paper.yml", "net.minecrell.plugin-yml.paper").versionRef("paper.yml")
+            plugin("paper.yml", "de.eldoria.plugin-yml.paper").versionRef("paper.yml")
             plugin("paper.run", "xyz.jpenilla.run-paper").versionRef("paper.run")
             plugin("shadowJar", "com.gradleup.shadow").versionRef("shadowJar")
             plugin("cyclonedx", "org.cyclonedx.bom").versionRef("cyclonedx")
