@@ -2,7 +2,6 @@ package net.onelitefeather.antiredstoneclockremastered.service.tracking;
 
 import com.jeff_media.customblockdata.CustomBlockData;
 import jakarta.inject.Inject;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.model.DynamicRedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
@@ -12,6 +11,8 @@ import net.onelitefeather.antiredstoneclockremastered.utils.UUIDTagType;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -22,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class DynamicTrackingService implements RedstoneTrackingService {
 
-    private static final ComponentLogger LOGGER = ComponentLogger.logger(DynamicTrackingService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicTrackingService.class);
     private static final NamespacedKey REDSTONE_CLOCK_METADATA_KEY = NamespacedKey.fromString("antiredstoneclock:redstone_clock");
     private final ConcurrentHashMap<UUID, DynamicRedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final AntiRedstoneClockRemastered plugin;
@@ -64,10 +65,14 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
 
     private boolean expireOrDestroyIfNeeded(@NotNull DynamicRedstoneClock clock) {
         if (clock.isTimeOut()) {
+            LOGGER.debug("Tracked block at {} timed out after {} triggers",
+                    clock.getCurrentLocation(), clock.getTriggerCount());
             removeClockByClock(clock);
             return false;
         }
         if (clock.getTriggerCount() >= plugin.getConfig().getInt("clock.maxCount", 150)) {
+            LOGGER.debug("Block at {} reached the trigger limit with {} triggers",
+                    clock.getCurrentLocation(), clock.getTriggerCount());
             removeClockByClock(clock);
             return true;
         }

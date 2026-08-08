@@ -6,9 +6,9 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockM
 import net.onelitefeather.antiredstoneclockremastered.service.api.DecisionService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.decision.BukkitDecisionService;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for creating RedstoneClockService implementations.

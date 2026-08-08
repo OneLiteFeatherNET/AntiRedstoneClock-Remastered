@@ -3,9 +3,13 @@ package net.onelitefeather.antiredstoneclockremastered.service.chain;
 import jakarta.inject.Inject;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockMiddleware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 public final class SkipEventTypeRedstoneClockMiddleware extends RedstoneClockMiddleware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SkipEventTypeRedstoneClockMiddleware.class);
 
     private final AntiRedstoneClockRemastered antiRedstoneClockRemastered;
 
@@ -34,6 +38,7 @@ public final class SkipEventTypeRedstoneClockMiddleware extends RedstoneClockMid
         if (context.eventType() == EventType.HOPPER &&
                 this.antiRedstoneClockRemastered.getConfig().getBoolean("check.hopper"))
             return checkNext(context);
+        LOGGER.debug("Skipping {} check, the detection for this block type is disabled", context.eventType());
         return ResultState.SKIP;
     }
 }

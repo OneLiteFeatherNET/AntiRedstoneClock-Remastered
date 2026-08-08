@@ -6,7 +6,6 @@ import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializer;
 import dev.vankka.mcdiscordreserializer.discord.DiscordSerializerOptions;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
@@ -14,6 +13,8 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationSe
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ import java.util.Map;
 
 public final class DiscordNotificationService implements NotificationService {
 
-    private static final ComponentLogger LOGGER = ComponentLogger.logger(DiscordNotificationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DiscordNotificationService.class);
     private final AntiRedstoneClockRemastered plugin;
     private final NotificationService notificationService;
     private final WebhookClient webhookClient;
@@ -77,7 +78,13 @@ public final class DiscordNotificationService implements NotificationService {
                 .setDescription(DiscordSerializer.INSTANCE.serialize(getNotificationMessage(location), DiscordSerializerOptions.defaults().withEscapeMarkdown(false)))
                 .setImageUrl(this.plugin.getConfig().getString("notification.discord.image", ""));
         generateFields(location).forEach(embed::addField);
-        this.webhookClient.send(embed.build()).thenAccept(message -> LOGGER.debug("Sent notification to Discord"));
+        this.webhookClient.send(embed.build())
+                .thenAccept(message -> LOGGER.debug("Sent notification for {} to Discord", location))
+                .exceptionally(throwable -> {
+                    LOGGER.warn("Could not send the notification to Discord, check the webhook url in the config.yml",
+                            throwable);
+                    return null;
+                });
     }
 
     public List<WebhookEmbed.EmbedField> generateFields(Location location) {

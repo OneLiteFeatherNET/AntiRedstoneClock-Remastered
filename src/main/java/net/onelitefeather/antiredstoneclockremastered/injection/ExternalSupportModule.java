@@ -13,9 +13,9 @@ import net.onelitefeather.antiredstoneclockremastered.support.NoOpWorldGuardSupp
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v6.WorldGuardLegacySupport;
 import net.onelitefeather.antiredstoneclockremastered.worldguard.v7.WorldGuardModernSupport;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Guice module for external plugin support dependencies.
@@ -39,7 +39,7 @@ public final class ExternalSupportModule extends AbstractModule {
     public WorldGuardSupport provideWorldGuardSupport(AntiRedstoneClockRemastered plugin) {
         Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
         if (wgPlugin == null) {
-            LOGGER.warn("WorldGuard hasn't been found!");
+            LOGGER.debug("WorldGuard has not been found, region checks are skipped");
             return new NoOpWorldGuardSupport(plugin);
         }
         
@@ -68,7 +68,7 @@ public final class ExternalSupportModule extends AbstractModule {
     public PlotsquaredSupport providePlotsquaredSupport(AntiRedstoneClockRemastered plugin) {
         Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PlotSquared");
         if (psPlugin == null) {
-            LOGGER.warn("PlotSquared hasn't been found!");
+            LOGGER.debug("PlotSquared has not been found, plot checks are skipped");
             return new NoOpPlotSquaredSupport();
         }
         

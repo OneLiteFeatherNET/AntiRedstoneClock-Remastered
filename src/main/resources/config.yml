@@ -22,6 +22,13 @@ clock:
   notifyConsole: true
   drop: true
 
+# Debug messages are written to debug-logs/latest.log inside this directory,
+# they never show up in the server log.
+debug:
+  enabled: false
+  # How many rotated log files are kept next to latest.log
+  keepFiles: 5
+
 tps:
   interval: 2
   max: 20

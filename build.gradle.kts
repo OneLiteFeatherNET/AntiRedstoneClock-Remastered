@@ -86,8 +86,11 @@ dependencies {
     implementation(project(":PlotSquaredv6Support"))
     implementation(project(":PlotSquaredv7Support"))
 
+    compileOnly(libs.log4j.core)
+
     // Testing dependencies
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.log4j.core)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.junit.jupiter)
     testImplementation(libs.mockbukkit)
@@ -208,6 +211,7 @@ paper {
         register("antiredstoneclockremastered.command.feature.clock.drop")
         register("antiredstoneclockremastered.command.feature.clock.enddelay")
         register("antiredstoneclockremastered.command.feature.clock.maxCount")
+        register("antiredstoneclockremastered.command.feature.debug")
         register("antiredstoneclockremastered.bundle.admin") {
             children = listOf(
                 "antiredstoneclockremastered.notify.admin",
@@ -229,6 +233,7 @@ paper {
                 "antiredstoneclockremastered.command.feature.clock.drop",
                 "antiredstoneclockremastered.command.feature.clock.enddelay",
                 "antiredstoneclockremastered.command.feature.clock.maxCount",
+                "antiredstoneclockremastered.command.feature.debug",
                 "antiredstoneclockremastered.command.display"
             )
             default = BukkitPluginDescription.Permission.Default.OP

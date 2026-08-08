@@ -6,10 +6,13 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.DecisionServic
 import net.onelitefeather.antiredstoneclockremastered.service.api.NotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockMiddleware;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -21,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
  * @since 1.0.0
  */
 public final class BukkitDecisionService implements DecisionService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BukkitDecisionService.class);
 
     private final @NotNull AntiRedstoneClockRemastered antiRedstoneClockRemastered;
     private final RegionService regionService;
@@ -46,6 +51,7 @@ public final class BukkitDecisionService implements DecisionService {
         if (resultState == RedstoneClockMiddleware.ResultState.SKIP) {
             return;
         }
+        LOGGER.debug("Handling {} clock at {}", context.eventType(), context.location());
         this.notificationService.sendNotificationMessage(context.location());
         if (resultState == RedstoneClockMiddleware.ResultState.ONLY_NOTIFY) {
             return;
@@ -57,23 +63,25 @@ public final class BukkitDecisionService implements DecisionService {
             Block block = location.getBlock();
             var drops = block.getDrops(SILK_TOUCH_PICKAXE);
             drops.forEach(itemStack -> block.getWorld().dropItem(location, itemStack));
-            Runnable removeTask = () -> block.setType(Material.AIR, true);
-            if (this.regionService.isRegionOwner(location)) {
-                this.regionService.executeInRegion(location, removeTask);
-            }
+            removeBlock(block, location);
             return;
         }
         if (resultState == RedstoneClockMiddleware.ResultState.REMOVE_AND_WITHOUT_DROP) {
-            Block block = location.getBlock();
-            Runnable removeTask = () -> block.setType(Material.AIR, true);
-            if (this.regionService.isRegionOwner(location)) {
-                this.regionService.executeInRegion(location, removeTask);
-            }
+            removeBlock(location.getBlock(), location);
         }
+    }
+
+    private void removeBlock(@NotNull Block block, @NotNull Location location) {
+        if (!this.regionService.isRegionOwner(location)) {
+            LOGGER.warn("Could not remove the redstone clock at {}, its region is not owned by the current thread", location);
+            return;
+        }
+        LOGGER.debug("Removing {} at {}", block.getType(), location);
+        this.regionService.executeInRegion(location, () -> block.setType(Material.AIR, true));
     }
 
     @Override
     public void reload() {
-        this.antiRedstoneClockRemastered.reloadConfig();
+        this.antiRedstoneClockRemastered.reloadPluginConfig();
     }
 }

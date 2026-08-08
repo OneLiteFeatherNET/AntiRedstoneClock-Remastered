@@ -4,9 +4,9 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.RegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.region.BukkitRegionService;
 import net.onelitefeather.antiredstoneclockremastered.service.region.FoliaRegionService;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for creating instances of RegionService based on the server environment.

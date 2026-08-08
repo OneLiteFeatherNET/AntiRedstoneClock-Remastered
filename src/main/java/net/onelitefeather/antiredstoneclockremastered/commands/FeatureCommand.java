@@ -12,6 +12,8 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
@@ -23,6 +25,8 @@ import java.util.List;
  */
 @Command("arcm feature")
 public final class FeatureCommand {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeatureCommand.class);
 
     private final AntiRedstoneClockRemastered plugin;
     private final DecisionService decisionService;
@@ -94,6 +98,7 @@ public final class FeatureCommand {
     }
 
     private void sendMessageToggleMessage(CommandSender sender, boolean value) {
+        LOGGER.debug("{} toggled a feature to {}", sender.getName(), value);
         if (value) {
             sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.check.toggle.enabled").arguments(AntiRedstoneClockRemastered.PREFIX));
         } else {
@@ -209,7 +214,18 @@ public final class FeatureCommand {
         sendMessageSetMessage(sender, plugin.getConfig().getInt("clock.maxCount"));
     }
 
+    @Command("debug")
+    @CommandDescription("antiredstoneclockremastered.command.feature.debug.toggle.description")
+    @Permission("antiredstoneclockremastered.command.feature.debug")
+    public void toggleDebug(CommandSender sender) {
+        plugin.getConfig().set("debug.enabled", !plugin.getConfig().getBoolean("debug.enabled"));
+        plugin.saveConfig();
+        decisionService.reload();
+        sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("debug.enabled"));
+    }
+
     private void sendMessageSetMessage(CommandSender sender, Integer value) {
+        LOGGER.debug("{} changed a value to {}", sender.getName(), value);
         sender.sendMessage(Component.translatable("antiredstoneclockremastered.command.feature.clock.set").arguments(AntiRedstoneClockRemastered.PREFIX, TranslationArgument.numeric(value)));
     }
 

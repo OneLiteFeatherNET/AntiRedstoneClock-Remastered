@@ -11,9 +11,9 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.TranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.translation.LegacyTranslationService;
 import net.onelitefeather.antiredstoneclockremastered.service.translation.ModernTranslationService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -67,12 +67,13 @@ public final class TranslationModule extends AbstractModule {
             try {
                 Files.createDirectories(langFolder);
             } catch (IOException e) {
-                LOGGER.error("An error occurred while creating lang folder");
+                LOGGER.error("Could not create the lang folder {}, translations stay on their defaults", langFolder, e);
                 return;
             }
         }
         var languages = new HashSet<>(plugin.getConfig().getStringList("translations"));
         languages.add("en-US");
+        LOGGER.debug("Loading translations for {}", languages);
         languages.stream()
                 .map(Locale::forLanguageTag)
                 .forEach(locale -> loadAndRegisterTranslation(locale, langFolder, translationService));
