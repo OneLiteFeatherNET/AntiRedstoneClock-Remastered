@@ -1,0 +1,36 @@
+name: Security
+
+# Dependency and secret scanning via the shared Trivy workflow. Complements
+# CodeQL rather than duplicating it: CodeQL analyses our own code, Trivy looks
+# at what we pull in and at anything credential-shaped that slipped into the
+# tree.
+#
+# No pull_request trigger on purpose. Fork pull requests get a read-only token,
+# so the SARIF upload to code scanning would fail for exactly the contributions
+# that need review most. Scanning main plus a weekly sweep also catches CVEs
+# published against code that has not changed - which is the majority of them.
+
+"on":
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trivy:
+    name: Trivy
+    permissions:
+      contents: read
+      security-events: write # to upload the SARIF report to code scanning
+    uses: OneLiteFeatherNET/workflows/.github/workflows/security-scan.yml@v2.6.0
+    with:
+      scan-type: fs
+      severity: "CRITICAL,HIGH"
+      # Report-only for now. Flip once the backlog is at zero, otherwise the
+      # first unrelated CVE blocks main.
+      fail-on-findings: false

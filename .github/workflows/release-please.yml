@@ -49,8 +49,9 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  publish:
-    name: Build & Publish Release
+  # Builds, publishes nothing. Everything public waits behind security-gate.
+  build:
+    name: Build Release Artifacts
     needs: release-please
     # always() because release-please is skipped on workflow_dispatch, and a
     # skipped dependency would otherwise skip this job too.
@@ -60,9 +61,13 @@ jobs:
        github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to upload assets to the GitHub release
+      contents: read
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+      ref: ${{ steps.resolve.outputs.ref }}
     env:
       TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || needs.release-please.outputs.tag_name }}
+      BUILD_REF: ${{ github.event_name == 'workflow_dispatch' && (inputs.ref || inputs.tag) || needs.release-please.outputs.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -79,6 +84,7 @@ jobs:
             exit 1
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "ref=$BUILD_REF" >> "$GITHUB_OUTPUT"
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v6
@@ -95,32 +101,21 @@ jobs:
       - name: Build
         run: ./gradlew check shadowJar cyclonedxBom
 
-      # Deliberately before the platform uploads. Hangar and Modrinth reject
-      # versions for reasons outside this repository's control; when that
-      # happens the artifact should still be attached to the GitHub release
-      # rather than lost with the failed run.
-      - name: Upload JAR to GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload "$TAG_NAME" build/libs/AntiRedstoneClock-Remastered-*.jar --clobber
-
-      - name: Publish to Hangar and Modrinth
-        env:
-          HANGAR_SECRET: ${{ secrets.HANGAR_KEY }}
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
-        run: ./gradlew publishAllPublicationsToHangar modrinth
-
-      - name: Upload BOM to Dependency-Track
-        uses: DependencyTrack/gh-upload-sbom@v4
+      - name: Upload plugin JAR
+        uses: actions/upload-artifact@v7
         with:
-          serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
-          apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectname: "AntiRedstoneClock-Remastered"
-          projectversion: ${{ steps.resolve.outputs.version }}
-          projecttags: 'bukkit,paper,plugin'
-          bomfilename: "build/reports/cyclonedx/bom.xml"
-          autocreate: true
-          parent: '682857a9-0cd2-4ffd-a2b3-098eeba5ab74'
+          name: plugin-jar
+          path: build/libs/AntiRedstoneClock-Remastered-*.jar
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom
+          path: build/reports/cyclonedx/bom.xml
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload build reports
         if: always()
@@ -130,3 +125,91 @@ jobs:
           path: build/reports/**
           if-no-files-found: ignore
           retention-days: 14
+
+  # The point of no return. Everything below this job is public, so a HIGH or
+  # CRITICAL finding in the jar we are about to ship stops the release here.
+  # Scans the built artifact, not the source tree: for a shaded jar that is the
+  # only target that sees what actually ships.
+  security-gate:
+    name: Security Gate
+    needs: build
+    permissions:
+      contents: read
+      security-events: write # SARIF upload to code scanning
+    uses: OneLiteFeatherNET/workflows/.github/workflows/security-scan.yml@v2.6.0
+    with:
+      scan-type: rootfs
+      artifact-name: plugin-jar
+      severity: "CRITICAL,HIGH"
+      fail-on-findings: true
+    secrets: inherit
+
+  publish:
+    name: Publish Release
+    needs: [release-please, build, security-gate]
+    # No always() here - a failed gate must stop the release, and always()
+    # would run this job anyway.
+    if: >-
+      !cancelled() &&
+      needs.security-gate.result == 'success' &&
+      (needs.release-please.outputs.release_created == 'true' ||
+       github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to upload assets to the GitHub release
+    env:
+      TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || needs.release-please.outputs.tag_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.build.outputs.ref }}
+
+      - name: Download plugin JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: plugin-jar
+          path: build/libs
+
+      # Deliberately before the platform uploads. Hangar and Modrinth reject
+      # versions for reasons outside this repository's control; when that
+      # happens the artifact should still be attached to the GitHub release
+      # rather than lost with the failed run.
+      - name: Upload JAR to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$TAG_NAME" build/libs/AntiRedstoneClock-Remastered-*.jar --clobber
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 24
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Publish to Hangar and Modrinth
+        env:
+          HANGAR_SECRET: ${{ secrets.HANGAR_KEY }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
+        run: ./gradlew publishAllPublicationsToHangar modrinth
+
+  # Separate job so Dependency-Track being down, or rejecting the API key,
+  # cannot take the release with it. 2.9.0 is why: the SBOM upload sat inside
+  # the publish job and one rejected platform version cost the JAR, both
+  # platform releases and the SBOM at once.
+  sbom:
+    name: Publish SBOM
+    needs: [build, publish]
+    uses: OneLiteFeatherNET/workflows/.github/workflows/sbom-publish.yml@v2.6.0
+    with:
+      project-name: "AntiRedstoneClock-Remastered"
+      project-version: ${{ needs.build.outputs.version }}
+      project-tags: "bukkit,paper,plugin"
+      parent-uuid: "682857a9-0cd2-4ffd-a2b3-098eeba5ab74"
+      # The CycloneDX Gradle plugin resolves the dependency graph better than
+      # an external scanner, so hand it the artifact the build produced.
+      artifact-name: "sbom"
+      sbom-path: "bom.xml"
+    secrets: inherit
