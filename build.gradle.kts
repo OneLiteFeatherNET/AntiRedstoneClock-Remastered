@@ -142,6 +142,12 @@ tasks {
         archiveClassifier.set("")
         relocate("org.bstats", "net.onelitefeather.antiredstoneclockremastered.org.bstats")
         relocate("com.jeff_media.customblockdata", "net.onelitefeather.antiredstoneclockremastered.com.jeff_media.customblockdata")
+        // Pulled in transitively by club.minnced:discord-webhooks -> okhttp -> kotlin-stdlib.
+        // An unrelocated kotlin/ package makes eco flag this plugin as conflicting (#216).
+        relocate("kotlin", "net.onelitefeather.antiredstoneclockremastered.kotlin")
+        relocate("kotlinx", "net.onelitefeather.antiredstoneclockremastered.kotlinx")
+        relocate("okhttp3", "net.onelitefeather.antiredstoneclockremastered.okhttp3")
+        relocate("okio", "net.onelitefeather.antiredstoneclockremastered.okio")
         dependsOn(jar)
     }
     this.modrinth {
