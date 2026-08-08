@@ -36,6 +36,7 @@ public abstract class RedstoneClockMiddleware {
         SCULK_SENSOR,
         COMPARATOR,
         OBSERVER,
+        HOPPER,
     }
 
     public record CheckContext(Location location, Block block, @Nullable Boolean state, EventType eventType) {

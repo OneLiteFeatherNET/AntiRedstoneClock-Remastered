@@ -22,6 +22,7 @@ public final class ListenerModule extends AbstractModule {
         bind(ObserverListener.class);
         bind(SculkListener.class);
         bind(PistonListener.class);
+        bind(HopperListener.class);
     }
     
     /**
@@ -48,6 +49,7 @@ public final class ListenerModule extends AbstractModule {
             plugin.getServer().getPluginManager().registerEvents(injector.getInstance(SculkListener.class), plugin);
         }
         plugin.getServer().getPluginManager().registerEvents(injector.getInstance(PistonListener.class), plugin);
+        plugin.getServer().getPluginManager().registerEvents(injector.getInstance(HopperListener.class), plugin);
 
         // Material-dependent listeners now use dependency injection
         var comparator = Material.getMaterial("COMPARATOR");

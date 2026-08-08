@@ -198,6 +198,7 @@ paper {
         register("antiredstoneclockremastered.command.feature.check.piston")
         register("antiredstoneclockremastered.command.feature.check.sculk")
         register("antiredstoneclockremastered.command.feature.check.redstone_and_repeater")
+        register("antiredstoneclockremastered.command.feature.check.hopper")
         register("antiredstoneclockremastered.command.feature.check.world.add")
         register("antiredstoneclockremastered.command.feature.check.world.remove")
         register("antiredstoneclockremastered.command.feature.check.region.remove")
@@ -218,6 +219,7 @@ paper {
                 "antiredstoneclockremastered.command.feature.check.piston",
                 "antiredstoneclockremastered.command.feature.check.sculk",
                 "antiredstoneclockremastered.command.feature.check.redstone_and_repeater",
+                "antiredstoneclockremastered.command.feature.check.hopper",
                 "antiredstoneclockremastered.command.feature.check.world.add",
                 "antiredstoneclockremastered.command.feature.check.world.remove",
                 "antiredstoneclockremastered.command.feature.check.region.remove",

@@ -33,6 +33,7 @@ For Minecraft version 1.20, it would be 1.20.6 and so on
 - 1.20,1.21 ready
 - Clock detection
 - Sculk support
+- Hopper clock detection
 - Config Migration(Soon)
 - Prevent duplicated loading of anti-redstoneclock plugins
 

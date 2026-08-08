@@ -31,6 +31,9 @@ public final class SkipEventTypeRedstoneClockMiddleware extends RedstoneClockMid
         if (context.eventType() == EventType.COMPARATOR &&
                 this.antiRedstoneClockRemastered.getConfig().getBoolean("check.comparator"))
             return checkNext(context);
+        if (context.eventType() == EventType.HOPPER &&
+                this.antiRedstoneClockRemastered.getConfig().getBoolean("check.hopper"))
+            return checkNext(context);
         return ResultState.SKIP;
     }
 }
