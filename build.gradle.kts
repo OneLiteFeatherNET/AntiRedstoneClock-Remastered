@@ -44,7 +44,8 @@ val supportedMinecraftVersions = listOf(
     "26.0",
     "26.1",
     "26.1.1",
-    "26.1.2"
+    "26.1.2",
+    "26.2"
 )
 allprojects {
     apply {
