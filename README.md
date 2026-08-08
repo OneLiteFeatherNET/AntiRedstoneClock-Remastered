@@ -10,35 +10,38 @@
 
 This plugin is inspired by https://gitlab.com/Trafalcraft/antiRedstoneClock
 
-We re-created the whole code and improved everything. On top, we support Plotsquared v7 and Worldguard v7.
+We re-created the whole code and improved everything. Additionally, we support PlotSquared v7 and WorldGuard v7.
 
 ### Goal
-The goal of this plugin is to detect redstone clocks, inform staff or console about active ones and optionally destroy / disable the redstone clocks so your server can save performance for something else. Also it can prevent players doing harm with heavy clocks, but this is more of a side effect.
+The goal of this plugin is to detect redstone clocks, inform staff or console about active ones and optionally destroy / disable the redstone clocks so your server can save performance for something else. It can also prevent players from causing harm with heavy redstone clocks, but this is more of a side effect.
 
 ### Not a goal
-It's not planned to support Paper forks or spigot directly - this plugin is developed to work on Paper, if you are using a fork of paper or spigot and it doesn't work because of your fork, you are likely on your own then.
+It's not planned to support Paper forks or Spigot directly - this plugin is developed to work on Paper, if you are using a fork of Paper or Spigot and it doesn't work because of your fork, you're likely on your own.
+Folia is the one exception: the plugin declares Folia support and there are dedicated Folia run tasks in the build.
 Also this plugin is not a "performance tool", it won't make your server run better directly.
-Third, support from 1.13 backwards likely won't happen.
+Support for Minecraft 1.13 and earlier is not planned.
 
 ## Minecraft Version Support
-Only the last 2 versions of a major Minecraft are supported.
-For Minecraft version 1.19, it would be 1.19.4,
-For Minecraft version 1.20, it would be 1.20.6 and so on
+The authoritative list is `supportedMinecraftVersions` in [`build.gradle.kts`](build.gradle.kts) - those are the versions we build and test against, and exactly that list is published to Hangar and Modrinth.
+
+At the time of writing it covers 1.20.6, every 1.21.x release up to 1.21.11, and 26.0 through 26.1.2.
+
+The plugin declares `api-version: 1.19`, so it may still load on older servers, but anything outside the list above is untested and unsupported.
 
 ## Features
-- 1.20+ Support
-- Java 21 only support
-- Plotsquared v6 and v7 support
-- WorldGuard Support
-- 1.20,1.21 ready
+- Minecraft 1.20.6 up to 26.1.2 support
+- Java 25 required
+- Folia support
+- PlotSquared v6 and v7 support
+- WorldGuard v6 and v7 support
 - Clock detection
 - Sculk support
 - Hopper clock detection
-- Config Migration(Soon)
+- Config Migration (Coming Soon)
 - Prevent duplicated loading of anti-redstoneclock plugins
 
 > [!CAUTION]
-> The "world" world is ignored by default
+> The "world" world is ignored by default.
 
 ## Debug logs
 When something does not work as expected, switch on debug logging with
@@ -68,20 +71,21 @@ The file is handled by the same Log4j2 the server itself logs with, so it behave
 are compressed to `.log.gz`. `keepFiles` decides how many of them are kept.
 
 ## Contribution
-You want to help us? Sure go for it, we would love to see your contribution! You can look for open issues or if you have a nice idea, please open an issue or ask us on discord if you can add your feature with a PR. Communication is key.
+You want to help us? Sure, go for it!
+We would love to see your contribution! You can look for open issues or if you have a new idea, please open an issue or ask us on Discord if you can submit your feature with a PR. Communication is key.
 
 ## Dependencies (soft-depend, can be used together)
-- Plotsquared v7 https://github.com/IntellectualSites/PlotSquared
-- Worldguard v7 https://github.com/EngineHub/WorldGuard
+- PlotSquared v6 and v7 https://github.com/IntellectualSites/PlotSquared
+- WorldGuard v6 and v7 https://github.com/EngineHub/WorldGuard
 
 ## Permissions:
 ```
 antiredstoneclockremastered.notify.admin
 ```
 > [!CAUTION]
-> All others can be taken from the Plugin.yml or use LuckPerms, which are automatically suggested there
+> All other permissions are declared in the `paper { permissions { ... } }` block in [`build.gradle.kts`](build.gradle.kts) and end up in the generated `plugin.yml` inside the jar. There is no `plugin.yml` to read in this repository. LuckPerms picks them up from the jar and suggests them automatically.
 
-## Commmands
+## Commands
 - /arcm reload
   - Reloads the config
 - /arcm help
@@ -89,7 +93,7 @@ antiredstoneclockremastered.notify.admin
 - /arcm feature debug
   - Turns debug logging on or off
 - /arcm display
-  - Shows current cached redstone clocks
+  - Displays the currently cached redstone clocks
 
 ## More information / external links / Download
 Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered
