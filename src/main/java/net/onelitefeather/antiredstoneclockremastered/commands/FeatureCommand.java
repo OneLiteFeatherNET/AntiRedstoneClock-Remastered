@@ -73,6 +73,16 @@ public final class FeatureCommand {
         sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.sculk"));
     }
 
+    @Command("check hopper")
+    @CommandDescription("antiredstoneclockremastered.command.feature.check.toggle.hopper.description")
+    @Permission("antiredstoneclockremastered.command.feature.check.hopper")
+    public void toggleHopper(CommandSender sender) {
+        plugin.getConfig().set("check.hopper", !plugin.getConfig().getBoolean("check.hopper"));
+        plugin.saveConfig();
+        decisionService.reload();
+        sendMessageToggleMessage(sender, plugin.getConfig().getBoolean("check.hopper"));
+    }
+
     @Command("check redstone_and_repeater")
     @CommandDescription("antiredstoneclockremastered.command.feature.check.toggle.redstone_and_repeater.description")
     @Permission("antiredstoneclockremastered.command.feature.check.redstone_and_repeater")

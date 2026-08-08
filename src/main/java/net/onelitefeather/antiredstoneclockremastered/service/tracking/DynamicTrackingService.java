@@ -41,7 +41,10 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
         if (clock != null) {
             if (expireOrDestroyIfNeeded(clock)) return true;
 
-            if (eventType == RedstoneClockMiddleware.EventType.REDSTONE_AND_REPEATER) {
+            // The hopper listener only reports completed back and forth cycles, so every
+            // report counts as a trigger just like a redstone signal does.
+            if (eventType == RedstoneClockMiddleware.EventType.REDSTONE_AND_REPEATER
+                    || eventType == RedstoneClockMiddleware.EventType.HOPPER) {
                 clock.incrementTriggerCount();
                 clock.setCurrentLocation(location);
             } else {

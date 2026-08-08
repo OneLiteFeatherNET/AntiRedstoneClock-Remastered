@@ -8,6 +8,8 @@ check:
   piston: true
   comparator: true
   sculk: true
+  # A hopper clock is a pair of hoppers pointing at each other, moving an item back and forth
+  hopper: true
   ignoredWorlds:
     - world
   ignoredRegions: []
