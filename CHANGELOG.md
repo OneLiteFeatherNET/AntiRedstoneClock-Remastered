@@ -5,6 +5,23 @@
 
 * **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.2 ([#259](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/259)) ([c44a8d6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c44a8d640464a582a8e50617e8de9ce91d1bf837))
 
+## [2.9.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.9...v2.9.0) (2026-08-08)
+
+
+### Features
+
+* add debug logging into an own log file ([#272](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/272)) ([2f0969d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/2f0969d4dc38b91e00f9fded1befd28fc63ee803)), closes [#186](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/186)
+* detect hopper clocks ([#271](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/271)) ([eed90f4](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/eed90f44af2610266622ebe23094c5aef2601ebd)), closes [#229](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/229)
+* **i18n:** translate all shipped languages ([#276](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/276)) ([9bac70d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/9bac70d52dcf0bbd7953171a82919ad744130f47))
+
+
+### Bug Fixes
+
+* **build:** relocate shaded kotlin and okhttp packages ([#269](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/269)) ([dc919bc](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/dc919bc2cee7604a5b725de1e35ca943bda76365)), closes [#216](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/216)
+* correct spelling of 'observers' in help menu translations ([#245](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/245)) ([62f6b36](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/62f6b36b18dbb6f3c2b9825685c97f4e40955c9e))
+* correct typos in help menu descriptions ([#273](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/273)) ([0512810](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/0512810859bef993897556736b8fa89f89e59c53)), closes [#230](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/230)
+* use lenient version parsing to detect the translation service ([#277](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/277)) ([204d89a](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/204d89ad39683aa341f64b059cd865af4321953d)), closes [#267](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/267)
+
 ## [2.8.8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.7...v2.8.8) (2026-06-30)
 
 
