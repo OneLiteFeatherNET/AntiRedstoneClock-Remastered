@@ -20,7 +20,7 @@ dependencyResolutionManagement {
             version("hangar", "0.1.4")
             version("paper.yml", "0.9.0")
             version("paper.run", "3.0.2")
-            version("shadowJar", "9.6.0")
+            version("shadowJar", "9.6.1")
             version("cyclonedx", "3.3.0")
 
             version("paper", "26.1.2.build.+")
