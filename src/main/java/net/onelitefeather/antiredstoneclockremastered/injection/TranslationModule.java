@@ -47,8 +47,26 @@ public final class TranslationModule extends AbstractModule {
     }
 
     private boolean isLegacyVersion() {
-        ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-        Optional<Version> optionalVersion = Version.tryParse(buildInfo.minecraftVersionId());
+        return isLegacyVersion(ServerBuildInfo.buildInfo().minecraftVersionId());
+    }
+
+    /**
+     * Decides whether a server reporting {@code minecraftVersionId} needs the legacy
+     * translation service.
+     *
+     * <p>Minecraft version ids are not strict semver: releases without a patch component
+     * such as {@code "26.2"} or {@code "1.21"} are perfectly normal. They must therefore be
+     * parsed leniently, which pads the missing component to zero. Parsing them strictly
+     * returns an empty optional, which silently selects the legacy service - and that one
+     * fails with an {@code IllegalAccessError} on modern Adventure, so the plugin does not
+     * load at all.</p>
+     *
+     * @param minecraftVersionId the id the server reports, e.g. {@code "26.2"} or {@code "1.21.8"}
+     * @return {@code true} if the legacy translation service has to be used
+     * @see <a href="https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/267">#267</a>
+     */
+    static boolean isLegacyVersion(String minecraftVersionId) {
+        Optional<Version> optionalVersion = Version.tryParse(minecraftVersionId, false);
         if (optionalVersion.isEmpty()) {
             return true;
         }
