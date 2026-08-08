@@ -1,0 +1,328 @@
+name: Issue triage
+
+# Harden the bug-report intake. Every bug report is checked for the three
+# things that used to cost the most triage time: unreadable logs, servers we
+# do not support, and versions that are already fixed or out of scope.
+#
+# The workflow never deletes user content. It labels, explains what is wrong
+# in a single sticky comment, and only closes an issue when the reporter is on
+# server software this project explicitly does not support.
+
+"on":
+  issues:
+    types: [opened, edited, reopened]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    name: Validate bug report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Only bug reports carry a "Server Logs" section. Feature requests and
+    # manually opened issues are left alone.
+    if: contains(github.event.issue.body, '### Server Logs')
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const fs = require('fs');
+
+            const MARKER = '<!-- arcm-issue-triage -->';
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+
+            // --- helpers -------------------------------------------------
+
+            // Issue forms render as "### Heading\n\ncontent". Split on the
+            // headings so each answer can be looked up by its label.
+            function parseSections(text) {
+              const out = {};
+              for (const part of text.split(/^### +/m).slice(1)) {
+                const nl = part.indexOf('\n');
+                if (nl === -1) continue;
+                out[part.slice(0, nl).trim()] = part.slice(nl + 1).trim();
+              }
+              return out;
+            }
+
+            // Strip the code fence that `render:` adds so the contents can be
+            // pattern matched, while remembering whether a fence was there.
+            function unfence(value) {
+              if (!value) return { text: '', fenced: false };
+              const m = value.match(/^```[^\n]*\n([\s\S]*?)\n?```$/);
+              return m ? { text: m[1], fenced: true } : { text: value, fenced: false };
+            }
+
+            const isBlank = (v) => !v || !v.trim() || /^_No response_$/i.test(v.trim());
+
+            const sections = parseSections(body);
+            const logs = unfence(sections['Server Logs']);
+            const paperVersion = unfence(sections['Paper version']);
+            const pluginVersion = unfence(sections['Plugin version']);
+            const softwareAnswer = (sections['Server software'] || '').trim();
+            const logLink = (sections['Full log (paste service)'] || '').trim();
+
+            // Everything the reporter pasted about their server, in one blob.
+            const haystack = [logs.text, paperVersion.text, pluginVersion.text].join('\n');
+
+            const problems = [];
+            const labelsToAdd = new Set();
+            const labelsToRemove = new Set();
+            let closeAsUnsupported = false;
+
+            // --- 1. server software --------------------------------------
+
+            const SUPPORTED = ['paper', 'folia'];
+            const FORKS = [
+              'purpur', 'pufferfish', 'airplane', 'tuinity', 'yatopia', 'gale',
+              'leaves', 'divinemc', 'luminol', 'canvas', 'plazma', 'petal',
+              'mirai', 'sugarcane', 'patina', 'scissors', 'kaiiju', 'pearl',
+              'spigot', 'craftbukkit', 'bukkit', 'glowstone',
+              'mohist', 'magma', 'arclight', 'banner', 'ketting', 'catserver',
+              'thermos', 'crucible', 'uranium', 'youer',
+              'sponge', 'forge', 'fabric', 'neoforge', 'quilt',
+            ];
+
+            // The "This server is running X version" line is authoritative -
+            // it is printed by the server itself and cannot be mistyped.
+            let detected = null;
+            const running = haystack.match(/This server is running ([A-Za-z0-9_.-]+) version/i);
+            if (running) {
+              detected = running[1].toLowerCase();
+            } else {
+              const bootstrap = haystack.match(/\[bootstrap\][^\n]*Loading ([A-Za-z0-9_.-]+) /i);
+              if (bootstrap) detected = bootstrap[1].toLowerCase();
+            }
+
+            const dropdownUnsupported = /^(A Paper fork|Spigot or CraftBukkit|A hybrid server|Something else)/i
+              .test(softwareAnswer);
+
+            const notAGoal =
+              `[Not a goal](https://github.com/${context.repo.owner}/${context.repo.repo}#not-a-goal)`;
+            const reproduce =
+              'Please reproduce the problem on Paper or Folia and open a new report if it still happens.';
+
+            if (detected && SUPPORTED.includes(detected)) {
+              // Paper or Folia - nothing to do.
+            } else if (detected && FORKS.includes(detected)) {
+              const pretty = detected.charAt(0).toUpperCase() + detected.slice(1);
+              problems.push(
+                `**Unsupported server software.** Your log says the server is running \`${pretty}\`. ` +
+                `This plugin targets Paper and Folia only - see ${notAGoal}. ${reproduce}`
+              );
+              closeAsUnsupported = true;
+            } else if (dropdownUnsupported) {
+              problems.push(
+                `**Unsupported server software.** You selected \`${softwareAnswer}\`. ` +
+                `This plugin targets Paper and Folia only - see ${notAGoal}. ${reproduce}`
+              );
+              closeAsUnsupported = true;
+            } else if (detected) {
+              // Something we do not recognise. Closing on a guess would be
+              // worse than a human spending ten seconds on it, so only flag.
+              const pretty = detected.charAt(0).toUpperCase() + detected.slice(1);
+              problems.push(
+                `**Unrecognised server software.** Your log says the server is running \`${pretty}\`, ` +
+                `which we do not know. We support Paper and Folia - see ${notAGoal}. ` +
+                `If this is a Paper fork, the report cannot be accepted; if the detection is wrong, ` +
+                `please paste the unmodified output of \`/version\`.`
+              );
+            }
+
+            // --- 2. log formatting and completeness ----------------------
+
+            if (isBlank(logs.text) && !logLink) {
+              problems.push(
+                '**No logs.** Attach your `logs/latest.log` - either paste it into the ' +
+                '*Server Logs* field or upload it to [mclo.gs](https://mclo.gs) and put the link ' +
+                'in the *Full log* field.'
+              );
+            } else if (!logs.fenced && logs.text.split('\n').length > 2) {
+              // Pasted through the old template (or hand-written): the log is
+              // sitting in the body as raw Markdown, which mangles it.
+              problems.push(
+                '**Unreadable log formatting.** Your log was posted as plain Markdown, so ' +
+                'timestamps, brackets and stack-trace indentation are mangled. Please edit the ' +
+                'issue and wrap the log in a fenced code block:\n\n' +
+                '````\n```text\n[12:34:56] [Server thread/INFO]: ...\n```\n````\n\n' +
+                'Better still, upload the full file to [mclo.gs](https://mclo.gs) and paste the link.'
+              );
+            }
+
+            for (const [heading, value] of Object.entries({
+              'Expected behavior': sections['Expected behavior'],
+              'Actual behavior': sections['Actual behavior'],
+              'Steps to reproduce': sections['Steps to reproduce'],
+            })) {
+              if (isBlank(value)) problems.push(`**Missing \`${heading}\`.** This field is required.`);
+            }
+
+            // --- 3. Minecraft version ------------------------------------
+
+            // build.gradle.kts is the single source of truth: this same list is
+            // what gets published to Hangar and Modrinth.
+            let supportedVersions = [];
+            try {
+              const gradle = fs.readFileSync('build.gradle.kts', 'utf8');
+              const block = gradle.match(/val supportedMinecraftVersions = listOf\(([\s\S]*?)\n\)/);
+              if (block) supportedVersions = [...block[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+            } catch (err) {
+              core.warning(`Could not read supported versions: ${err.message}`);
+            }
+
+            let mcVersion = null;
+            const patterns = [
+              /for Minecraft ([0-9][0-9A-Za-z.\-]*)/i,
+              /Implementing API version ([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i,
+              /running [A-Za-z]+ version ([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i,
+            ];
+            for (const re of patterns) {
+              const m = haystack.match(re);
+              if (m) { mcVersion = m[1]; break; }
+            }
+
+            if (mcVersion && supportedVersions.length) {
+              if (supportedVersions.includes(mcVersion)) {
+                labelsToAdd.add(`Game Version: ${mcVersion}`);
+              } else {
+                labelsToAdd.add('legacy');
+                problems.push(
+                  `**Unsupported Minecraft version.** Your server reports \`${mcVersion}\`, which is ` +
+                  `not in our supported list. We currently build and publish for: ` +
+                  `${supportedVersions.map((v) => `\`${v}\``).join(', ')}.`
+                );
+              }
+            }
+
+            // --- 4. plugin version ---------------------------------------
+
+            let reportedPlugin = null;
+            const pluginPatterns = [
+              /AntiRedstoneClock-Remastered version ([0-9]+\.[0-9]+\.[0-9]+)/i,
+              /AntiRedstoneClock-Remastered[ -]v?([0-9]+\.[0-9]+\.[0-9]+)/i,
+              /AntiRedstoneClock-Remastered \(([0-9]+\.[0-9]+\.[0-9]+)\)/i,
+            ];
+            for (const re of pluginPatterns) {
+              const m = [pluginVersion.text, haystack].join('\n').match(re);
+              if (m) { reportedPlugin = m[1]; break; }
+            }
+
+            if (reportedPlugin) {
+              labelsToAdd.add(`Plugin Version: ${reportedPlugin}`);
+              try {
+                const latest = await github.rest.repos.getLatestRelease({ ...context.repo });
+                const latestVersion = latest.data.tag_name.replace(/^v/, '');
+                const cmp = (a, b) => {
+                  const pa = a.split('.').map(Number);
+                  const pb = b.split('.').map(Number);
+                  for (let i = 0; i < 3; i++) {
+                    if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0);
+                  }
+                  return 0;
+                };
+                if (cmp(reportedPlugin, latestVersion) < 0) {
+                  problems.push(
+                    `**Outdated plugin version.** You are on \`${reportedPlugin}\`, the latest release ` +
+                    `is \`${latestVersion}\`. Please update and check whether the problem still occurs ` +
+                    `before we spend time on it.`
+                  );
+                }
+              } catch (err) {
+                core.warning(`Could not read latest release: ${err.message}`);
+              }
+            } else if (!isBlank(pluginVersion.text)) {
+              problems.push(
+                '**Could not read your plugin version.** Please paste the raw output of ' +
+                '`/about AntiRedstoneClock-Remastered` into the *Plugin version* field.'
+              );
+            }
+
+            // --- apply ----------------------------------------------------
+
+            if (problems.length) {
+              labelsToAdd.add('user response');
+            } else {
+              labelsToRemove.add('user response');
+            }
+            if (closeAsUnsupported) {
+              // Do not ask for more information on a report we are closing.
+              labelsToAdd.add('resolution: invalid');
+              labelsToAdd.delete('user response');
+              labelsToRemove.add('user response');
+            }
+
+            if (labelsToAdd.size) {
+              await github.rest.issues.addLabels({
+                ...context.repo,
+                issue_number: issue.number,
+                labels: [...labelsToAdd],
+              });
+            }
+            for (const name of labelsToRemove) {
+              if (!issue.labels.some((l) => l.name === name)) continue;
+              await github.rest.issues.removeLabel({
+                ...context.repo,
+                issue_number: issue.number,
+                name,
+              }).catch(() => {});
+            }
+
+            // One sticky comment that gets rewritten, instead of a new comment
+            // on every edit.
+            const heading = closeAsUnsupported
+              ? '### This report cannot be accepted\n'
+              : '### This report needs a few fixes before we can look at it\n';
+            const wanted = problems.length
+              ? `${MARKER}\n${heading}\n` +
+                problems.map((p) => `- ${p}`).join('\n\n') +
+                '\n\nEdit the issue to fix these - this check runs again automatically on every edit.'
+              : `${MARKER}\n### Automated checks passed\n\nThanks, everything we need is here. ` +
+                'A maintainer will pick this up.';
+
+            const existing = await github.paginate(github.rest.issues.listComments, {
+              ...context.repo,
+              issue_number: issue.number,
+              per_page: 100,
+            });
+            const mine = existing.find((c) => c.body && c.body.includes(MARKER));
+
+            if (mine) {
+              if (mine.body.trim() !== wanted.trim()) {
+                await github.rest.issues.updateComment({
+                  ...context.repo,
+                  comment_id: mine.id,
+                  body: wanted,
+                });
+              }
+            } else if (problems.length) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: issue.number,
+                body: wanted,
+              });
+            }
+
+            if (closeAsUnsupported && issue.state === 'open') {
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'not_planned',
+              });
+            }
+
+            core.summary
+              .addHeading(`Triage for #${issue.number}`, 3)
+              .addRaw(problems.length ? `${problems.length} problem(s) found.` : 'All checks passed.')
+              .write();

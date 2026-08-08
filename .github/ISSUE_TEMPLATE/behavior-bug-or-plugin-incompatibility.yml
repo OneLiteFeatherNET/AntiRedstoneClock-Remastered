@@ -4,14 +4,61 @@ labels: [ "status: needs triage", "type: bug" ]
 projects: ["OneLiteFeatherNET/6"]
 assignees: ["OneLiteFeatherNET/antiredstoneclock-remastered-triage"]
 body:
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before you continue
+      description: We close reports that skip these. Please tick every box.
+      options:
+        - label: I am running the latest version of AntiRedstoneClock-Remastered from [Hangar](https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered) or [Modrinth](https://modrinth.com/plugin/AntiRedstoneClock-Remastered).
+          required: true
+        - label: I am running a Minecraft version that is listed as supported in the [README](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered#minecraft-version-support).
+          required: true
+        - label: I searched the open and closed issues and this is not a duplicate.
+          required: true
+        - label: I am pasting unmodified console output, not screenshots and not a summary.
+          required: true
+
+  - type: dropdown
+    id: server-software
+    attributes:
+      label: Server software
+      description: |
+        We support Paper and Folia. Paper forks, Spigot, CraftBukkit and hybrid servers are not supported -
+        see [Not a goal](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered#not-a-goal).
+        Reports for unsupported software are closed automatically.
+      options:
+        - Paper
+        - Folia
+        - A Paper fork (Purpur, Pufferfish, Leaves, ...)
+        - Spigot or CraftBukkit
+        - A hybrid server (Mohist, Arclight, Magma, Banner, ...)
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: log-link
+    attributes:
+      label: Full log (paste service)
+      description: |
+        Upload your full `logs/latest.log` to [mclo.gs](https://mclo.gs) and paste the link here.
+        This is the fastest way for us to help you - a link keeps the whole log intact and readable.
+      placeholder: https://mclo.gs/xxxxxxx
+    validations:
+      required: false
+
   - type: textarea
     id: server-logs
     attributes:
       label: Server Logs
       description: |
-        Upload your server log from `logs/latest.log` here
+        Paste the relevant part of `logs/latest.log` here, including the full stack trace if there is one.
+        Do not reformat or shorten the lines - this field is turned into a code block automatically.
+      render: text
     validations:
       required: true
+
   - type: textarea
     id: expected-behavior
     attributes:
@@ -43,6 +90,7 @@ body:
       description: |
         All plugins and datapacks running on your server.
         To list plugins, run `/plugins`. For datapacks, run `/datapack list`.
+      render: text
     validations:
       required: true
 
@@ -54,20 +102,12 @@ body:
         Run `/version` on your server and **paste** the full, unmodified output here.
         "latest" is *not* a version; we require the output of `/version` so we can adequately track down the issue.
         Additionally, do NOT provide a screenshot, you MUST paste the entire output.
-        <details>
-        <summary>Example</summary>
-
-        ```
-        > version
-        [19:36:32 INFO]: Checking version, please wait...
-        [19:36:32 INFO]: This server is running Paper version 1.20.6-148-ver/1.20.6@20f5165 (2024-07-02T15:37:33Z) (Implementing API version 1.20.6-R0.1-SNAPSHOT)
-        You are running the latest version
-        Previous version: git-Paper-446 (MC: 1.19.3)
-        ```
-
-        </details>
+        Example:
+        `[19:36:32 INFO]: This server is running Paper version 1.20.6-148-ver/1.20.6@20f5165 (2024-07-02T15:37:33Z) (Implementing API version 1.20.6-R0.1-SNAPSHOT)`
+      render: text
     validations:
       required: true
+
   - type: textarea
     id: plugin-version
     attributes:
@@ -76,18 +116,12 @@ body:
         Run `/about AntiRedstoneClock-Remastered` on your server and **paste** the full, unmodified output here.
         "latest" is *not* a version; we require the output of `/about AntiRedstoneClock-Remastered` so we can adequately track down the issue.
         Additionally, do NOT provide a screenshot, you MUST paste the entire output.
-        <details>
-        <summary>Example</summary>
-
-        ```
-        > about AntiRedstoneClock-Remastered
-        [19:37:16 INFO]: AntiRedstoneClock-Remastered version 1.1.0
-        [19:37:16 INFO]: Authors: OneLiteFeather and TheMeinerLP
-        ```
-
-        </details>
+        Example:
+        `[19:37:16 INFO]: AntiRedstoneClock-Remastered version 1.1.0`
+      render: text
     validations:
       required: true
+
   - type: textarea
     id: other-information
     attributes:
@@ -97,14 +131,3 @@ body:
         The more information we receive, the quicker and more effective we can be at finding the solution to the issue.
     validations:
       required: false
-
-  - type: markdown
-    id: pre-submission-checklist
-    attributes:
-      value: |
-        Before submitting this issue, please ensure the following:
-
-        1. You are running the latest version of Paper from [our downloads page](https://papermc.io/downloads).
-        2. You searched for and ensured there isn't already an open issue regarding this.
-        3. Your version of Minecraft is supported by AntiRedstoneClock-Remastered.
-        4. You are running the latest version of AntiRedstoneClock-Remastered from [our hangar page](https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered).
