@@ -68,6 +68,16 @@ allprojects {
 }
 
 dependencies {
+    constraints {
+        // CVE-2023-5072 (HIGH): org.json below 20231013 can be driven into a
+        // parser denial of service. It reaches the shaded jar transitively via
+        // club.minnced:discord-webhooks, which still resolves 20230618.
+        // Found by the Trivy gate in .github/workflows/release-please.yml.
+        implementation("org.json:json:20231013") {
+            because("CVE-2023-5072 in the version discord-webhooks pulls in")
+        }
+    }
+
     implementation(libs.bstats)
     implementation(libs.cloud.command.paper)
     implementation(libs.cloud.command.extras)
