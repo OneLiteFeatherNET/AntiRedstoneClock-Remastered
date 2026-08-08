@@ -15,6 +15,8 @@ plugins {
     jacoco
 }
 
+version = "2.8.9" // x-release-please-version
+
 if (!File("$rootDir/.git").exists()) {
     logger.lifecycle(
         """
@@ -48,6 +50,8 @@ allprojects {
     apply {
         plugin("java")
     }
+
+    version = rootProject.version
 
     configure<JavaPluginExtension> {
         toolchain {
