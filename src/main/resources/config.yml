@@ -1,3 +1,10 @@
+# Languages loaded on startup. 'en-US' is always loaded as the fallback.
+# Shipped out of the box:
+#   af-ZA  ar-SA  ca-ES  cs-CZ  da-DK  de-DE  el-GR  en-US  es-ES  fi-FI
+#   fr-FR  he-IL  hu-HU  it-IT  ja-JP  ko-KR  nl-NL  no-NO  pl-PL  pt-BR
+#   pt-PT  ro-RO  ru-RU  sr-Cyrl  sv-SE  tr-TR  uk-UA  vi-VN  zh-CN  zh-TW
+# Drop your own antiredstoneclockremasterd_<tag>.properties into the lang folder
+# to override any of them.
 translations:
   - 'en-US'
 
