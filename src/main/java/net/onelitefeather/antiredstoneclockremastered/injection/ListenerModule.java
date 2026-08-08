@@ -6,6 +6,8 @@ import net.onelitefeather.antiredstoneclockremastered.listener.*;
 import net.onelitefeather.antiredstoneclockremastered.service.api.DecisionService;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Guice module for listener dependencies.
@@ -15,6 +17,8 @@ import org.bukkit.plugin.Plugin;
  * @version 1.0.0
  */
 public final class ListenerModule extends AbstractModule {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ListenerModule.class);
     
     @Override
     protected void configure() {
@@ -40,6 +44,7 @@ public final class ListenerModule extends AbstractModule {
     }
 
     public void registerEvents(Injector injector, Plugin plugin) {
+        LOGGER.debug("Registering listeners");
         // Register DI-enabled listeners
         plugin.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerListener.class), plugin);
         plugin.getServer().getPluginManager().registerEvents(injector.getInstance(ObserverListener.class), plugin);

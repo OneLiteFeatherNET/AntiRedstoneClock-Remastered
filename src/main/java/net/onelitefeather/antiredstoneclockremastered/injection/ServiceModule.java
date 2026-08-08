@@ -46,6 +46,8 @@ public final class ServiceModule extends AbstractModule {
         var consoleNotification = new ConsoleNotificationService(antiRedstoneClockRemastered, adminNotifications);
         var signNotifications = new SignNotificationService(antiRedstoneClockRemastered, consoleNotification, regionService);
         var discordNotification = new DiscordNotificationService(antiRedstoneClockRemastered, signNotifications);
+        LOGGER.debug("Built notification chain: discord -> sign -> console -> admins, enabled targets are {}",
+                antiRedstoneClockRemastered.getConfig().getStringList("notification.enabled"));
         return discordNotification;
     }
 
@@ -71,6 +73,7 @@ public final class ServiceModule extends AbstractModule {
     @Provides
     @Singleton
     public RedstoneClockMiddleware provideRedstoneClockMiddleware(Injector injector) {
+        LOGGER.debug("Building middleware chain: tps -> event type -> world -> worldguard -> plotsquared -> tracking");
         return RedstoneClockMiddleware.link(
                 injector.getInstance(TPSRedstoneClockMiddleware.class),
                 injector.getInstance(SkipEventTypeRedstoneClockMiddleware.class),

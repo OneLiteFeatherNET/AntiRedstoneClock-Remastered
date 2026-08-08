@@ -40,6 +40,33 @@ For Minecraft version 1.20, it would be 1.20.6 and so on
 > [!CAUTION]
 > The "world" world is ignored by default
 
+## Debug logs
+When something does not work as expected, switch on debug logging with
+
+```
+/arcm feature debug
+```
+
+or in the `config.yml`:
+
+```yaml
+debug:
+  enabled: true
+  # How many rotated log files are kept next to latest.log
+  keepFiles: 5
+```
+
+Both take effect right away, no restart needed.
+
+Debug messages are written to `plugins/AntiRedstoneClock-Remastered/debug-logs/latest.log` and never
+show up in the server log, because they are far too noisy for it. Warnings and errors go to the server
+log as usual and are written to this file as well, so it contains the whole picture when you attach it
+to a bug report.
+
+The file is handled by the same Log4j2 the server itself logs with, so it behaves just like
+`logs/latest.log`: it rolls over on every server start and once it grows past 10 MB, and older files
+are compressed to `.log.gz`. `keepFiles` decides how many of them are kept.
+
 ## Contribution
 You want to help us? Sure go for it, we would love to see your contribution! You can look for open issues or if you have a nice idea, please open an issue or ask us on discord if you can add your feature with a PR. Communication is key.
 
@@ -59,6 +86,8 @@ antiredstoneclockremastered.notify.admin
   - Reloads the config
 - /arcm help
   - Shows all commands and descriptions
+- /arcm feature debug
+  - Turns debug logging on or off
 - /arcm display
   - Shows current cached redstone clocks
 

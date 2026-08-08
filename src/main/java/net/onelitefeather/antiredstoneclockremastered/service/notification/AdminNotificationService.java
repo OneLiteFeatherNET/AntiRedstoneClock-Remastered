@@ -8,10 +8,14 @@ import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class AdminNotificationService implements NotificationService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminNotificationService.class);
 
     private final AntiRedstoneClockRemastered plugin;
     private final NotificationService notificationService;
@@ -42,10 +46,13 @@ public final class AdminNotificationService implements NotificationService {
             this.notificationService.sendNotificationMessage(location);
         }
         if (!isEnabled()) return;
+        var notified = 0;
         for (final Player player : Bukkit.getOnlinePlayers()) {
             if (!player.hasPermission(Constants.PERMISSION_NOTIFY) || !player.isOp()) continue;
             player.sendMessage(getNotificationMessage(location));
+            notified++;
         }
+        LOGGER.debug("Notified {} admins about the clock at {}", notified, location);
     }
 
     @Override

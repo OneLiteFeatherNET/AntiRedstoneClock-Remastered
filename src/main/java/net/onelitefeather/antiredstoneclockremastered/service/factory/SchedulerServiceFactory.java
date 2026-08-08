@@ -4,9 +4,9 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.service.scheduler.BukkitSchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.service.scheduler.FoliaSchedulerService;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for creating instances of SchedulerService based on the server environment.

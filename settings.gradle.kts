@@ -24,6 +24,7 @@ dependencyResolutionManagement {
             version("cyclonedx", "3.3.0")
 
             version("paper", "26.1.2.build.+")
+            version("log4j", "2.25.2")
             version("bstats", "3.2.1")
             version("customblockdata", "2.2.5")
 
@@ -68,6 +69,7 @@ dependencyResolutionManagement {
             library("psv7.bukkit", "com.intellectualsites.plotsquared","plotsquared-bukkit").withoutVersion()
 
             library("paper", "io.papermc.paper", "paper-api").versionRef("paper")
+            library("log4j.core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j")
             library("adventure.text.discord", "dev.vankka", "mcdiscordreserializer").versionRef("adventure-text-discord-serializer")
             library("jda-webhook", "club.minnced", "discord-webhooks").versionRef("jda-webhook")
             library("bstats", "org.bstats", "bstats-bukkit").versionRef("bstats")

@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Command for reloading the plugin configuration.
@@ -17,6 +19,8 @@ import org.incendo.cloud.annotations.Permission;
  * @version 1.0.0
  */
 public final class ReloadCommand {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReloadCommand.class);
 
     private final DecisionService decisionService;
 
@@ -29,6 +33,7 @@ public final class ReloadCommand {
     @CommandDescription("antiredstoneclockremastered.command.reload.description")
     @Permission("antiredstoneclockremastered.command.reload")
     public void reloadConfig(CommandSender commandSender) {
+        LOGGER.debug("{} reloads the configuration", commandSender.getName());
         this.decisionService.reload();
         commandSender.sendMessage(Component.translatable("antiredstoneclockremastered.command.reload.success").arguments(AntiRedstoneClockRemastered.PREFIX));
     }

@@ -8,6 +8,8 @@ import net.onelitefeather.antiredstoneclockremastered.model.StaticRedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockMiddleware;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
 import org.bukkit.Location;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Named("staticTrackingService")
 public final class StaticTrackingService implements RedstoneTrackingService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticTrackingService.class);
 
     private final ConcurrentHashMap<Location, StaticRedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
 
@@ -59,10 +63,12 @@ public final class StaticTrackingService implements RedstoneTrackingService {
 
     private boolean expireOrDestroyIfNeeded(@NotNull StaticRedstoneClock clock) {
         if (clock.isTimeOut()) {
+            LOGGER.debug("Tracked block at {} timed out after {} triggers", clock.getLocation(), clock.getTriggerCount());
             removeClockByClock(clock);
             return false;
         }
         if (clock.getTriggerCount() >= antiRedstoneClockRemastered.getConfig().getInt("clock.maxCount", 150)) {
+            LOGGER.debug("Block at {} reached the trigger limit with {} triggers", clock.getLocation(), clock.getTriggerCount());
             removeClockByClock(clock);
             return true;
         }

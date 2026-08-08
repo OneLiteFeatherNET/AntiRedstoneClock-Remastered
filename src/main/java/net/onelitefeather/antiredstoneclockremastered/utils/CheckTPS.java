@@ -4,9 +4,13 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public final class CheckTPS {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckTPS.class);
 
     private long lastPoll = System.currentTimeMillis();
     private boolean tpsOk = true;
@@ -26,8 +30,12 @@ public final class CheckTPS {
 
     public void startCheck() {
         if (this.minimumTPS > 0 || this.maximimumTPS > 0) {
+            LOGGER.debug("Starting TPS check every {} seconds, accepted range is {} to {}",
+                    this.interval, this.minimumTPS, this.maximimumTPS);
             this.scheduler.scheduleRepeatingTask(this::runCheck, 1, 20L * this.interval);
+            return;
         }
+        LOGGER.debug("TPS check is disabled, both tps.min and tps.max are negative");
     }
 
     private void runCheck() {
@@ -43,6 +51,7 @@ public final class CheckTPS {
             this.tpsOk = (this.tps >= this.minimumTPS && this.tps <= this.maximimumTPS);
         }
         this.lastPoll = current;
+        LOGGER.debug("Measured {} TPS, clock detection is {}", this.tps, this.tpsOk ? "running" : "paused");
     }
 
     public boolean isTpsOk() {

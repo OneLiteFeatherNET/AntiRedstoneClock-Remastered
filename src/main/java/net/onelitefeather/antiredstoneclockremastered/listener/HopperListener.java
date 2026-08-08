@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Listener for handling hopper clocks.
@@ -23,6 +25,8 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
  * @since 2.9.0
  */
 public final class HopperListener implements Listener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HopperListener.class);
 
     private final AntiRedstoneClockRemastered plugin;
     private final DecisionService decisionService;
@@ -55,6 +59,8 @@ public final class HopperListener implements Listener {
         if (!this.tracker.registerMovement(sourceKey, destinationKey, System.currentTimeMillis() / 1000, timeout)) {
             return;
         }
+
+        LOGGER.debug("Hopper at {} moved an item back to {}", sourceLocation, destinationLocation);
 
         // Always report the same hopper of the pair, otherwise every cycle would be tracked as its own clock.
         var pair = HopperClockTracker.HopperPair.of(sourceKey, destinationKey);

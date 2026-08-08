@@ -11,9 +11,9 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerServi
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.http.HttpClient;

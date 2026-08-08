@@ -7,9 +7,9 @@ import net.onelitefeather.antiredstoneclockremastered.model.RedstoneClock;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneClockMiddleware;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
 import org.bukkit.Location;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +33,10 @@ public final class DelegatedTrackingService implements RedstoneTrackingService {
     @Override
     public boolean isRedstoneClock(RedstoneClockMiddleware.CheckContext context) {
         var mode = ConfigMode.getEnum(this.plugin.getConfig(), "check.mode", ConfigMode.STATIC);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Delegating {} check at {} to the {} tracking service",
+                    context.eventType(), context.location(), mode);
+        }
         return switch (mode) {
             case STATIC -> this.staticTrackingService.isRedstoneClock(context);
             case DYNAMIC -> this.dynamicTrackingService.isRedstoneClock(context);
