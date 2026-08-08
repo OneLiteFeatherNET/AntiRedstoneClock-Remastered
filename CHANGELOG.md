@@ -5,6 +5,13 @@
 
 * **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.2 ([#259](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/259)) ([c44a8d6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c44a8d640464a582a8e50617e8de9ce91d1bf837))
 
+## [2.9.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.9.0...v2.9.1) (2026-08-08)
+
+
+### Bug Fixes
+
+* **ci:** drop invalid platform version and allow re-publishing a release ([#278](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/278)) ([36de8db](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/36de8dbabf462d4285efc741603a13bfafac9450))
+
 ## [2.9.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.8.9...v2.9.0) (2026-08-08)
 
 
