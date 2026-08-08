@@ -1,0 +1,78 @@
+name: Release Please
+"on":
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    name: Release Please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to create the tag and the GitHub release
+      pull-requests: write # to open and update the release PR
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Release Please
+        id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    name: Build & Publish Release
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to upload assets to the GitHub release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v6
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 24
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build & Publish
+        env:
+          HANGAR_SECRET: ${{ secrets.HANGAR_KEY }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_KEY }}
+        run: ./gradlew check shadowJar publishAllPublicationsToHangar modrinth cyclonedxBom
+      - name: Upload JAR to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
+        run: gh release upload "$TAG_NAME" build/libs/AntiRedstoneClock-Remastered-*.jar --clobber
+      - name: Upload BOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v4
+        with:
+          serverhostname: ${{ secrets.DEPENDENCYTRACK_HOSTNAME }}
+          apikey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectname: "AntiRedstoneClock-Remastered"
+          projectversion: ${{ needs.release-please.outputs.version }}
+          projecttags: 'bukkit,paper,plugin'
+          bomfilename: "build/reports/cyclonedx/bom.xml"
+          autocreate: true
+          parent: '682857a9-0cd2-4ffd-a2b3-098eeba5ab74'
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: publish-reports
+          path: build/reports/**
+          if-no-files-found: ignore
+          retention-days: 14

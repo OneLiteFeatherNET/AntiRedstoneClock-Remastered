@@ -69,7 +69,9 @@ Modrinth: https://modrinth.com/plugin/AntiRedstoneClock-Remastered
 Discord: https://discord.onelitefeather.net
 
 ## Release Cycle
-**Important Announcement:** While we have already been using Semantic Versioning (SemVer) for our releases, starting from July 24, 2025, we will be implementing the "semantic-release" tool to automate this process.
+**Important Announcement:** We use Semantic Versioning (SemVer) for our releases, automated with [Release Please](https://github.com/googleapis/release-please). Instead of releasing on every push to `main`, Release Please opens and updates a release pull request that collects the pending changelog. Merging that pull request is what bumps the version, writes `CHANGELOG.md`, creates the tag and the GitHub release, and publishes to Hangar and Modrinth.
+
+Because the version and the changelog are derived from commit messages, every pull request title and every commit on the branch is checked against the [Conventional Commits](https://www.conventionalcommits.org/) standard by the `pr-lint` workflow.
 
 ### What is Semantic Versioning?
 Semantic Versioning follows the format of **MAJOR.MINOR.PATCH** (e.g., 2.4.1):
@@ -101,11 +103,13 @@ Different types of commits will automatically trigger different version incremen
 ### Example Release Flow
 1. Current version: 1.2.3
 2. Developer adds a new feature: `feat: add support for custom clock detection rules`
-   - Version becomes 1.3.0
+   - Release Please opens a release pull request for 1.3.0
 3. Developer fixes a bug: `fix: prevent false positives in clock detection`
-   - Version becomes 1.3.1
+   - The same release pull request is updated and still targets 1.3.0
 4. Developer makes a breaking change: `feat!: redesign configuration format`
-   - Version becomes 2.0.0
+   - The release pull request now targets 2.0.0
+5. A maintainer merges the release pull request
+   - Version 2.0.0 is tagged, released and published
 
 ### Update Triggers
 Please note that version updates can be triggered by:
@@ -115,4 +119,4 @@ Please note that version updates can be triggered by:
 ### References
 - Official Semantic Versioning specification: https://semver.org/
 - Conventional Commits standard: https://www.conventionalcommits.org/
-- Semantic Release tool: https://github.com/semantic-release/semantic-release
+- Release Please: https://github.com/googleapis/release-please
