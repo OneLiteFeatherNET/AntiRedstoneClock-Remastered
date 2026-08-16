@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             version("customblockdata", "2.2.5")
 
             version("cloudcommand", "2.0.0")
-            version("cloudcommandPaper", "2.0.0-SNAPSHOT")
+            version("cloudcommandPaper", "2.0.0")
             version("cloudcommandAnnotations", "2.1.0")
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
