@@ -30,7 +30,7 @@ dependencyResolutionManagement {
 
             version("cloudcommand", "2.0.0")
             version("cloudcommandPaper", "2.0.0-SNAPSHOT")
-            version("cloudcommandAnnotations", "2.0.0")
+            version("cloudcommandAnnotations", "2.1.0")
             version("cloudcommandExtras", "2.0.0-SNAPSHOT")
 
             version("adventure-text-discord-serializer", "4.4.0")
