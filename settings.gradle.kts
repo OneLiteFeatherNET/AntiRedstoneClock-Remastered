@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             version("cyclonedx", "3.4.1")
 
             version("paper", "26.1.2.build.+")
-            version("log4j", "2.25.3")
+            version("log4j", "2.25.4")
             version("bstats", "3.2.1")
             version("customblockdata", "2.2.7")
 
