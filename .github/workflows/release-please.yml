@@ -136,7 +136,7 @@ jobs:
     permissions:
       contents: read
       security-events: write # SARIF upload to code scanning
-    uses: OneLiteFeatherNET/workflows/.github/workflows/security-scan.yml@v2.7.0
+    uses: OneLiteFeatherNET/workflows/.github/workflows/security-scan.yml@v2.8.0
     with:
       scan-type: rootfs
       artifact-name: plugin-jar
@@ -202,7 +202,7 @@ jobs:
   sbom:
     name: Publish SBOM
     needs: [build, publish]
-    uses: OneLiteFeatherNET/workflows/.github/workflows/sbom-publish.yml@v2.7.0
+    uses: OneLiteFeatherNET/workflows/.github/workflows/sbom-publish.yml@v2.8.0
     with:
       project-name: "AntiRedstoneClock-Remastered"
       project-version: ${{ needs.build.outputs.version }}
