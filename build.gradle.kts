@@ -15,7 +15,7 @@ plugins {
     jacoco
 }
 
-version = "2.9.1" // x-release-please-version
+version = "2.9.2" // x-release-please-version
 
 if (!File("$rootDir/.git").exists()) {
     logger.lifecycle(
