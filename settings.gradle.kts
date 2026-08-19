@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             version("paper", "26.1.2.build.+")
             version("log4j", "2.25.4")
             version("bstats", "3.2.1")
-            version("customblockdata", "2.2.7")
+            version("customblockdata", "2.2.8")
 
             version("cloudcommand", "2.0.0")
             version("cloudcommandPaper", "2.0.0")
