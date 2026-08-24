@@ -44,20 +44,41 @@ Two habits make that cheap:
   links to the reference. A value that exists in two places is a contradiction waiting to happen,
   and it is the reason the old README and the code disagreed on several points.
 
-## Building the site
+## Adding a page
 
-`docs/` is published to GitHub Pages with MkDocs Material by
-`.github/workflows/docs.yml`. To see your changes before pushing:
+A new page has to be registered in three places, and forgetting one of them is the usual
+mistake:
 
-```
-python -m venv .venv && . .venv/bin/activate
-pip install -r requirements-docs.txt
-mkdocs serve
-```
+1. The file itself, in the directory of its quadrant.
+2. `docs/SUMMARY.md` — the navigation. A page that is not listed there is not part of the
+   published site.
+3. `docs/index.md` — the entry point readers actually land on.
 
-The workflow builds with `--strict`, which turns a dead internal link or a page missing from
-the `nav` in `mkdocs.yml` into a failed build. A new page therefore has to be added to `nav`,
-and it has to be added to `docs/index.md` as well — the index is what readers actually land on.
+Renames have to happen in the file system and in `SUMMARY.md` at the same time. A rename with
+no summary update drops the page out of the navigation while leaving it reachable by URL, which
+is worse than a broken link because nobody notices.
 
-`docs/development/` is excluded from the published site through `exclude_docs`. It stays
-readable on GitHub, which is where the people who need it already are.
+## Publishing
+
+The documentation is published at <https://arcr.onelitefeather.net/> by GitBook. `.gitbook.yaml`
+in the repository root points Git Sync at `docs/`, with `index.md` as the landing page and
+`SUMMARY.md` as the navigation. The four quadrant directories are the four page groups.
+`docs/development/` is not listed in `SUMMARY.md` and is therefore not part of the space — it
+stays readable on GitHub, which is where the people who need it already are.
+
+Two properties of Git Sync are worth knowing before editing anything in the GitBook editor:
+
+- **It is bidirectional.** Edits made in GitBook are committed back to the branch the space is
+  connected to. Those commits do not pass through a pull request, so they are not seen by
+  `pr-lint` and not reviewed.
+- **Nothing checks the links.** There is no build step for the documentation any more, so a
+  dead link between two pages is found by a reader, not by CI. When you rename or move a page,
+  grep for its old path before you push:
+
+  ```
+  grep -rn "old-page-name" docs/ README.md CONTRIBUTING.md .github/
+  ```
+
+If a page has to move, add a redirect under `redirects:` in `.gitbook.yaml` rather than leaving
+the old URL dead — external links to it, from Hangar, Modrinth or Discord, cannot be fixed
+afterwards.
