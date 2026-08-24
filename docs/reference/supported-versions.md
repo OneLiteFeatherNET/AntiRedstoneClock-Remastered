@@ -1,10 +1,8 @@
 # Supported versions
 
-Generated from `supportedMinecraftVersions` and `paper.apiVersion` in `build.gradle.kts`
-by `./gradlew generateReferenceDocs`. Do not edit by hand.
-
-These are the Minecraft versions the project builds and tests against, and exactly the
-list published to Hangar and Modrinth.
+The Minecraft versions the project builds and tests against, and exactly the list published to
+Hangar and Modrinth. The authoritative source is `supportedMinecraftVersions` in
+`build.gradle.kts` — when a version is added there, it has to be added here too.
 
 - 1.20.6
 - 1.21

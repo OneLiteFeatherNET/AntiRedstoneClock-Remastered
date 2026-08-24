@@ -14,9 +14,9 @@ Ask us anything on [Discord](https://discord.onelitefeather.net).
 - [docs/development/](docs/development/) covers the dependency injection setup, the testing
   guide and how issues are triaged.
 
-Documentation for users lives in [docs/](docs/index.md). Its reference pages are partly
-generated — see [Writing documentation](docs/development/documentation.md) before editing
-anything under `docs/reference/`.
+Documentation for users lives in [docs/](docs/index.md). See
+[Writing documentation](docs/development/documentation.md) for how it is organised and which
+pages have to be updated when you change a config key, a command or a permission.
 
 ## Commit messages
 
