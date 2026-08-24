@@ -44,54 +44,41 @@ Two habits make that cheap:
   links to the reference. A value that exists in two places is a contradiction waiting to happen,
   and it is the reason the old README and the code disagreed on several points.
 
-## Building the site
-
-`docs/` is published to GitHub Pages with MkDocs Material by
-`.github/workflows/docs.yml`. To see your changes before pushing:
-
-```
-python -m venv .venv && . .venv/bin/activate
-pip install -r requirements-docs.txt
-mkdocs serve
-```
-
-The workflow builds with `--strict`, which turns a dead internal link or a page missing from
-the `nav` in `mkdocs.yml` into a failed build. A new page therefore has to be added to `nav`,
-and it has to be added to `docs/index.md` as well — the index is what readers actually land on.
-
-`docs/development/` is excluded from the published site through `exclude_docs`. It stays
-readable on GitHub, which is where the people who need it already are.
-
 ## Adding a page
 
-A new page has to be registered in **three** places, and forgetting one of them is the usual
+A new page has to be registered in three places, and forgetting one of them is the usual
 mistake:
 
 1. The file itself, in the directory of its quadrant.
-2. `nav:` in `mkdocs.yml` — the MkDocs build runs with `--strict` and fails on a page that is
-   missing from it, so this one catches itself.
-3. `docs/SUMMARY.md` — the GitBook navigation. **Nothing checks this one.** A page that is not
-   listed there is not part of the GitBook space, and a rename that only happens in the file
-   system silently drops the page out of the navigation while leaving it reachable by URL.
+2. `docs/SUMMARY.md` — the navigation. A page that is not listed there is not part of the
+   published site.
+3. `docs/index.md` — the entry point readers actually land on.
 
-Also add it to `docs/index.md`, which is what readers actually land on.
+Renames have to happen in the file system and in `SUMMARY.md` at the same time. A rename with
+no summary update drops the page out of the navigation while leaving it reachable by URL, which
+is worse than a broken link because nobody notices.
 
-## GitBook
+## Publishing
 
-`.gitbook.yaml` in the repository root points GitBook Git Sync at `docs/`, with `index.md` as
-the landing page and `SUMMARY.md` as the navigation. The four quadrant directories become the
-four page groups.
+The documentation is published at <https://arcr.onelitefeather.net/> by GitBook. `.gitbook.yaml`
+in the repository root points Git Sync at `docs/`, with `index.md` as the landing page and
+`SUMMARY.md` as the navigation. The four quadrant directories are the four page groups.
+`docs/development/` is not listed in `SUMMARY.md` and is therefore not part of the space — it
+stays readable on GitHub, which is where the people who need it already are.
 
-Two things about Git Sync are worth knowing before editing anything in the GitBook editor:
+Two properties of Git Sync are worth knowing before editing anything in the GitBook editor:
 
 - **It is bidirectional.** Edits made in GitBook are committed back to the branch the space is
   connected to. Those commits do not pass through a pull request, so they are not seen by
   `pr-lint` and not reviewed.
-- **It has no link check.** The `--strict` MkDocs build is what catches a dead link between two
-  pages, and it only runs on pull requests. A link broken through the GitBook editor is not
-  caught by anything until a reader hits it.
+- **Nothing checks the links.** There is no build step for the documentation any more, so a
+  dead link between two pages is found by a reader, not by CI. When you rename or move a page,
+  grep for its old path before you push:
 
-While both targets exist, `nav:` in `mkdocs.yml` and `docs/SUMMARY.md` describe the same
-structure twice and have to be changed together. That duplication is the reason to settle on
-one of the two rather than running both indefinitely.
+  ```
+  grep -rn "old-page-name" docs/ README.md CONTRIBUTING.md .github/
+  ```
 
+If a page has to move, add a redirect under `redirects:` in `.gitbook.yaml` rather than leaving
+the old URL dead — external links to it, from Hangar, Modrinth or Discord, cannot be fixed
+afterwards.

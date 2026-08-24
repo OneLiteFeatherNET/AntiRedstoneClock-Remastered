@@ -3,20 +3,5 @@
   "extends": [
     "github>OneLiteFeatherNET/renovate:default(OneLiteFeatherNET/antiredstone-remastered-maintainers)",
     "github>OneLiteFeatherNET/renovate:paper"
-  ],
-  "packageRules": [
-    {
-      "description": "MkDocs 2.0 removes the plugin system Material for MkDocs is built on, with no migration path. Stay on 1.x until Material supports it.",
-      "matchManagers": [
-        "pip_requirements"
-      ],
-      "matchPackageNames": [
-        "mkdocs"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "enabled": false
-    }
   ]
 }

@@ -44,7 +44,3 @@ bin/
 
 ### Project
 run-*/
-
-# MkDocs
-/site/
-.venv/

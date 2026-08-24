@@ -45,15 +45,15 @@ are cut.
 This plugin is inspired by [Trafalcraft's antiRedstoneClock](https://gitlab.com/Trafalcraft/antiRedstoneClock);
 the code was re-created from scratch. Licensed under the terms in [LICENSE](LICENSE).
 
-[docs]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/
-[tutorial]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/tutorial/detect-your-first-clock/
-[discord-alerts]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/send-alerts-to-discord/
-[ignore-world]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/exclude-a-world-from-detection/
-[regions]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/allow-redstone-clocks-in-a-region/
-[report-only]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/report-clocks-without-breaking-them/
-[debug-log]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/produce-a-debug-log-for-a-bug-report/
-[config]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/configuration/
-[commands]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/commands/
-[perms]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/permissions/
-[versions]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/supported-versions/
-[detection]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/explanation/how-detection-works/
+[docs]: https://arcr.onelitefeather.net/
+[tutorial]: https://arcr.onelitefeather.net/tutorial/detect-your-first-clock
+[discord-alerts]: https://arcr.onelitefeather.net/how-to/send-alerts-to-discord
+[ignore-world]: https://arcr.onelitefeather.net/how-to/exclude-a-world-from-detection
+[regions]: https://arcr.onelitefeather.net/how-to/allow-redstone-clocks-in-a-region
+[report-only]: https://arcr.onelitefeather.net/how-to/report-clocks-without-breaking-them
+[debug-log]: https://arcr.onelitefeather.net/how-to/produce-a-debug-log-for-a-bug-report
+[config]: https://arcr.onelitefeather.net/reference/configuration
+[commands]: https://arcr.onelitefeather.net/reference/commands
+[perms]: https://arcr.onelitefeather.net/reference/permissions
+[versions]: https://arcr.onelitefeather.net/reference/supported-versions
+[detection]: https://arcr.onelitefeather.net/explanation/how-detection-works
