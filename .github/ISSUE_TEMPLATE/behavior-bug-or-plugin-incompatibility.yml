@@ -12,7 +12,7 @@ body:
       options:
         - label: I am running the latest version of AntiRedstoneClock-Remastered from [Hangar](https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered) or [Modrinth](https://modrinth.com/plugin/AntiRedstoneClock-Remastered).
           required: true
-        - label: I am running a Minecraft version that is listed as supported in the [supported versions](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/blob/main/docs/reference/supported-versions.md).
+        - label: I am running a Minecraft version that is listed as supported in the [supported versions](https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/supported-versions/).
           required: true
         - label: I searched the open and closed issues and this is not a duplicate.
           required: true
@@ -25,7 +25,7 @@ body:
       label: Server software
       description: |
         We support Paper and Folia. Paper forks, Spigot, CraftBukkit and hybrid servers are not supported -
-        see [Scope and non-goals](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/blob/main/docs/explanation/scope-and-non-goals.md).
+        see [Scope and non-goals](https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/explanation/scope-and-non-goals/).
         Reports for unsupported software are closed automatically.
       options:
         - Paper

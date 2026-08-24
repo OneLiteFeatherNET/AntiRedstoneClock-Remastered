@@ -13,25 +13,28 @@ else. It works with PlotSquared and WorldGuard when they are installed, and supp
 
 ## Documentation
 
-**[📖 docs/index.md](docs/index.md)** — start here.
+**[📖 Read the documentation][docs]** — it has search.
 
-- New to the plugin? [Detect your first redstone clock](docs/tutorial/detect-your-first-clock.md)
-- Setting it up? The [how-to guides](docs/how-to/) cover Discord alerts, ignoring a world,
-  region exceptions, and reporting clocks without breaking them.
-- Looking up a key, a command or a permission? See the [reference](docs/reference/).
-- Wondering how it decides what a clock is? See the [background pages](docs/explanation/).
+- New to the plugin? [Detect your first redstone clock][tutorial]
+- Setting it up? The how-to guides cover [Discord alerts][discord-alerts], [ignoring a
+  world][ignore-world], [region exceptions][regions] and [reporting clocks without breaking
+  them][report-only].
+- Looking up a value? [Configuration][config] · [Commands][commands] · [Permissions][perms]
+- Wondering how it decides what a clock is? [How detection works][detection]
+
+The pages are written in [`docs/`](docs/) and published from `main` on every change.
 
 ## Download
 
 - [Hangar](https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered)
 - [Modrinth](https://modrinth.com/plugin/AntiRedstoneClock-Remastered)
 
-Requires Java 25 and a [supported Minecraft version](docs/reference/supported-versions.md).
+Requires Java 25 and a [supported Minecraft version][versions].
 
 ## Get help
 
 - [Open an issue](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues) —
-  please attach a [debug log](docs/how-to/produce-a-debug-log-for-a-bug-report.md)
+  please attach a [debug log][debug-log]
 - [Discord](https://discord.onelitefeather.net)
 
 ## Contributing
@@ -41,3 +44,16 @@ are cut.
 
 This plugin is inspired by [Trafalcraft's antiRedstoneClock](https://gitlab.com/Trafalcraft/antiRedstoneClock);
 the code was re-created from scratch. Licensed under the terms in [LICENSE](LICENSE).
+
+[docs]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/
+[tutorial]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/tutorial/detect-your-first-clock/
+[discord-alerts]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/send-alerts-to-discord/
+[ignore-world]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/exclude-a-world-from-detection/
+[regions]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/allow-redstone-clocks-in-a-region/
+[report-only]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/report-clocks-without-breaking-them/
+[debug-log]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/how-to/produce-a-debug-log-for-a-bug-report/
+[config]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/configuration/
+[commands]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/commands/
+[perms]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/permissions/
+[versions]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/reference/supported-versions/
+[detection]: https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/explanation/how-detection-works/
