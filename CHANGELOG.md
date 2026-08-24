@@ -5,6 +5,31 @@
 
 * **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.2 ([#259](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/259)) ([c44a8d6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c44a8d640464a582a8e50617e8de9ce91d1bf837))
 
+## [2.10.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.9.1...v2.10.0) (2026-08-24)
+
+
+### Features
+
+* restructure the user documentation along Diátaxis and generate its reference ([#309](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/309)) ([d12af5f](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/d12af5fbf9371ac51a9564a5150931f701bbeae6))
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.jeff-media:custom-block-data to v2.2.6 ([#295](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/295)) ([7f7533d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/7f7533d62e18bd6c0dc5f0f13692ea795cf02fd8))
+* **deps:** update dependency com.jeff-media:custom-block-data to v2.2.7 ([#299](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/299)) ([85f76d7](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/85f76d79a9479987e48e8371671500f860d6525c))
+* **deps:** update dependency com.jeff-media:custom-block-data to v2.2.8 ([#302](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/302)) ([9889f4b](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/9889f4b7b7479ccf06890988df116b652cfba8f0))
+* **deps:** update dependency com.sk89q.worldedit:worldedit-bukkit to v6.1 ([#285](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/285)) ([11f1a5a](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/11f1a5afbeb800dcb342c2561a85285cd2ce43c6))
+* **deps:** update dependency com.sk89q.worldguard:worldguard-bukkit to v7.0.18 ([#265](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/265)) ([2231e6d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/2231e6d5dbe1243e92b77b79d2038dda1c195dff))
+* **deps:** update dependency org.apache.logging.log4j:log4j-core to v2.25.3 ([#291](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/291)) ([b6714c2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/b6714c24fd23907aa4fc5c9693cf9e36b4bdaf3a))
+* **deps:** update dependency org.apache.logging.log4j:log4j-core to v2.25.4 ([#300](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/300)) ([7c42569](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/7c42569edfc2275a747fccb081b5bffef3401377))
+* **deps:** update dependency org.apache.logging.log4j:log4j-core to v2.25.5 ([#303](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/303)) ([a4292e9](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/a4292e98623ff5bf6c257d5e404fd59ee85e3b9b))
+* **deps:** update dependency org.apache.logging.log4j:log4j-core to v2.26.0 ([#305](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/305)) ([c9a4ce2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c9a4ce218981dcd5de6ee5681663b1b1af867ae0))
+* **deps:** update dependency org.apache.logging.log4j:log4j-core to v2.26.1 ([#306](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/306)) ([8661506](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/86615061c2d9075a1f9e32728c888dade6005a1b))
+* **deps:** update dependency org.incendo:cloud-annotations to v2.1.0 ([#286](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/286)) ([dc8715d](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/dc8715d1060b7204f0cd5f9ca9365e412caf85ff))
+* **deps:** update dependency org.incendo:cloud-minecraft-extras to v2.0.0 ([#297](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/297)) ([dffe383](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/dffe383c5bdbac22af68c2b1b0712422ab248b31))
+* **deps:** update dependency org.incendo:cloud-paper to v2.0.0 ([#298](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/298)) ([5b8209a](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/5b8209a173602ad26c4003e5460776ba4d05e210))
+* **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.3 ([#292](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/292)) ([28b0647](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/28b0647137062ac07f65d3b19ec9fbb6fda68ec6))
+
 ## [2.9.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.9.0...v2.9.1) (2026-08-08)
 
 
