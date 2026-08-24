@@ -365,7 +365,7 @@ data class DeclaredPermission(
  * YAML library into the build classpath.
  */
 fun parseDeclaredPermissions(pluginYml: File): List<DeclaredPermission> {
-    val lines = pluginYml.readLines()
+    val lines = pluginYml.readLines().map { it.removeSuffix("\r") }
     val start = lines.indexOfFirst { it == "permissions:" }
     if (start < 0) return emptyList()
 
@@ -482,7 +482,8 @@ fun parseConfigKeys(configYml: File): Map<String, String?> {
     var blockScalarIndent: Int? = null
     var listIndent: Int? = null
 
-    for (raw in configYml.readLines()) {
+    for (line0 in configYml.readLines()) {
+        val raw = line0.removeSuffix("\r")
         val indent = raw.takeWhile { it == ' ' }.length
         if (blockScalarIndent != null) {
             if (raw.isBlank() || indent > blockScalarIndent!!) continue
@@ -554,10 +555,14 @@ val checkReferenceDocs = tasks.register("checkReferenceDocs") {
     doLast {
         val problems = mutableListOf<String>()
 
+        // Checkouts on Windows turn the committed LF into CRLF, so both sides of every
+        // comparison are normalised before they are compared.
+        fun File.readTextLf() = readText().replace("\r\n", "\n")
+
         fun compare(fileName: String, expected: String) {
             val actual = outputDir.file(fileName).asFile
             if (!actual.exists()) problems += "docs/reference/$fileName is missing"
-            else if (actual.readText() != expected) problems += "docs/reference/$fileName is out of date"
+            else if (actual.readTextLf() != expected) problems += "docs/reference/$fileName is out of date"
         }
 
         compare("permissions.md", renderPermissionsPage(parseDeclaredPermissions(pluginYml.get().asFile)))
@@ -569,7 +574,7 @@ val checkReferenceDocs = tasks.register("checkReferenceDocs") {
         if (!configurationPage.exists()) {
             problems += "docs/reference/configuration.md is missing"
         } else {
-            val page = configurationPage.readText()
+            val page = configurationPage.readTextLf()
             val documented = Regex("""^### `([^`]+)`""", RegexOption.MULTILINE)
                 .findAll(page).map { it.groupValues[1] }.toList()
             val shipped = parseConfigKeys(configYml.asFile)
