@@ -32,8 +32,11 @@ from an empty `plugins/` directory to watching the plugin find and break a clock
 
 ---
 
-Working on the plugin itself? See [docs/development/](development/) for the dependency
-injection setup, the testing guide and the issue intake pipeline.
+Working on the plugin itself? The maintainer notes — dependency injection, testing, issue
+intake — live in
+[docs/development/](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/tree/main/docs/development)
+on GitHub, alongside
+[CONTRIBUTING.md](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/blob/main/CONTRIBUTING.md).
 
 Something missing or wrong? [Open an issue](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues)
 or ask on [Discord](https://discord.onelitefeather.net).
