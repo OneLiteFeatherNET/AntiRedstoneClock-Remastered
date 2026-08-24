@@ -1,0 +1,8 @@
+# GitBook Git Sync reads the documentation straight out of docs/.
+# The navigation is docs/SUMMARY.md; a page that is not listed there is not part
+# of the space. See docs/development/documentation.md.
+root: ./docs/
+
+structure:
+  readme: index.md
+  summary: SUMMARY.md

@@ -9,9 +9,11 @@ edit_uri: edit/main/docs/
 copyright: OneLiteFeatherNET
 
 # The maintainer record is not part of the user documentation. It stays readable
-# on GitHub and is linked from CONTRIBUTING.md.
+# on GitHub and is linked from CONTRIBUTING.md. SUMMARY.md is the GitBook
+# navigation and has no meaning here.
 exclude_docs: |
   development/
+  SUMMARY.md
 
 theme:
   name: material

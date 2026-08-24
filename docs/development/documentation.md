@@ -61,3 +61,37 @@ and it has to be added to `docs/index.md` as well — the index is what readers 
 
 `docs/development/` is excluded from the published site through `exclude_docs`. It stays
 readable on GitHub, which is where the people who need it already are.
+
+## Adding a page
+
+A new page has to be registered in **three** places, and forgetting one of them is the usual
+mistake:
+
+1. The file itself, in the directory of its quadrant.
+2. `nav:` in `mkdocs.yml` — the MkDocs build runs with `--strict` and fails on a page that is
+   missing from it, so this one catches itself.
+3. `docs/SUMMARY.md` — the GitBook navigation. **Nothing checks this one.** A page that is not
+   listed there is not part of the GitBook space, and a rename that only happens in the file
+   system silently drops the page out of the navigation while leaving it reachable by URL.
+
+Also add it to `docs/index.md`, which is what readers actually land on.
+
+## GitBook
+
+`.gitbook.yaml` in the repository root points GitBook Git Sync at `docs/`, with `index.md` as
+the landing page and `SUMMARY.md` as the navigation. The four quadrant directories become the
+four page groups.
+
+Two things about Git Sync are worth knowing before editing anything in the GitBook editor:
+
+- **It is bidirectional.** Edits made in GitBook are committed back to the branch the space is
+  connected to. Those commits do not pass through a pull request, so they are not seen by
+  `pr-lint` and not reviewed.
+- **It has no link check.** The `--strict` MkDocs build is what catches a dead link between two
+  pages, and it only runs on pull requests. A link broken through the GitBook editor is not
+  caught by anything until a reader hits it.
+
+While both targets exist, `nav:` in `mkdocs.yml` and `docs/SUMMARY.md` describe the same
+structure twice and have to be changed together. That duplication is the reason to settle on
+one of the two rather than running both indefinitely.
+
