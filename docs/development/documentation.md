@@ -43,3 +43,21 @@ Two habits make that cheap:
 - **Never restate a default outside `reference/configuration.md`.** A how-to names the key and
   links to the reference. A value that exists in two places is a contradiction waiting to happen,
   and it is the reason the old README and the code disagreed on several points.
+
+## Building the site
+
+`docs/` is published to GitHub Pages with MkDocs Material by
+`.github/workflows/docs.yml`. To see your changes before pushing:
+
+```
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements-docs.txt
+mkdocs serve
+```
+
+The workflow builds with `--strict`, which turns a dead internal link or a page missing from
+the `nav` in `mkdocs.yml` into a failed build. A new page therefore has to be added to `nav`,
+and it has to be added to `docs/index.md` as well — the index is what readers actually land on.
+
+`docs/development/` is excluded from the published site through `exclude_docs`. It stays
+readable on GitHub, which is where the people who need it already are.
