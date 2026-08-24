@@ -2,8 +2,8 @@
 
 Every key of `plugins/AntiRedstoneClock-Remastered/config.yml`, in the order the file uses.
 
-The keys and defaults on this page are checked against `src/main/resources/config.yml` by
-`./gradlew checkReferenceDocs`, which fails the build when the two disagree.
+The authoritative source is `src/main/resources/config.yml` — that is the file the plugin ships
+and reads, and this page is maintained alongside it.
 
 `Reload` states how a change takes effect. `/arcm reload` re-reads the file; a value marked
 *restart* is only read while the server starts.
