@@ -21,41 +21,25 @@ Two rules keep the set from rotting:
 - **Recommendations never go in `reference/`.** In a reference table a recommendation is read as
   a fact, and unlike a fact it goes stale silently. It belongs in `explanation/`.
 
-## Generated pages
+## Keeping the reference honest
 
-Two reference pages are generated and must not be edited by hand:
+Every page under `docs/reference/` is written by hand, so nothing enforces that it still matches
+the code. These four changes are the ones that silently invalidate it — update the page in the
+same commit:
 
-| Page | Generated from |
+| When you change | Update |
 |---|---|
-| `reference/permissions.md` | the `paper { permissions { ... } }` block, via the generated `paper-plugin.yml` |
-| `reference/supported-versions.md` | `supportedMinecraftVersions` and `paper.apiVersion` |
+| `paper { permissions { ... } }` in `build.gradle.kts` | `reference/permissions.md` |
+| `supportedMinecraftVersions` or `paper.apiVersion` | `reference/supported-versions.md` |
+| a key or default in `src/main/resources/config.yml` | `reference/configuration.md` |
+| a command, its arguments or its `@Permission` | `reference/commands.md` |
 
-Regenerate and commit the result with:
+Two habits make that cheap:
 
-```
-./gradlew generateReferenceDocs
-```
-
-The one sentence a generator cannot produce is what a permission actually does. That sentence is
-the `description` next to the permission in `build.gradle.kts`, so the generator carries it
-along — and permission plugins show it to server admins in game as a bonus.
-
-`reference/configuration.md` is hand-written, because each key needs an effect sentence that
-exists nowhere in the source. It is still guarded: every key and every default in it is checked
-against `src/main/resources/config.yml`.
-
-## The drift gate
-
-```
-./gradlew checkReferenceDocs
-```
-
-runs as part of `check`, so `./gradlew build` and the `build-pr` workflow fail when:
-
-- a generated page differs from what the generator would write now,
-- `config.yml` gained a key that `reference/configuration.md` does not document,
-- `reference/configuration.md` documents a key `config.yml` does not have,
-- a default in the reference disagrees with the one shipped in `config.yml`.
-
-Adding a config key therefore fails the build until the reference is updated. That is the point:
-it turns "the docs are out of date" from a maintenance task into a build error.
+- **Give every declared permission a `description` in `build.gradle.kts`.** It is the one
+  sentence saying what the permission actually does, it lives next to the declaration where it
+  cannot be missed, and it ends up in the `plugin.yml` inside the jar — so permission plugins
+  show it to server admins as well.
+- **Never restate a default outside `reference/configuration.md`.** A how-to names the key and
+  links to the reference. A value that exists in two places is a contradiction waiting to happen,
+  and it is the reason the old README and the code disagreed on several points.

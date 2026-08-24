@@ -1,11 +1,11 @@
 # Permissions
 
-Generated from the `paper { permissions { ... } }` block in `build.gradle.kts` by
-`./gradlew generateReferenceDocs`. Do not edit by hand.
+The permissions the plugin declares. They come from the `paper { permissions { ... } }` block in
+`build.gradle.kts` — when that block changes, this page has to be updated with it.
 
-These are the permissions the plugin declares. LuckPerms and comparable plugins read
-them from the JAR and suggest them automatically. A permission the plugin checks but
-does not declare is not listed here; those are named per command in
+LuckPerms and comparable plugins read the permissions from the JAR and suggest them
+automatically, including the description shown below each one here. A permission the plugin
+checks but does not declare is not listed on this page; those are named per command in
 [Commands](commands.md).
 
 A permission without a stated default is held by server operators only.
