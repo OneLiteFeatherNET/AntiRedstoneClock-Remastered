@@ -14,9 +14,11 @@ Ask us anything on [Discord](https://discord.onelitefeather.net).
 - [docs/development/](docs/development/) covers the dependency injection setup, the testing
   guide and how issues are triaged.
 
-Documentation for users lives in [docs/](docs/index.md). See
-[Writing documentation](docs/development/documentation.md) for how it is organised and which
-pages have to be updated when you change a config key, a command or a permission.
+Documentation for users lives in [docs/](docs/index.md) and is published to
+<https://onelitefeathernet.github.io/AntiRedstoneClock-Remastered/> from `main`. See
+[Writing documentation](docs/development/documentation.md) for how it is organised, how to
+preview the site locally, and which pages have to be updated when you change a config key, a
+command or a permission.
 
 ## Commit messages
 
