@@ -7,150 +7,37 @@
 [![Modrinth](https://img.shields.io/modrinth/dt/AntiRedstoneClock-Remastered?style=flat-square)](https://modrinth.com/plugin/AntiRedstoneClock-Remastered)
 ![Dependency Track](https://dependency-track.onelitefeather.dev/api/v1/badge/vulns/project/682857a9-0cd2-4ffd-a2b3-098eeba5ab74?style=flat-square)
 
+A Paper plugin that detects running redstone clocks, tells your staff or the console where they
+are, and optionally disables or destroys them — so your server spends its time on something
+else. It works with PlotSquared and WorldGuard when they are installed, and supports Folia.
 
-This plugin is inspired by https://gitlab.com/Trafalcraft/antiRedstoneClock
+## Documentation
 
-We re-created the whole code and improved everything. Additionally, we support PlotSquared v7 and WorldGuard v7.
+**[📖 docs/index.md](docs/index.md)** — start here.
 
-### Goal
-The goal of this plugin is to detect redstone clocks, inform staff or console about active ones and optionally destroy / disable the redstone clocks so your server can save performance for something else. It can also prevent players from causing harm with heavy redstone clocks, but this is more of a side effect.
+- New to the plugin? [Detect your first redstone clock](docs/tutorial/detect-your-first-clock.md)
+- Setting it up? The [how-to guides](docs/how-to/) cover Discord alerts, ignoring a world,
+  region exceptions, and reporting clocks without breaking them.
+- Looking up a key, a command or a permission? See the [reference](docs/reference/).
+- Wondering how it decides what a clock is? See the [background pages](docs/explanation/).
 
-### Not a goal
-It's not planned to support Paper forks or Spigot directly - this plugin is developed to work on Paper, if you are using a fork of Paper or Spigot and it doesn't work because of your fork, you're likely on your own.
-Folia is the one exception: the plugin declares Folia support and there are dedicated Folia run tasks in the build.
-Also this plugin is not a "performance tool", it won't make your server run better directly.
-Support for Minecraft 1.13 and earlier is not planned.
+## Download
 
-## Minecraft Version Support
-The authoritative list is `supportedMinecraftVersions` in [`build.gradle.kts`](build.gradle.kts) - those are the versions we build and test against, and exactly that list is published to Hangar and Modrinth.
+- [Hangar](https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered)
+- [Modrinth](https://modrinth.com/plugin/AntiRedstoneClock-Remastered)
 
-At the time of writing it covers 1.20.6, every 1.21.x release up to 1.21.11, and 26.0 through 26.1.2.
+Requires Java 25 and a [supported Minecraft version](docs/reference/supported-versions.md).
 
-The plugin declares `api-version: 1.19`, so it may still load on older servers, but anything outside the list above is untested and unsupported.
+## Get help
 
-## Features
-- Minecraft 1.20.6 up to 26.1.2 support
-- Java 25 required
-- Folia support
-- PlotSquared v6 and v7 support
-- WorldGuard v6 and v7 support
-- Clock detection
-- Sculk support
-- Hopper clock detection
-- Config Migration (Coming Soon)
-- Prevent duplicated loading of anti-redstoneclock plugins
+- [Open an issue](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues) —
+  please attach a [debug log](docs/how-to/produce-a-debug-log-for-a-bug-report.md)
+- [Discord](https://discord.onelitefeather.net)
 
-> [!CAUTION]
-> The "world" world is ignored by default.
+## Contributing
 
-## Debug logs
-When something does not work as expected, switch on debug logging with
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the build, the commit conventions and how releases
+are cut.
 
-```
-/arcm feature debug
-```
-
-or in the `config.yml`:
-
-```yaml
-debug:
-  enabled: true
-  # How many rotated log files are kept next to latest.log
-  keepFiles: 5
-```
-
-Both take effect right away, no restart needed.
-
-Debug messages are written to `plugins/AntiRedstoneClock-Remastered/debug-logs/latest.log` and never
-show up in the server log, because they are far too noisy for it. Warnings and errors go to the server
-log as usual and are written to this file as well, so it contains the whole picture when you attach it
-to a bug report.
-
-The file is handled by the same Log4j2 the server itself logs with, so it behaves just like
-`logs/latest.log`: it rolls over on every server start and once it grows past 10 MB, and older files
-are compressed to `.log.gz`. `keepFiles` decides how many of them are kept.
-
-## Contribution
-You want to help us? Sure, go for it!
-We would love to see your contribution! You can look for open issues or if you have a new idea, please open an issue or ask us on Discord if you can submit your feature with a PR. Communication is key.
-
-## Dependencies (soft-depend, can be used together)
-- PlotSquared v6 and v7 https://github.com/IntellectualSites/PlotSquared
-- WorldGuard v6 and v7 https://github.com/EngineHub/WorldGuard
-
-## Permissions:
-```
-antiredstoneclockremastered.notify.admin
-```
-> [!CAUTION]
-> All other permissions are declared in the `paper { permissions { ... } }` block in [`build.gradle.kts`](build.gradle.kts) and end up in the generated `plugin.yml` inside the jar. There is no `plugin.yml` to read in this repository. LuckPerms picks them up from the jar and suggests them automatically.
-
-## Commands
-- /arcm reload
-  - Reloads the config
-- /arcm help
-  - Shows all commands and descriptions
-- /arcm feature debug
-  - Turns debug logging on or off
-- /arcm display
-  - Displays the currently cached redstone clocks
-
-## More information / external links / Download
-Hangar: https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered
-
-Modrinth: https://modrinth.com/plugin/AntiRedstoneClock-Remastered
-
-Discord: https://discord.onelitefeather.net
-
-## Release Cycle
-**Important Announcement:** We use Semantic Versioning (SemVer) for our releases, automated with [Release Please](https://github.com/googleapis/release-please). Instead of releasing on every push to `main`, Release Please opens and updates a release pull request that collects the pending changelog. Merging that pull request is what bumps the version, writes `CHANGELOG.md`, creates the tag and the GitHub release, and publishes to Hangar and Modrinth.
-
-Because the version and the changelog are derived from commit messages, every pull request title and every commit on the branch is checked against the [Conventional Commits](https://www.conventionalcommits.org/) standard by the `pr-lint` workflow.
-
-### What is Semantic Versioning?
-Semantic Versioning follows the format of **MAJOR.MINOR.PATCH** (e.g., 2.4.1):
-
-- **MAJOR** version increases when incompatible API changes are made
-- **MINOR** version increases when functionality is added in a backward-compatible manner
-- **PATCH** version increases when backward-compatible bug fixes are implemented
-
-### How Commits Affect Version Numbers
-Different types of commits will automatically trigger different version increments:
-
-1. **MAJOR version bump** (e.g., 1.2.3 → 2.0.0)
-   - Breaking changes to the API
-   - Commits with `BREAKING CHANGE:` in the commit message
-   - Commits with `!` after the type (e.g., `feat!: remove deprecated methods`)
-
-2. **MINOR version bump** (e.g., 1.2.3 → 1.3.0)
-   - Commits with type `feat` (new features)
-   - Example: `feat: add new command for clock statistics`
-
-3. **PATCH version bump** (e.g., 1.2.3 → 1.2.4)
-   - Commits with type `fix` (bug fixes)
-   - Example: `fix: resolve issue with clock detection in nether worlds`
-
-4. **No version bump**
-   - Commits with types like `docs`, `style`, `refactor`, `test`, `chore`
-   - Example: `docs: update README with new information`
-
-### Example Release Flow
-1. Current version: 1.2.3
-2. Developer adds a new feature: `feat: add support for custom clock detection rules`
-   - Release Please opens a release pull request for 1.3.0
-3. Developer fixes a bug: `fix: prevent false positives in clock detection`
-   - The same release pull request is updated and still targets 1.3.0
-4. Developer makes a breaking change: `feat!: redesign configuration format`
-   - The release pull request now targets 2.0.0
-5. A maintainer merges the release pull request
-   - Version 2.0.0 is tagged, released and published
-
-### Update Triggers
-Please note that version updates can be triggered by:
-- **Pull Requests (PRs)**: Any merged PR can trigger a version update based on its commit messages
-- **Renovate Bot**: Dependency updates through Renovate will also trigger appropriate version updates
-
-### References
-- Official Semantic Versioning specification: https://semver.org/
-- Conventional Commits standard: https://www.conventionalcommits.org/
-- Release Please: https://github.com/googleapis/release-please
+This plugin is inspired by [Trafalcraft's antiRedstoneClock](https://gitlab.com/Trafalcraft/antiRedstoneClock);
+the code was re-created from scratch. Licensed under the terms in [LICENSE](LICENSE).

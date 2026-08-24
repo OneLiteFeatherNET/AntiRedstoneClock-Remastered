@@ -11,7 +11,7 @@ and what is automated along the way.
    [#267](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/267).
 2. **Unsupported server software.** Reports from Paper forks, Spigot,
    CraftBukkit and hybrid servers cost triage time for something we do not
-   support. See [Not a goal](../README.md#not-a-goal).
+   support. See [Scope and non-goals](../explanation/scope-and-non-goals.md).
 3. **Issues never reaching the board.** The `projects:` key in an issue form
    only applies when the person opening the issue has write access to the
    project. For outside reporters it is silently ignored, which is why reports
