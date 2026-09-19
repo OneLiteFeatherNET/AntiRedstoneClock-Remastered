@@ -1,6 +1,6 @@
 dependencies {
     compileOnly(libs.wg6)
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:6.1") {
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:6.1.4") {
         exclude("org.bukkit", "bukkit")
     }
 }
