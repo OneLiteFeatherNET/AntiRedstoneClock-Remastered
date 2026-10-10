@@ -71,9 +71,10 @@ Two properties of Git Sync are worth knowing before editing anything in the GitB
 - **It is bidirectional.** Edits made in GitBook are committed back to the branch the space is
   connected to. Those commits do not pass through a pull request, so they are not seen by
   `pr-lint` and not reviewed.
-- **Nothing checks the links.** There is no build step for the documentation any more, so a
-  dead link between two pages is found by a reader, not by CI. When you rename or move a page,
-  grep for its old path before you push:
+- **Links are only checked after the fact.** There is no build step for the documentation any
+  more; the `link-check` workflow runs lychee on pull requests that touch Markdown or issue
+  templates, on pushes to `main` and weekly, but it cannot see edits made in GitBook until they
+  are synced. When you rename or move a page, grep for its old path before you push:
 
   ```
   grep -rn "old-page-name" docs/ README.md CONTRIBUTING.md .github/

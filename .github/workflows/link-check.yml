@@ -1,0 +1,63 @@
+name: link-check
+
+# Catch moved or dead documentation links. The docs live on GitBook and are
+# synced back without a pull request, so nothing else notices a stale link.
+# CHANGELOG.md is not checked: release-please generates it and it links to
+# every historic commit and compare range.
+"on":
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/link-check.yml'
+      - '.lycheeignore'
+  push:
+    branches: [main]
+    paths:
+      - '**/*.md'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/link-check.yml'
+      - '.lycheeignore'
+  schedule:
+    # Weekly, because external pages die without any change in this repository.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  link-check:
+    name: Check documentation links
+    if: github.repository_owner == 'OneLiteFeatherNET'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Restore lychee cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .lycheecache
+          key: lychee-${{ github.run_id }}
+          restore-keys: lychee-
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >-
+            --no-progress
+            --cache --max-cache-age 1d
+            --max-redirects 5
+            --accept 200..=204,429
+            README.md
+            CONTRIBUTING.md
+            'docs/**/*.md'
+            '.github/ISSUE_TEMPLATE/*.yml'
+          fail: true
