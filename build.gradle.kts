@@ -189,6 +189,7 @@ paper {
     main = "net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered"
     apiVersion = "1.19"
     authors = listOf("OneLiteFeather", "TheMeinerLP")
+    website = "https://docs.onelitefeather.net/antiredstoneclock-remastered"
     foliaSupported = true
     serverDependencies {
         register("PlotSquared") {
