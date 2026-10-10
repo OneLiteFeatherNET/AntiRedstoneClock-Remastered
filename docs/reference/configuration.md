@@ -123,9 +123,13 @@ check:
 | Reload | `/arcm feature check sculk` |
 | Source | `SkipEventTypeRedstoneClockMiddleware` |
 
-Intended to switch counting of sculk sensor events on and off. Detection reads the key
-`check.sculkSensor`, which the shipped file does not contain, so sculk sensors are currently
-never counted whatever this key is set to.
+Whether sculk sensor events are counted. Vibrations caused by players or mobs are not counted.
+
+A plain sculk sensor activates at most once every 2 seconds (30 ticks active plus 10 ticks
+cooldown), so it cannot reach the default [`clock.maxCount`](#clockmaxcount) of 150 within the
+default [`clock.endDelay`](#clockenddelay) of 300 seconds. Calibrated sculk sensors (10 ticks
+active) can. To catch clocks built from plain sensors, lower `clock.maxCount` or raise
+`clock.endDelay`; both apply to every event type.
 
 ```yaml
 check:

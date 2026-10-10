@@ -82,8 +82,7 @@ Toggles detection of comparators.
 | Writes | `check.sculk` |
 | Source | `FeatureCommand.toggleSculk` |
 
-Toggles `check.sculk`. Detection reads `check.sculkSensor`, so this command does not currently
-change what is detected — see [`check.sculk`](configuration.md#checksculk).
+Toggles detection of sculk sensors.
 
 ### `/arcm feature check hopper`
 
