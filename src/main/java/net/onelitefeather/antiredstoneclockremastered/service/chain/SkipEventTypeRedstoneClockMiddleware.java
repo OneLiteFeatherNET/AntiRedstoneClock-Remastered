@@ -21,7 +21,7 @@ public final class SkipEventTypeRedstoneClockMiddleware extends RedstoneClockMid
     @Override
     public @NotNull ResultState check(@NotNull CheckContext context) {
         if (context.eventType() == EventType.SCULK_SENSOR &&
-                this.antiRedstoneClockRemastered.getConfig().getBoolean("check.sculkSensor"))
+                this.antiRedstoneClockRemastered.getConfig().getBoolean("check.sculk"))
             return checkNext(context);
         if (context.eventType() == EventType.REDSTONE_AND_REPEATER &&
                 this.antiRedstoneClockRemastered.getConfig().getBoolean("check.redstoneAndRepeater"))
