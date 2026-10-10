@@ -45,15 +45,15 @@ are cut.
 This plugin is inspired by [Trafalcraft's antiRedstoneClock](https://gitlab.com/Trafalcraft/antiRedstoneClock);
 the code was re-created from scratch. Licensed under the terms in [LICENSE](LICENSE).
 
-[docs]: https://docs.onelitefeather.net/antiredstoneclockremasterd
-[tutorial]: https://docs.onelitefeather.net/antiredstoneclockremasterd/getting-started/detect-your-first-clock
-[discord-alerts]: https://docs.onelitefeather.net/antiredstoneclockremasterd/how-to-guides/send-alerts-to-discord
-[ignore-world]: https://docs.onelitefeather.net/antiredstoneclockremasterd/how-to-guides/exclude-a-world-from-detection
-[regions]: https://docs.onelitefeather.net/antiredstoneclockremasterd/how-to-guides/allow-redstone-clocks-in-a-region
-[report-only]: https://docs.onelitefeather.net/antiredstoneclockremasterd/how-to-guides/report-clocks-without-breaking-them
-[debug-log]: https://docs.onelitefeather.net/antiredstoneclockremasterd/how-to-guides/produce-a-debug-log-for-a-bug-report
-[config]: https://docs.onelitefeather.net/antiredstoneclockremasterd/reference/configuration
-[commands]: https://docs.onelitefeather.net/antiredstoneclockremasterd/reference/commands
-[perms]: https://docs.onelitefeather.net/antiredstoneclockremasterd/reference/permissions
-[versions]: https://docs.onelitefeather.net/antiredstoneclockremasterd/reference/supported-versions
-[detection]: https://docs.onelitefeather.net/antiredstoneclockremasterd/background/how-detection-works
+[docs]: https://docs.onelitefeather.net/antiredstoneclock-remastered
+[tutorial]: https://docs.onelitefeather.net/antiredstoneclock-remastered/getting-started/detect-your-first-clock
+[discord-alerts]: https://docs.onelitefeather.net/antiredstoneclock-remastered/how-to-guides/send-alerts-to-discord
+[ignore-world]: https://docs.onelitefeather.net/antiredstoneclock-remastered/how-to-guides/exclude-a-world-from-detection
+[regions]: https://docs.onelitefeather.net/antiredstoneclock-remastered/how-to-guides/allow-redstone-clocks-in-a-region
+[report-only]: https://docs.onelitefeather.net/antiredstoneclock-remastered/how-to-guides/report-clocks-without-breaking-them
+[debug-log]: https://docs.onelitefeather.net/antiredstoneclock-remastered/how-to-guides/produce-a-debug-log-for-a-bug-report
+[config]: https://docs.onelitefeather.net/antiredstoneclock-remastered/reference/configuration
+[commands]: https://docs.onelitefeather.net/antiredstoneclock-remastered/reference/commands
+[perms]: https://docs.onelitefeather.net/antiredstoneclock-remastered/reference/permissions
+[versions]: https://docs.onelitefeather.net/antiredstoneclock-remastered/reference/supported-versions
+[detection]: https://docs.onelitefeather.net/antiredstoneclock-remastered/background/how-detection-works
