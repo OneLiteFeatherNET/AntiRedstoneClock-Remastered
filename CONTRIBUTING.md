@@ -15,7 +15,7 @@ Ask us anything on [Discord](https://discord.onelitefeather.net).
   guide and how issues are triaged.
 
 Documentation for users lives in [docs/](docs/index.md) and is published to
-<https://arcr.onelitefeather.net/> by GitBook. See
+<https://docs.onelitefeather.net/antiredstoneclock-remastered> by GitBook. See
 [Writing documentation](docs/development/documentation.md) for how it is organised and which
 pages have to be updated when you change a config key, a command or a permission.
 

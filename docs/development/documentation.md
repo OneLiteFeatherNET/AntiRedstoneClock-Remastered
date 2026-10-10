@@ -60,7 +60,7 @@ is worse than a broken link because nobody notices.
 
 ## Publishing
 
-The documentation is published at <https://arcr.onelitefeather.net/> by GitBook. `.gitbook.yaml`
+The documentation is published at <https://docs.onelitefeather.net/antiredstoneclock-remastered> by GitBook. `.gitbook.yaml`
 in the repository root points Git Sync at `docs/`, with `index.md` as the landing page and
 `SUMMARY.md` as the navigation. The four quadrant directories are the four page groups.
 `docs/development/` is not listed in `SUMMARY.md` and is therefore not part of the space — it
