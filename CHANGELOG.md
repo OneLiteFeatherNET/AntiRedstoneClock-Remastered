@@ -5,6 +5,18 @@
 
 * **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.2 ([#259](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/259)) ([c44a8d6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c44a8d640464a582a8e50617e8de9ce91d1bf837))
 
+## [2.10.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.10.0...v2.10.1) (2026-10-10)
+
+
+### Bug Fixes
+
+* count comparator clocks ([f1cdf46](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/f1cdf46bc14fd43dc5f3a005a3ee8f561d7bfbbf))
+* **deps:** update dependency com.sk89q.worldguard:worldguard-bukkit to v7.0.19 ([#318](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/318)) ([372cdd8](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/372cdd87bc83ef38823289f159083bcd398c6635))
+* **deps:** update dependency org.incendo:cloud-minecraft-extras to v2.0.1 ([#319](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/319)) ([29e068a](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/29e068a1b68edf0ebb9fcd524293be776b02b8a7))
+* **deps:** update dependency org.incendo:cloud-paper to v2.0.1 ([#320](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/320)) ([0b9ca76](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/0b9ca764c085bed56ec7bee920c9edfeb2043a5e))
+* **deps:** update mockito to v5.24.0 ([#323](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/323)) ([b3bd095](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/b3bd0953465aba51f964a2ef3bbdf7824151d701))
+* detect sculk sensor clocks ([1b7cd09](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/1b7cd0992493886cd310ba8f0f72dd5e1f3706cd))
+
 ## [2.10.0](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.9.1...v2.10.0) (2026-08-24)
 
 
