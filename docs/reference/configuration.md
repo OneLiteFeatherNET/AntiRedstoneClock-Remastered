@@ -123,9 +123,7 @@ check:
 | Reload | `/arcm feature check sculk` |
 | Source | `SkipEventTypeRedstoneClockMiddleware` |
 
-Intended to switch counting of sculk sensor events on and off. Detection reads the key
-`check.sculkSensor`, which the shipped file does not contain, so sculk sensors are currently
-never counted whatever this key is set to.
+Whether sculk sensor events are counted. Vibrations caused by players or mobs are not counted.
 
 ```yaml
 check:

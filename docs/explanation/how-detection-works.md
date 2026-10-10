@@ -25,6 +25,10 @@ warehouse. Instead the plugin watches the *direction* of transfers within one ho
 only counts a completed back-and-forth cycle, which a sorter never produces and a hopper clock
 produces continuously.
 
+Sculk sensors count every vibration they accept. Vibrations that players or mobs cause, such
+as footsteps next to a sensor, are not counted, because only a vibration that a block causes
+can keep a clock running by itself.
+
 ## The order of the checks
 
 Before a block is ever counted, an event passes through a chain of filters, each of which can
