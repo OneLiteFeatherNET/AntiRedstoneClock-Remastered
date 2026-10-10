@@ -33,6 +33,6 @@ public final class ComparatorListener implements Listener {
 
         if (blockRedstoneEvent.getOldCurrent() != 0) return;
 
-        this.decisionService.makeDecisionWithContext(RedstoneClockMiddleware.CheckContext.of(block, RedstoneClockMiddleware.EventType.COMPARATOR));
+        this.decisionService.makeDecisionWithContext(RedstoneClockMiddleware.CheckContext.of(block, true, RedstoneClockMiddleware.EventType.COMPARATOR));
     }
 }
