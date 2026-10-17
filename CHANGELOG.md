@@ -5,6 +5,13 @@
 
 * **deps:** update dependency org.junit.jupiter:junit-jupiter to v6.1.2 ([#259](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/259)) ([c44a8d6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/c44a8d640464a582a8e50617e8de9ce91d1bf837))
 
+## [2.10.2](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.10.1...v2.10.2) (2026-10-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency com.sk89q.worldguard:worldguard-bukkit to v7.0.20 ([#334](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/issues/334)) ([79405f6](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/commit/79405f63c4b6aff79de5dc2fe3f845cecdaa9288))
+
 ## [2.10.1](https://github.com/OneLiteFeatherNET/AntiRedstoneClock-Remastered/compare/v2.10.0...v2.10.1) (2026-10-10)
 
 
