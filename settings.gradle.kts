@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             version("cloudcommandAnnotations", "2.1.0")
             version("cloudcommandExtras", "2.0.1")
 
-            version("adventure-text-discord-serializer", "4.4.0")
+            version("adventure-text-discord-serializer", "5.0.0")
             version("jda", "5.6.1")
             version("jda-webhook", "0.8.4")
 
