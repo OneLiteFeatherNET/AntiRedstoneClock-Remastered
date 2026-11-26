@@ -388,8 +388,8 @@ tps:
 | Reload | `/arcm reload` |
 | Source | `ServiceModule.providesNotificationService` |
 
-Which notification targets are active. `sign` does not send a message: it replaces the block of
-the detected clock with a sign.
+Which notification targets are active. `sign` does not send a message: it places a sign where
+the detected clock was, only if that position is empty by then.
 
 ```yaml
 notification:
