@@ -1,12 +1,14 @@
 package net.onelitefeather.antiredstoneclockremastered.utils;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public final class Constants {
 
@@ -17,7 +19,10 @@ public final class Constants {
     public static final HttpRequest LATEST_RELEASE_VERSION_REQUEST = HttpRequest.newBuilder().GET().uri(LATEST_RELEASE_VERSION_URI).build();
     public static final int MAX_SIGN_LINES = 4;
     public static final int MAX_SIGN_LINE_LENGTH = 16;
-    public static final String META_KEY_ARCR_SIGN = "arcr-sign";
+    /**
+     * Marks a notification sign placed by the plugin in the sign's persistent data container.
+     */
+    public static final NamespacedKey ARCR_SIGN_KEY = Objects.requireNonNull(NamespacedKey.fromString("antiredstoneclock-remastered:arcr-sign"));
     public static final Collection<Material> REDSTONE_ITEMS = new ArrayList<>(initRedstoneItems());
 
     private static Collection<Material> initRedstoneItems() {

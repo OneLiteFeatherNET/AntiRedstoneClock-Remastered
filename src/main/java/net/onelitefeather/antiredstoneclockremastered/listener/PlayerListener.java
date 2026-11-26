@@ -8,11 +8,13 @@ import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class PlayerListener implements Listener {
 
@@ -51,7 +53,8 @@ public final class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onSignBlockBreak(BlockBreakEvent blockBreakEvent) {
         var block = blockBreakEvent.getBlock();
-        var hasKey = block.hasMetadata(Constants.META_KEY_ARCR_SIGN);
+        var hasKey = block.getState(false) instanceof Sign sign
+                && sign.getPersistentDataContainer().has(Constants.ARCR_SIGN_KEY, PersistentDataType.BOOLEAN);
         if (hasKey) {
             blockBreakEvent.setDropItems(false);
         }
