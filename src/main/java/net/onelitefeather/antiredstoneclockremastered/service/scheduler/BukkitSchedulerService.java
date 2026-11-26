@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 
 public final class BukkitSchedulerService implements SchedulerService {
 
+    private static final long MILLISECONDS_PER_TICK = 50L;
+
     private final AntiRedstoneClockRemastered plugin;
 
     public BukkitSchedulerService(AntiRedstoneClockRemastered plugin) {
@@ -27,7 +29,7 @@ public final class BukkitSchedulerService implements SchedulerService {
 
     @Override
     public ScheduledTask runTaskTimerAsynchronously(Consumer<ScheduledTask> task, long delay, long period) {
-        return plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay, period, TimeUnit.MILLISECONDS);
+        return plugin.getServer().getAsyncScheduler().runAtFixedRate(plugin, task, delay * MILLISECONDS_PER_TICK, period * MILLISECONDS_PER_TICK, TimeUnit.MILLISECONDS);
     }
 
     @Override

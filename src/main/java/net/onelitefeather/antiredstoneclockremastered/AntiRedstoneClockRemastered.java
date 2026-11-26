@@ -104,8 +104,6 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
         Optional.ofNullable(injector.getInstance(PlotsquaredSupport.class)).ifPresent(PlotsquaredSupport::init);
         donationInformation();
         injector.getInstance(UpdateService.class).schedule();
-        injector.getInstance(UpdateService.class).run();
-        injector.getInstance(UpdateService.class).notifyConsole(getComponentLogger());
         injector.getInstance(CommandFrameworkModule.class).enable();
         injector.getInstance(MetricsModule.class).registerCharts();
         this.injector.getInstance(ListenerModule.class).registerEvents(injector, this);
