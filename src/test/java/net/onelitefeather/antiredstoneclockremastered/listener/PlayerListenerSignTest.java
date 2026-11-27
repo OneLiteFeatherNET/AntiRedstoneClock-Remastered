@@ -73,13 +73,27 @@ class PlayerListenerSignTest {
     }
 
     @Test
-    @DisplayName("Breaking a player sign without the plugin marker still drops")
+    @DisplayName("Breaking a sign placed by an older plugin version drops normally")
     void unmarkedSignDrops() throws Exception {
+        // older versions only left position bound metadata, which the helper simulates
         var event = breakOf(blockWithState(Material.OAK_SIGN, signWithMarker(false)));
 
         fire(event);
 
-        verify(event, never()).setDropItems(anyBoolean());
+        verify(event, never().description("a sign without the persistent marker is ordinary loot"))
+                .setDropItems(anyBoolean());
+    }
+
+    @Test
+    @DisplayName("Breaking a player placed sign drops normally")
+    void playerPlacedSignDrops() throws Exception {
+        var block = blockWithState(Material.OAK_SIGN, signWithMarker(false));
+        when(block.hasMetadata("arcr-sign")).thenReturn(false);
+        var event = breakOf(block);
+
+        fire(event);
+
+        verify(event, never().description("a player's own sign must drop")).setDropItems(anyBoolean());
     }
 
     @Test
