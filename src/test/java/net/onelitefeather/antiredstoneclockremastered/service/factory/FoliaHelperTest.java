@@ -23,15 +23,21 @@ class FoliaHelperTest {
     @Test
     @DisplayName("Folia is detected when the regionized server class is present")
     void detectsFoliaByRegionizedServerClass() {
-        List<String> lookedUp = new ArrayList<>();
-        FoliaHelper.ClassLookup lookup = className -> {
-            lookedUp.add(className);
-            return Object.class;
-        };
-
-        assertThat(FoliaHelper.isFolia(lookup))
+        assertThat(FoliaHelper.isFolia(className -> Object.class))
                 .as("a server providing %s must be detected as Folia", REGIONIZED_SERVER)
                 .isTrue();
+    }
+
+    @Test
+    @DisplayName("Only the regionized server class is looked up")
+    void looksUpOnlyTheRegionizedServerClass() {
+        List<String> lookedUp = new ArrayList<>();
+
+        FoliaHelper.isFolia(className -> {
+            lookedUp.add(className);
+            return Object.class;
+        });
+
         assertThat(lookedUp)
                 .as("only the Folia marker class must be looked up")
                 .containsExactly(REGIONIZED_SERVER);
@@ -48,6 +54,25 @@ class FoliaHelperTest {
             assertThat(FoliaHelper.isFolia(className -> Object.class))
                     .as("Folia 26.1 provides %s and must be detected as Folia", REGIONIZED_SERVER)
                     .isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Detection works where the server build info is unavailable")
+    void detectionDoesNotTouchServerBuildInfo() {
+        try (MockedStatic<ServerBuildInfo> serverBuildInfo = mockStatic(ServerBuildInfo.class)) {
+            serverBuildInfo.when(ServerBuildInfo::buildInfo)
+                    .thenThrow(new IllegalStateException("server build info is unavailable"));
+
+            assertThat(FoliaHelper.isFolia(className -> Object.class))
+                    .as("Folia must be detected without the server build info")
+                    .isTrue();
+            assertThat(FoliaHelper.isFolia(className -> {
+                throw new ClassNotFoundException(className);
+            }))
+                    .as("Paper must be detected without the server build info")
+                    .isFalse();
+            serverBuildInfo.verifyNoInteractions();
         }
     }
 
