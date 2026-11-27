@@ -545,3 +545,106 @@ notification:
     back:
       - "<red>No clocks"
 ```
+
+## `donation`
+
+### `donation.notice`
+
+| | |
+|---|---|
+| Type | boolean |
+| Default | `true` |
+| Reload | restart |
+| Source | `DonationNoticeService`, `DonationNoticeListener`, `AntiRedstoneClockRemastered.donationInformation` |
+
+Whether the donation reminder is shown. Admins see it on join at most once per
+`donation.intervalDays`, and the console logs it once per plugin version, on the first start after
+an install or update. The `antiredstoneclockremastered.notify.disable.donation` permission hides the
+join reminder for admins who are not operators. Operators always get it unless `donation.notice` is
+`false`, which turns it off for everyone.
+
+```yaml
+donation:
+  notice: true
+```
+
+### `donation.intervalDays`
+
+| | |
+|---|---|
+| Type | integer, days |
+| Default | `30` |
+| Reload | restart |
+| Source | `DonationNoticeService` |
+
+Days between two join reminders for the same admin. The last reminder time is kept in the
+database selected by `storage`, so it is remembered across restarts.
+
+```yaml
+donation:
+  intervalDays: 30
+```
+
+## `storage`
+
+### `storage.type`
+
+| | |
+|---|---|
+| Type | string, `sqlite` or `mariadb` |
+| Default | `'sqlite'` |
+| Reload | restart |
+| Source | `DonationNoticeStoreFactory` |
+
+Database that keeps the donation reminder state. `sqlite` writes a file inside the plugin folder
+and needs nothing else. `mariadb` lets several servers share the state. An unknown value falls back
+to `sqlite` with a warning.
+
+If the database cannot be reached, the reminders are skipped and a warning is logged. The plugin
+keeps starting and working.
+
+```yaml
+storage:
+  type: 'sqlite'
+```
+
+### `storage.sqlite.file`
+
+| | |
+|---|---|
+| Type | string, file name |
+| Default | `'storage.db'` |
+| Reload | restart |
+| Source | `DonationNoticeStoreFactory`, `SqliteConnectionSource` |
+
+File name of the SQLite database, placed inside the plugin folder. Used only when `storage.type`
+is `sqlite`.
+
+```yaml
+storage:
+  sqlite:
+    file: 'storage.db'
+```
+
+### `storage.mariadb`
+
+| | |
+|---|---|
+| Type | section |
+| Default | see below |
+| Reload | restart |
+| Source | `DonationNoticeStoreFactory`, `MariaDbConnectionSource` |
+
+Connection settings for a MariaDB server. Used only when `storage.type` is `mariadb`. The tables
+`arcr_donation_notice` and `arcr_state` are created in the given database on first use. A new
+connection is opened for each query, there is no pool.
+
+```yaml
+storage:
+  mariadb:
+    host: 'localhost'
+    port: 3306
+    database: 'antiredstoneclock'
+    username: ''
+    password: ''
+```
