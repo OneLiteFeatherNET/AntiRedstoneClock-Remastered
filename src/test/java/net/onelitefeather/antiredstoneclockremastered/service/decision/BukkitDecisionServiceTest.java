@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.description;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -40,6 +43,7 @@ class BukkitDecisionServiceTest {
     private final RedstoneClockMiddleware middleware = mock(RedstoneClockMiddleware.class);
     private final ItemStack tool = mock(ItemStack.class);
     private final ItemStack drop = mock(ItemStack.class);
+    private final NotificationService notificationService = mock(NotificationService.class);
     private World world;
     private Block block;
     private Location location;
@@ -57,7 +61,7 @@ class BukkitDecisionServiceTest {
         when(this.block.getState()).thenReturn(mock(BlockState.class));
         when(this.block.getDrops(this.tool)).thenReturn(List.of(this.drop));
         this.service = new BukkitDecisionService(mock(AntiRedstoneClockRemastered.class), this.middleware,
-                this.regionService, mock(NotificationService.class), this.tool);
+                this.regionService, this.notificationService, this.tool);
     }
 
     private void decide(ResultState resultState) {
@@ -157,6 +161,114 @@ class BukkitDecisionServiceTest {
 
         assertThat(this.regionService.tasks).isEmpty();
         verify(this.world, never()).dropItem(any(Location.class), any(ItemStack.class));
+    }
+
+    private static ItemStack stack(boolean empty) {
+        var stack = mock(ItemStack.class);
+        when(stack.isEmpty()).thenReturn(empty);
+        return stack;
+    }
+
+    private Inventory hopperWith(ItemStack... contents) {
+        var inventory = mock(Inventory.class);
+        when(inventory.getContents()).thenReturn(contents);
+        var container = mock(Container.class);
+        when(container.getInventory()).thenReturn(inventory);
+        when(this.block.getType()).thenReturn(Material.HOPPER);
+        when(this.block.getState()).thenReturn(container);
+        return inventory;
+    }
+
+    @Test
+    @DisplayName("Removing without drop leaves a container's contents undropped")
+    void removeWithoutDropKeepsContainerContents() {
+        var content = stack(false);
+        var inventory = hopperWith(content);
+
+        decide(ResultState.REMOVE_AND_WITHOUT_DROP);
+        this.regionService.runAll();
+
+        verify(this.world, never().description("clock.drop: false must not drop the contents"))
+                .dropItem(any(Location.class), any(ItemStack.class));
+        verify(inventory, never().description("the contents are not touched when nothing drops")).clear();
+        verify(this.block, description("the container is still removed")).setType(Material.AIR, true);
+    }
+
+    @Test
+    @DisplayName("A skipped clock schedules nothing, drops nothing and sends no notification")
+    void skipDoesNothing() {
+        decide(ResultState.SKIP);
+        this.regionService.runAll();
+
+        assertThat(this.regionService.tasks).as("a skipped clock must not schedule a block change").isEmpty();
+        verify(this.notificationService, never().description("a skipped clock is not reported"))
+                .sendNotificationMessage(any());
+        verify(this.world, never()).dropItem(any(Location.class), any(ItemStack.class));
+    }
+
+    @Test
+    @DisplayName("A report only result sends the notification")
+    void onlyNotifySendsNotification() {
+        decide(ResultState.ONLY_NOTIFY);
+
+        verify(this.notificationService, description("report only still reports the clock"))
+                .sendNotificationMessage(this.location);
+        verify(this.block, never().description("report only never changes the block"))
+                .setType(any(Material.class), anyBoolean());
+    }
+
+    @Test
+    @DisplayName("Of a double chest only the detected half's own items are dropped")
+    void doubleChestDropsOnlyOwnHalf() {
+        var ownItem = stack(false);
+        var otherHalfItem = stack(false);
+        var ownInventory = mock(Inventory.class);
+        when(ownInventory.getContents()).thenReturn(new ItemStack[]{ownItem});
+        var doubleInventory = mock(Inventory.class);
+        when(doubleInventory.getContents()).thenReturn(new ItemStack[]{ownItem, otherHalfItem});
+        var chest = mock(Chest.class);
+        when(chest.getBlockInventory()).thenReturn(ownInventory);
+        when(chest.getInventory()).thenReturn(doubleInventory);
+        when(this.block.getType()).thenReturn(Material.CHEST);
+        when(this.block.getState()).thenReturn(chest);
+
+        decide(ResultState.REMOVE_AND_DROP);
+        this.regionService.runAll();
+
+        verify(this.world, description("the detected half's item drops")).dropItem(this.location, ownItem);
+        verify(this.world, never().description("the other half keeps its items")).dropItem(this.location, otherHalfItem);
+        verify(ownInventory).clear();
+        verify(doubleInventory, never().description("the other half must not be emptied")).clear();
+    }
+
+    @Test
+    @DisplayName("Empty slots and empty stacks of a container are not dropped")
+    void emptySlotsAreSkipped() {
+        var emptyStack = stack(true);
+        var content = stack(false);
+        hopperWith(null, emptyStack, content);
+
+        decide(ResultState.REMOVE_AND_DROP);
+        this.regionService.runAll();
+
+        verify(this.world, never().description("an empty stack is no item")).dropItem(this.location, emptyStack);
+        verify(this.world, never().description("a null slot is skipped")).dropItem(this.location, (ItemStack) null);
+        verify(this.world).dropItem(this.location, content);
+    }
+
+    @Test
+    @DisplayName("The container is emptied before the block's own drops are computed")
+    void inventoryIsClearedBeforeDropsAreComputed() {
+        var inventory = hopperWith(stack(false));
+
+        decide(ResultState.REMOVE_AND_DROP);
+        this.regionService.runAll();
+
+        var order = inOrder(inventory, this.block);
+        // contents must be gone first, else a shulker box item carries them a second time
+        order.verify(inventory).clear();
+        order.verify(this.block).getDrops(this.tool);
+        order.verify(this.block).setType(Material.AIR, true);
     }
 
     /**
