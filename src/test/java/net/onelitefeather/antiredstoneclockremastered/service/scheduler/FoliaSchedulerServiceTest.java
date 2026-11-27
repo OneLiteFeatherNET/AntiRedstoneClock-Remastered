@@ -36,11 +36,20 @@ class FoliaSchedulerServiceTest {
     }
 
     @Test
-    @DisplayName("Asynchronous timer delay and period in ticks are converted to milliseconds")
-    void asyncTimerConvertsTicksToMilliseconds() {
-        this.schedulerService.runTaskTimerAsynchronously(task -> { }, 20L, 216_000L);
+    @DisplayName("Asynchronous timer period in ticks is converted to milliseconds")
+    void asyncTimerConvertsPeriodToMilliseconds() {
+        this.schedulerService.runTaskTimerAsynchronously(task -> { }, 0L, 216_000L);
 
-        verify(this.asyncScheduler).runAtFixedRate(same(this.plugin), any(), eq(1_000L), eq(10_800_000L),
+        verify(this.asyncScheduler).runAtFixedRate(same(this.plugin), any(), eq(0L), eq(10_800_000L),
+                eq(TimeUnit.MILLISECONDS));
+    }
+
+    @Test
+    @DisplayName("Asynchronous timer delay in ticks is converted to milliseconds")
+    void asyncTimerConvertsDelayToMilliseconds() {
+        this.schedulerService.runTaskTimerAsynchronously(task -> { }, 20L, 1L);
+
+        verify(this.asyncScheduler).runAtFixedRate(same(this.plugin), any(), eq(1_000L), eq(50L),
                 eq(TimeUnit.MILLISECONDS));
     }
 }
