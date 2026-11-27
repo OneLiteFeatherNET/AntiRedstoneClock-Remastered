@@ -22,6 +22,8 @@ dependencyResolutionManagement {
             version("paper.run", "3.1.0")
             version("shadowJar", "9.6.1")
             version("cyclonedx", "3.6.1")
+            version("mariadb", "4.0.0")
+            version("sqlite", "3.54.1.0")
 
             version("paper", "26.1.2.build.+")
             version("log4j", "2.26.1")
@@ -81,6 +83,8 @@ dependencyResolutionManagement {
 
             library("semver", "com.github.zafarkhaja", "java-semver").versionRef("semver")
             library("guice", "com.google.inject", "guice").versionRef("guice")
+            library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").versionRef("mariadb")
+            library("sqlite-jdbc", "org.xerial", "sqlite-jdbc").versionRef("sqlite")
             library("jakarta-inject", "jakarta.inject", "jakarta.inject-api").versionRef("jakarta-inject")
             
             // Testing libraries

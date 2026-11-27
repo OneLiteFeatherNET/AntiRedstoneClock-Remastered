@@ -21,6 +21,11 @@ public final class FoliaSchedulerService implements SchedulerService {
     }
 
     @Override
+    public void scheduleAsyncTask(Runnable task) {
+        this.plugin.getServer().getAsyncScheduler().runNow(plugin, t -> task.run());
+    }
+
+    @Override
     public void scheduleRepeatingTask(Runnable task, long delay, long period) {
         plugin.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, t -> task.run(), delay, period);
     }

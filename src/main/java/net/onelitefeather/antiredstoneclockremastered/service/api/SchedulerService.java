@@ -25,6 +25,14 @@ public interface SchedulerService {
     void scheduleTask(Runnable task);
 
     /**
+     * Runs a task on an asynchronous thread, not on the server or region thread. Use it for blocking work such as
+     * database access.
+     *
+     * @param task The task to run.
+     */
+    void scheduleAsyncTask(Runnable task);
+
+    /**
      * Schedules a repeating task to run asynchronously.
      *
      * @param task   The task to run.

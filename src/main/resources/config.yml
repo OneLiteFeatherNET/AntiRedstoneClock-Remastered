@@ -73,3 +73,23 @@ notification:
       - "<red>RedstoneClocks!"
       - "<red>Are"
       - "<red>prohibited"
+
+donation:
+  # Reminder shown to admins on join and once per plugin version in the console.
+  # false turns it off for everyone, operators included.
+  notice: true
+  # Days between two reminders for the same admin
+  intervalDays: 30
+
+# Where the donation reminder state is kept. The data is small and read once per
+# admin join, so a database is only needed when several servers should share it.
+storage:
+  type: 'sqlite' # 'sqlite' or 'mariadb'
+  sqlite:
+    file: 'storage.db'   # inside the plugin folder
+  mariadb:
+    host: 'localhost'
+    port: 3306
+    database: 'antiredstoneclock'
+    username: ''
+    password: ''

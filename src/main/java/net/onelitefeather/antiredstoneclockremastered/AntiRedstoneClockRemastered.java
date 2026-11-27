@@ -15,7 +15,9 @@ import net.onelitefeather.antiredstoneclockremastered.injection.ListenerModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.PlatformModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.ServiceModule;
 import net.onelitefeather.antiredstoneclockremastered.injection.TranslationModule;
+import net.onelitefeather.antiredstoneclockremastered.service.DonationNoticeService;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
+import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerService;
 import net.onelitefeather.antiredstoneclockremastered.service.logging.DebugLogging;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.ConfigMode;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
@@ -120,7 +122,12 @@ public final class AntiRedstoneClockRemastered extends JavaPlugin {
     }
 
     private void donationInformation() {
-        getComponentLogger().info(Component.translatable("antiredstoneclockremastered.notify.donation.console"));
+        var donationNoticeService = injector.getInstance(DonationNoticeService.class);
+        injector.getInstance(SchedulerService.class).scheduleAsyncTask(() -> {
+            if (donationNoticeService.claimConsoleNotice()) {
+                getComponentLogger().info(Component.translatable("antiredstoneclockremastered.notify.donation.console"));
+            }
+        });
     }
 
 }

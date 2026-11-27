@@ -21,6 +21,11 @@ public final class BukkitSchedulerService implements SchedulerService {
     }
 
     @Override
+    public void scheduleAsyncTask(Runnable task) {
+        plugin.getServer().getAsyncScheduler().runNow(plugin, t -> task.run());
+    }
+
+    @Override
     public void scheduleRepeatingTask(Runnable task, long delay, long period) {
         plugin.getServer().getScheduler().runTaskTimer(plugin, task, delay, period);
     }

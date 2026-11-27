@@ -23,6 +23,7 @@ public final class ListenerModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(PlayerListener.class);
+        bind(DonationNoticeListener.class);
         bind(ObserverListener.class);
         bind(SculkListener.class);
         bind(PistonListener.class);
@@ -47,6 +48,7 @@ public final class ListenerModule extends AbstractModule {
         LOGGER.debug("Registering listeners");
         // Register DI-enabled listeners
         plugin.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerListener.class), plugin);
+        plugin.getServer().getPluginManager().registerEvents(injector.getInstance(DonationNoticeListener.class), plugin);
         plugin.getServer().getPluginManager().registerEvents(injector.getInstance(ObserverListener.class), plugin);
 
         var sculk = Material.getMaterial("SCULK");

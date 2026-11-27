@@ -9,6 +9,7 @@ import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastere
 import net.onelitefeather.antiredstoneclockremastered.service.api.*;
 import net.onelitefeather.antiredstoneclockremastered.service.chain.*;
 import net.onelitefeather.antiredstoneclockremastered.service.factory.DecisionServiceFactory;
+import net.onelitefeather.antiredstoneclockremastered.service.DonationNoticeService;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.notification.AdminNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.notification.ConsoleNotificationService;
@@ -16,10 +17,13 @@ import net.onelitefeather.antiredstoneclockremastered.service.notification.Disco
 import net.onelitefeather.antiredstoneclockremastered.service.notification.SignNotificationService;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.DelegatedTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.DynamicTrackingService;
+import net.onelitefeather.antiredstoneclockremastered.service.storage.DonationNoticeStoreFactory;
 import net.onelitefeather.antiredstoneclockremastered.service.tracking.StaticTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.CheckTPS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Clock;
 
 /**
  * Guice module for core service dependencies.
@@ -82,6 +86,17 @@ public final class ServiceModule extends AbstractModule {
                 injector.getInstance(PlotSquaredRedstoneClockMiddleware.class),
                 injector.getInstance(TrackingRedstoneClockMiddleware.class)
                 );
+    }
+
+    @Provides
+    @Singleton
+    public DonationNoticeService provideDonationNoticeService(AntiRedstoneClockRemastered plugin) {
+        var config = plugin.getConfig();
+        var store = DonationNoticeStoreFactory.create(config, plugin.getDataFolder().toPath());
+        return new DonationNoticeService(store, Clock.systemUTC(),
+                config.getBoolean("donation.notice", true),
+                config.getInt("donation.intervalDays", 30),
+                plugin.getPluginMeta().getVersion());
     }
 
     @Provides
