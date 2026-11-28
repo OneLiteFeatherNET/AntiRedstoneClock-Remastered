@@ -1,7 +1,7 @@
 # Stop warning signs from being placed
 
-Out of the box the plugin replaces the block of a detected clock with a sign carrying a
-warning text. Turn that off and leave the world untouched.
+Out of the box the plugin puts a sign carrying a warning text where it removed the block of a
+detected clock. Turn that off and leave the world untouched.
 
 **Before you start:** none.
 

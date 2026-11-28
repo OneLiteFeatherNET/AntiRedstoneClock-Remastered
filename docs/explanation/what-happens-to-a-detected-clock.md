@@ -11,8 +11,9 @@ only then decides what to do with the block.
 
 Notifications go out in a fixed chain — Discord, sign, console, in-game admins — and every
 target that is switched on gets its message. The sign target is unlike the other three: it does
-not send a message anywhere, it **replaces the block of the clock** with a sign carrying the
-configured warning text.
+not send a message anywhere, it **places a sign** carrying the configured warning text where
+the clock's block was — but only once that position is empty. It never replaces a block that is
+still there.
 
 After the notifications, the block is dealt with according to two switches. With
 `clock.autoBreak` off, nothing happens to the world and the clock keeps running. With it on,
@@ -21,11 +22,9 @@ if it had been mined with a silk touch pickaxe.
 
 ## What this means in practice
 
-The default configuration has both the sign target and automatic breaking enabled, and the two
-work against each other: the sign is placed on the clock's block, and the removal step then
-takes that same block away again. On a default installation you therefore rarely see the sign
-survive — and what drops on the floor is the sign, not the redstone component that caused the
-detection.
+The default configuration has both the sign target and automatic breaking enabled: the clock's
+block is removed first, and the sign then takes its empty place. With automatic breaking off
+the block stays, so no sign is placed either.
 
 Whichever behaviour you want, pick one of the two:
 

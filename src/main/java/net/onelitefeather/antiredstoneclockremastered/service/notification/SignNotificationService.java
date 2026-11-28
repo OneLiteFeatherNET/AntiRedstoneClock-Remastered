@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,6 @@ public final class SignNotificationService implements NotificationService {
     private final AntiRedstoneClockRemastered plugin;
     private final NotificationService notificationService;
     private final RegionService regionService;
-    private final FixedMetadataValue metaValue;
 
     public SignNotificationService(@NotNull AntiRedstoneClockRemastered plugin,
                                    @Nullable NotificationService notificationService,
@@ -33,7 +32,6 @@ public final class SignNotificationService implements NotificationService {
         this.plugin = plugin;
         this.notificationService = notificationService;
         this.regionService = regionService;
-        this.metaValue = new FixedMetadataValue(plugin, Constants.META_KEY_ARCR_SIGN);
         if (isEnabled()) {
             this.warnForTooLongText();
             this.warnForWrongMaterial();
@@ -97,12 +95,17 @@ public final class SignNotificationService implements NotificationService {
             var blockMaterialString = this.plugin.getConfig().getString("notification.sign.material", "OAK_SIGN");
             var blockMaterial = Optional.ofNullable(Material.matchMaterial(blockMaterialString)).orElse(Material.OAK_SIGN);
             var block = location.getWorld().getBlockAt(location);
+            if (!block.isEmpty()) {
+                // the clock was not removed or something else took its place, never overwrite it
+                LOGGER.debug("Not placing a notification sign at {}, the position is occupied by {}", location, block.getType());
+                return;
+            }
             block.setType(blockMaterial, false);
             var state = block.getState();
             if (!(state instanceof Sign sign)) {
                 LOGGER.debug("Placed {} at {}, it carries no text because it is not a sign", blockMaterial, location);
             } else {
-                sign.setMetadata(Constants.META_KEY_ARCR_SIGN, this.metaValue);
+                sign.getPersistentDataContainer().set(Constants.ARCR_SIGN_KEY, PersistentDataType.BOOLEAN, true);
                 var side = sign.getSide(Side.BACK);
                 var lines = this.plugin.getConfig().getStringList("notification.sign.back")
                         .stream()
