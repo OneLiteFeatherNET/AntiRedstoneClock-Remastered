@@ -14,6 +14,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,10 +28,16 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
     private static final NamespacedKey REDSTONE_CLOCK_METADATA_KEY = NamespacedKey.fromString("antiredstoneclock:redstone_clock");
     private final ConcurrentHashMap<UUID, DynamicRedstoneClock> activeClockTesters = new ConcurrentHashMap<>();
     private final AntiRedstoneClockRemastered plugin;
+    private final ClockMarkers clockMarkers;
 
     @Inject
     public DynamicTrackingService(AntiRedstoneClockRemastered plugin) {
+        this(plugin, new BlockDataClockMarkers(plugin));
+    }
+
+    DynamicTrackingService(AntiRedstoneClockRemastered plugin, ClockMarkers clockMarkers) {
         this.plugin = plugin;
+        this.clockMarkers = clockMarkers;
     }
 
     @Override
@@ -86,23 +93,21 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
     }
 
     private DynamicRedstoneClock getClockByLocation(Location location) {
-        var block = location.getBlock();
-        var customBlockData = new CustomBlockData(block, this.plugin);
-        if (customBlockData.has(REDSTONE_CLOCK_METADATA_KEY)) {
-            var uuid = customBlockData.get(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID);
+        var uuid = this.clockMarkers.read(location);
+        if (uuid != null) {
             return this.activeClockTesters.get(uuid);
         }
         return null;
     }
 
     public void addRedstoneClockTest(@NotNull Location location) {
-        var block = location.getBlock();
-        var customBlockData = new CustomBlockData(block, this.plugin);
-        if (customBlockData.has(REDSTONE_CLOCK_METADATA_KEY)) {
+        var uuid = this.clockMarkers.read(location);
+        // A marker without a tracked clock is left over from a removed clock or a restart and is overwritten.
+        if (uuid != null && this.activeClockTesters.containsKey(uuid)) {
             return;
         }
         var dynamicRedstoneClock = new DynamicRedstoneClock(location, (System.currentTimeMillis() / 1000) + plugin.getConfig().getInt("clock.endDelay", 300));
-        customBlockData.set(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID, dynamicRedstoneClock.getUuid());
+        this.clockMarkers.write(location, dynamicRedstoneClock.getUuid());
         this.activeClockTesters.put(dynamicRedstoneClock.getUuid(), dynamicRedstoneClock);
     }
 
@@ -115,5 +120,37 @@ public final class DynamicTrackingService implements RedstoneTrackingService {
     @Override
     public void removeClockByLocation(Location location) {
         this.activeClockTesters.values().removeIf(dynamicRedstoneClock -> dynamicRedstoneClock.getCurrentLocation().equals(location));
+        this.clockMarkers.remove(location);
+    }
+
+    /**
+     * Reads, writes and removes the marker that links a block to its tracked clock.
+     */
+    interface ClockMarkers {
+
+        @Nullable
+        UUID read(@NotNull Location location);
+
+        void write(@NotNull Location location, @NotNull UUID uuid);
+
+        void remove(@NotNull Location location);
+    }
+
+    private record BlockDataClockMarkers(AntiRedstoneClockRemastered plugin) implements ClockMarkers {
+
+        @Override
+        public @Nullable UUID read(@NotNull Location location) {
+            return new CustomBlockData(location.getBlock(), this.plugin).get(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID);
+        }
+
+        @Override
+        public void write(@NotNull Location location, @NotNull UUID uuid) {
+            new CustomBlockData(location.getBlock(), this.plugin).set(REDSTONE_CLOCK_METADATA_KEY, UUIDTagType.UUID, uuid);
+        }
+
+        @Override
+        public void remove(@NotNull Location location) {
+            new CustomBlockData(location.getBlock(), this.plugin).remove(REDSTONE_CLOCK_METADATA_KEY);
+        }
     }
 }
