@@ -36,7 +36,7 @@ public final class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onBlockBreak(BlockBreakEvent blockBreakEvent) {
         var block = blockBreakEvent.getBlock();
         recheck:
