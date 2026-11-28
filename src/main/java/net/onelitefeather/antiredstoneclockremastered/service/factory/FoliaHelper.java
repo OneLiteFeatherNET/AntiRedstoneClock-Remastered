@@ -1,35 +1,39 @@
 package net.onelitefeather.antiredstoneclockremastered.service.factory;
 
-import io.papermc.paper.ServerBuildInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 final class FoliaHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FoliaHelper.class);
+    private static final String REGIONIZED_SERVER_CLASS = "io.papermc.paper.threadedregions.RegionizedServer";
 
     /**
      * Detects if the server is running on Folia.
-     * Folia support is available starting from Paper version 1.20 and above.
+     * Folia is identified by its regionized server class, independent of the Minecraft version.
      *
      * @return true if Folia is detected, false otherwise
      */
     static boolean isFolia() {
-        try {
-            ServerBuildInfo buildInfo = ServerBuildInfo.buildInfo();
-            String version = buildInfo.minecraftVersionId();
+        return isFolia(Class::forName);
+    }
 
-            // Check if running Paper 1.20+ which supports Folia
-            if (version.startsWith("1.20") || version.startsWith("1.21") || version.startsWith("1.22")) {
-                // Additional check for Folia-specific classes
-                Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-                return true;
-            }
-            LOGGER.debug("Minecraft version {} is not checked for Folia support", version);
-            return false;
+    static boolean isFolia(ClassLookup classLookup) {
+        try {
+            classLookup.find(REGIONIZED_SERVER_CLASS);
+            LOGGER.debug("Found {}, running on a Folia server", REGIONIZED_SERVER_CLASS);
+            return true;
         } catch (ClassNotFoundException e) {
             LOGGER.debug("No Folia classes found, running on a regular Paper server");
             return false;
         }
+    }
+
+    /**
+     * Looks up a class by its fully qualified name.
+     */
+    @FunctionalInterface
+    interface ClassLookup {
+        Class<?> find(String className) throws ClassNotFoundException;
     }
 }
