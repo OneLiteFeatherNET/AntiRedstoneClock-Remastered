@@ -2,8 +2,6 @@ package net.onelitefeather.antiredstoneclockremastered.listener;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import net.kyori.adventure.text.Component;
-import net.onelitefeather.antiredstoneclockremastered.AntiRedstoneClockRemastered;
 import net.onelitefeather.antiredstoneclockremastered.service.UpdateService;
 import net.onelitefeather.antiredstoneclockremastered.service.api.RedstoneTrackingService;
 import net.onelitefeather.antiredstoneclockremastered.utils.Constants;
@@ -28,9 +26,6 @@ public final class PlayerListener implements Listener {
     @EventHandler
     private void onPlayerJoinEvent(PlayerJoinEvent playerJoinEvent) {
         var player = playerJoinEvent.getPlayer();
-        if (player.isOp() || (player.hasPermission(Constants.PERMISSION_NOTIFY) && !player.hasPermission(Constants.DISABLE_DONATION_NOTIFY))) {
-            player.sendMessage(Component.translatable("antiredstoneclockremastered.notify.donation.player").arguments(AntiRedstoneClockRemastered.PREFIX));
-        }
         if (player.isOp() || player.hasPermission(Constants.PERMISSION_NOTIFY_UPDATE)) {
             this.updateService.notifyPlayer(player);
         }

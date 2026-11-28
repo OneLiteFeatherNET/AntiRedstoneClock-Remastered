@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.customblockdata)
     implementation(libs.guice)
     implementation(libs.jakarta.inject)
+    implementation(libs.mariadb)
     annotationProcessor(libs.cloud.command.annotations)
 
     implementation(project(":internal-api"))
@@ -105,6 +106,7 @@ dependencies {
     testImplementation(libs.mockito.junit.jupiter)
     testImplementation(libs.mockbukkit)
     testImplementation(libs.assertj.core)
+    testImplementation(libs.sqlite.jdbc)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
@@ -161,6 +163,9 @@ tasks {
         relocate("kotlinx", "net.onelitefeather.antiredstoneclockremastered.kotlinx")
         relocate("okhttp3", "net.onelitefeather.antiredstoneclockremastered.okhttp3")
         relocate("okio", "net.onelitefeather.antiredstoneclockremastered.okio")
+        relocate("org.mariadb.jdbc", "net.onelitefeather.antiredstoneclockremastered.org.mariadb.jdbc")
+        // The driver loads its codecs and auth plugins through META-INF/services, the entries must follow the relocation.
+        transform(com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer::class.java)
         dependsOn(jar)
     }
     this.modrinth {
