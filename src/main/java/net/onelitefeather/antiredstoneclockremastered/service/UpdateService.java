@@ -1,5 +1,6 @@
 package net.onelitefeather.antiredstoneclockremastered.service;
 
+import com.github.zafarkhaja.semver.ParseException;
 import com.github.zafarkhaja.semver.Version;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import jakarta.inject.Inject;
@@ -18,24 +19,43 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.function.Supplier;
 
 @Singleton
 public final class UpdateService implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
     private static final long UPDATE_CHECK_INTERVAL_TICKS = Long.getLong("ARCR_UPDATE_SERVICE_SCHEDULE", 20 * 60 * 60 * 3L); // 3 hours
     private static final int MAX_RETRY_COUNT = Integer.getInteger("ARCR_UPDATE_SERVICE_MAX_RETRY", 5);
+    private static final Duration CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final String DOWNLOAD_URL = "https://hangar.papermc.io/OneLiteFeather/AntiRedstoneClock-Remastered/versions/%s";
-    private final HttpClient hangarClient = HttpClient.newBuilder().build();
+    private final HttpClient hangarClient;
     private final Version localVersion;
     private final SchedulerService schedulerService;
+    private final ComponentLogger consoleLogger;
+    private final Supplier<? extends Collection<? extends Player>> onlinePlayers;
     private Version remoteVersion;
     private ScheduledTask scheduler;
     private int retryCount = 0;
 
     @Inject
     public UpdateService(AntiRedstoneClockRemastered antiRedstoneClockRemastered, SchedulerService schedulerService) {
-        this.localVersion = Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion());
+        this(Version.parse(antiRedstoneClockRemastered.getPluginMeta().getVersion()), schedulerService,
+                createHangarClient(), antiRedstoneClockRemastered.getComponentLogger(), Bukkit::getOnlinePlayers);
+    }
+
+    UpdateService(Version localVersion, SchedulerService schedulerService, HttpClient hangarClient,
+                  ComponentLogger consoleLogger, Supplier<? extends Collection<? extends Player>> onlinePlayers) {
+        this.localVersion = localVersion;
         this.schedulerService = schedulerService;
+        this.hangarClient = hangarClient;
+        this.consoleLogger = consoleLogger;
+        this.onlinePlayers = onlinePlayers;
+    }
+
+    static HttpClient createHangarClient() {
+        return HttpClient.newBuilder().connectTimeout(CONNECT_TIMEOUT).build();
     }
 
 
@@ -51,8 +71,12 @@ public final class UpdateService implements Runnable {
         }
         var remoteVersion = getNewerVersion();
         if (remoteVersion != null) {
+            boolean firstFound = !remoteVersion.equals(this.remoteVersion);
             this.remoteVersion = remoteVersion;
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if (firstFound) {
+                notifyConsole(this.consoleLogger);
+            }
+            for (Player onlinePlayer : this.onlinePlayers.get()) {
                 if (onlinePlayer.isOp() || onlinePlayer.hasPermission(Constants.PERMISSION_NOTIFY_UPDATE)) {
                     notifyPlayer(localVersion, remoteVersion, onlinePlayer);
                 }
@@ -107,6 +131,8 @@ public final class UpdateService implements Runnable {
             }
         } catch (IOException | InterruptedException e) {
             LOGGER.error("Something went wrong to check updates", e);
+        } catch (ParseException e) {
+            LOGGER.error("Failed to check for updates, Hangar returned an invalid version", e);
         }
         return null;
     }
