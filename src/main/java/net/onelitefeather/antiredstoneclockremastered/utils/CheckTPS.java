@@ -7,12 +7,16 @@ import net.onelitefeather.antiredstoneclockremastered.service.api.SchedulerServi
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.function.LongSupplier;
+
 @Singleton
 public final class CheckTPS {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckTPS.class);
 
-    private long lastPoll = System.currentTimeMillis();
+    private final LongSupplier nanoTime;
+    private long lastPoll;
+    private boolean hasBaseline;
     private boolean tpsOk = true;
     private long tps = 20;
     private final SchedulerService scheduler;
@@ -22,7 +26,12 @@ public final class CheckTPS {
 
     @Inject
     public CheckTPS(AntiRedstoneClockRemastered plugin, SchedulerService scheduler) {
+        this(plugin, scheduler, System::nanoTime);
+    }
+
+    CheckTPS(AntiRedstoneClockRemastered plugin, SchedulerService scheduler, LongSupplier nanoTime) {
         this.scheduler = scheduler;
+        this.nanoTime = nanoTime;
         this.interval = plugin.getConfig().getInt("tps.interval", 2);
         this.maximimumTPS = plugin.getConfig().getInt("tps.max", 20);
         this.minimumTPS = plugin.getConfig().getInt("tps.min", 15);
@@ -39,10 +48,18 @@ public final class CheckTPS {
     }
 
     private void runCheck() {
-        var current = System.currentTimeMillis();
-        var spendTime = (current - this.lastPoll) / 1000;
-        if (spendTime <= 0) spendTime = 1;
-        this.tps = (20L * this.interval / spendTime);
+        var current = this.nanoTime.getAsLong();
+        if (!this.hasBaseline) {
+            // The first sample only records the start of the first window; there is nothing to measure yet.
+            this.lastPoll = current;
+            this.hasBaseline = true;
+            return;
+        }
+        var elapsedNanos = current - this.lastPoll;
+        if (elapsedNanos <= 0) return;
+        var measuredTps = 20.0 * this.interval * 1_000_000_000L / elapsedNanos;
+        // Round to whole ticks so ordinary scheduling jitter around the interval does not leave the range.
+        this.tps = Math.round(measuredTps);
         if (this.minimumTPS < 0) {
             this.tpsOk = (this.tps <= this.maximimumTPS);
         } else if (this.maximimumTPS < 0) {
@@ -51,7 +68,8 @@ public final class CheckTPS {
             this.tpsOk = (this.tps >= this.minimumTPS && this.tps <= this.maximimumTPS);
         }
         this.lastPoll = current;
-        LOGGER.debug("Measured {} TPS, clock detection is {}", this.tps, this.tpsOk ? "running" : "paused");
+        LOGGER.debug("Measured {} TPS ({} ms for {} ticks), clock detection is {}", this.tps,
+                elapsedNanos / 1_000_000, 20L * this.interval, this.tpsOk ? "running" : "paused");
     }
 
     public boolean isTpsOk() {
